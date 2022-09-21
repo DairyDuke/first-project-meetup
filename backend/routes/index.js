@@ -1,7 +1,10 @@
 // backend/routes/index.js
 const express = require('express');
 const router = express.Router();
+const apiRouter = require('./api');
 
+
+router.use('/api', apiRouter);
 //Test Route
 // router.get('/hello/world', function (req, res) {
 //   res.cookie('XSRF-TOKEN', req.csrfToken());
@@ -23,5 +26,7 @@ router.get("/api/csrf/restore", (req, res) => {
 //  until you implement the frontend of the application later.
 //  So for now, it will remain available to both the development
 //  and production environments.
+
+
 
 module.exports = router;
