@@ -11,21 +11,29 @@ const router = express.Router();
 // a JSON response with the user information. If the creation of the user is
 // unsuccessful, then a Sequelize Validation error will be passed onto the
 // next error-handling middleware.
-router.post(
-  '/',
-  async (req, res) => {
-    const { email, password, username } = req.body;
-    const user = await User.signup({ email, username, password });
+// router.post(
+//   '/',
+//   async (req, res) => {
+//     const { email, password, username } = req.body;
+//     const user = await User.signup({ email, username, password });
 
-    await setTokenCookie(res, user);
+//     await setTokenCookie(res, user);
 
-    return res.json({
-      user
-    });
-  }
-);
+//     return res.json({
+//       user
+//     });
+//   }
+// );
 
 const validateSignup = [
+  check('firstName')
+    .exists({ checkFalsy: true })
+    .isLength({ min: 2 })
+    .withMessage('Please provide a first name with at least 2 characters.'),
+  check('lastName')
+    .exists({ checkFalsy: true })
+    .isLength({ min: 2 })
+    .withMessage('Please provide a last name with at least 2 characters.'),
   check('email')
     .exists({ checkFalsy: true })
     .isEmail()
@@ -49,7 +57,7 @@ router.post(
   '/',
   validateSignup,
   async (req, res) => {
-    const { email, password, username } = req.body;
+    const { firstName, lastName, email, password, username } = req.body;
     const user = await User.signup({ firstName, lastName, email, username, password });
 
     await setTokenCookie(res, user);
