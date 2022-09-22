@@ -216,8 +216,8 @@ Returns all the groups.
 
 * Require Authentication: false
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: get
+  * URL: ?/api/groups
   * Body: none
 
 * Successful Response
@@ -253,8 +253,8 @@ Returns all the groups.
 
 * Require Authentication: true
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: get
+  * URL: /api/groups
   * Body: none
 
 * Successful Response
