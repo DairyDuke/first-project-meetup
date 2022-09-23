@@ -13,13 +13,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DairyDuke/first-project-soundcloud.git"
+    "url": "git+https://github.com/DairyDuke/first-project-meetup.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/DairyDuke/first-project-soundcloud/issues"
+    "url": "https://github.com/DairyDuke/first-project-meetup/issues"
   },
-  "homepage": "https://github.com/DairyDuke/first-project-soundcloud#readme"
+  "homepage": "https://github.com/DairyDuke/first-project-meetup#readme",
+  "dependencies": {
+    "pg": "^8.8.0"
+  }
 }
