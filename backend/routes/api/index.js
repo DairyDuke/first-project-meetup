@@ -4,9 +4,10 @@ const usersRouter = require('./users.js');
 const { restoreUser } = require('../../utils/auth.js');
 
 router.use(restoreUser);
-
+// Login/Logout routers
 router.use('/session', sessionRouter);
 
+//Signup
 router.use('/users', usersRouter);
 
 router.post('/test', (req, res) => {
