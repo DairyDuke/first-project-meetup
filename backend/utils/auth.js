@@ -73,7 +73,7 @@ const requireAuth = function (req, _res, next) {
 
 const uniqueUser = async function (req, _res, next) {
   const { firstName, lastName, email, password, username } = req.body;
-  const checkEmail = await User.findAll({ where: { email: email } })
+  const checkEmail = await User.findOne({ where: { email: email } })
   if (checkEmail) {
     const err = new Error('User Exists')
     // err.title = 'Forbidden';
