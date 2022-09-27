@@ -63,12 +63,45 @@ const restoreUser = (req, res, next) => {
 const requireAuth = function (req, _res, next) {
   if (req.user) return next();
 
-  const err = new Error('Unauthorized');
-  err.title = 'Unauthorized';
-  err.errors = ['Unauthorized'];
-  err.status = 401;
+  const err = new Error('Authentication');
+  // err.title = 'Unauthorized';
+  err.message = 'Authentication required';
+  // err.errors = ['Unauthorized'];
+  err.statusCode = 401;
   return next(err);
 }
 
+const requireAuthorization = function (req, _res, next) {
 
-module.exports = { setTokenCookie, restoreUser, requireAuth };
+
+  // Need to check the REQ for role/permission
+  // and query the databse to verify
+  // console.log(req)
+  // return next()
+  // if (req.user) return next();
+
+  const err = new Error('Authorization');
+  // err.title = 'Forbidden';
+  err.message = 'Forbidden';
+  // err.errors = ['Forbidden'];
+  err.statusCode = 403;
+  return next(err);
+}
+
+const uniqueUser = async function (req, _res, next) {
+  const { firstName, lastName, email, password, username } = req.body;
+  const checkEmail = await User.findAll({ where: { email: email } })
+  if (checkEmail) {
+    const err = new Error('User Exists')
+    // err.title = 'Forbidden';
+    err.message = 'User already exists';
+    err.errors = {
+      "email": "User with that email already exists"
+    };
+    err.statusCode = 403;
+    return next(err);
+  }
+  return next()
+}
+
+module.exports = { setTokenCookie, restoreUser, requireAuth, requireAuthorization, uniqueUser };
