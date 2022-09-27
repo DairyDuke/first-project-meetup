@@ -26,12 +26,6 @@ const router = express.Router();
 // );
 
 const validateSignup = [
-  check('email')
-    .exists({ checkFalsy: true })
-    .withMessage('Email can not be blank'),
-  check('email')
-    .isEmail()
-    .withMessage('Please provide a valid email.'),
   check('firstName')
     .exists({ checkFalsy: true })
     .withMessage('First name can not be blank.')
@@ -42,6 +36,11 @@ const validateSignup = [
     .withMessage('Last name can not be blank.')
     .isLength({ min: 2 })
     .withMessage('Please provide a last name with at least 2 characters.'),
+  check('email')
+    .exists({ checkFalsy: true })
+    .withMessage('Email can not be blank')
+    .isEmail()
+    .withMessage('Please provide a valid email.'),
   check('username')
     .exists({ checkFalsy: true })
     .withMessage('Username can not be blank.')
@@ -67,12 +66,12 @@ router.post(
     const { firstName, lastName, email, password, username } = req.body;
     const user = await User.signup({ firstName, lastName, email, username, password });
 
-    await setTokenCookie(res, user);
+    const token = await setTokenCookie(res, user);
     const tokenUser = user.toJSON()
     tokenUser.token = token
     return res.json({
       // user
-      tokenUser
+      ...tokenUser
     });
 
   })

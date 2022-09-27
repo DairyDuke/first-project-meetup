@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
         email,
         hashedPassword
       });
-      return await User.scope('currentUser').findByPk(user.id);
+      return await User.scope('newUser').findByPk(user.id);
     }
 
     static associate(models) {
@@ -68,36 +68,21 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          len: [2, 30],
-          isNotEmail(value) {
-            if (Validator.isEmail(value)) {
-              throw new Error("Cannot be an email.");
-            }
-          }
+          len: [2, 30]
         }
       },
       lastName: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          len: [2, 30],
-          isNotEmail(value) {
-            if (Validator.isEmail(value)) {
-              throw new Error("Cannot be an email.");
-            }
-          }
+          len: [2, 30]
         }
       },
       username: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          len: [4, 30],
-          isNotEmail(value) {
-            if (Validator.isEmail(value)) {
-              throw new Error("Cannot be an email.");
-            }
-          }
+          len: [4, 30]
         }
       },
       email: {
@@ -127,6 +112,9 @@ module.exports = (sequelize, DataTypes) => {
       scopes: {
         currentUser: {
           attributes: { exclude: ["hashedPassword"] }
+        },
+        newUser: {
+          attributes: { exclude: ["hashedPassword", "username", "createdAt", "updatedAt"] }
         },
         loginUser: {
           attributes: {}
