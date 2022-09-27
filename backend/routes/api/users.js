@@ -28,7 +28,8 @@ const router = express.Router();
 const validateSignup = [
   check('email')
     .exists({ checkFalsy: true })
-    .withMessage('Email can not be blank')
+    .withMessage('Email can not be blank'),
+  check('email')
     .isEmail()
     .withMessage('Please provide a valid email.'),
   check('firstName')
@@ -59,7 +60,7 @@ const validateSignup = [
 ];
 
 router.post(
-  '/signup',
+  '/',
   validateSignup,
   uniqueUser,
   async (req, res, next) => {
