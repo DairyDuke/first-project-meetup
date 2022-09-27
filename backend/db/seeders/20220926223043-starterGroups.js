@@ -45,11 +45,12 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
+    const Op = Sequelize.Op;
+
+    // what to use to delete the above.
     return queryInterface.bulkDelete('Groups', {
       // what to use to delete the above.
-      where: {
-        state: "FL"
-      }
+      organizerId: { [Op.in]: [1, 2, 3] }
     }, {});
     /**
      * Add commands to revert seed here.
