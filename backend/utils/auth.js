@@ -71,23 +71,6 @@ const requireAuth = function (req, _res, next) {
   return next(err);
 }
 
-const requireAuthorization = function (req, _res, next) {
-
-
-  // Need to check the REQ for role/permission
-  // and query the databse to verify
-  // console.log(req)
-  // return next()
-  // if (req.user) return next();
-
-  const err = new Error('Authorization');
-  // err.title = 'Forbidden';
-  err.message = 'Forbidden';
-  // err.errors = ['Forbidden'];
-  err.statusCode = 403;
-  return next(err);
-}
-
 const uniqueUser = async function (req, _res, next) {
   const { firstName, lastName, email, password, username } = req.body;
   const checkEmail = await User.findAll({ where: { email: email } })
@@ -104,4 +87,4 @@ const uniqueUser = async function (req, _res, next) {
   return next()
 }
 
-module.exports = { setTokenCookie, restoreUser, requireAuth, requireAuthorization, uniqueUser };
+module.exports = { setTokenCookie, restoreUser, requireAuth, uniqueUser };

@@ -10,15 +10,14 @@ router.use('/session', sessionRouter);
 //Signup
 router.use('/users', usersRouter);
 
-router.post('/test', (req, res) => {
-  res.json({ requestBody: req.body });
-});
-
-module.exports = router;
 // Test Route to see if /api is connected.
 // router.post('/test', function (req, res) {
 //   res.json({ requestBody: req.body });
 // });
+router.post('/test', (req, res) => {
+  res.json({ requestBody: req.body });
+});
+
 
 // Test Route to see if our security tokens are working.
 // // GET /api/set-token-cookie
@@ -44,11 +43,13 @@ router.get(
 );
 
 // GET / api / require - auth
-const { requireAuth, requireAuthorization } = require('../../utils/auth.js');
+const { requireAuth } = require('../../utils/auth.js');
 router.get(
   '/require-auth',
-  requireAuth, requireAuthorization,
+  requireAuth,
   (req, res) => {
     return res.json(req.user);
   }
 );
+
+module.exports = router;
