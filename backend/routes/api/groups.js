@@ -5,6 +5,8 @@ const { User, Group, Event, Membership, Venue, GroupImage } = require('../../db/
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
+const Op = Sequelize.Op;
+
 const router = express.Router();
 
 const validateGroup = []
@@ -17,12 +19,25 @@ router.get(
   async (req, res, next) => {
     const Groups = await Group.findAll({
       attributes: {
-        include: [[Sequelize.fn("COUNT", Sequelize.col("Memberships.groupId")), "numMembers"]]
+        include: [
+          [Sequelize.fn("COUNT", Sequelize.col("Memberships.groupId")), "numMembers"]
+        ],
       },
-      include: [{
-        model: Membership,
-        attributes: []
-      }],
+      include: [
+        {
+          model: Membership,
+          attributes: []
+        },
+        {
+          model: GroupImage,
+          as: 'previewImage',
+          attributes: ['url'],
+          required: false,
+          where: {
+            preview: false
+          }
+        }
+      ],
       group: ['Group.id']
     })
 

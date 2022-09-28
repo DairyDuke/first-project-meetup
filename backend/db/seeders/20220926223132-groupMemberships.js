@@ -90,17 +90,9 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     const Op = Sequelize.Op;
-
     return queryInterface.bulkDelete('Memberships', {
       // what to use to delete the above.
-      userId: { [Op.in]: [1, 2, 3] }
-
+      groupId: { [Op.in]: [1, 2, 3] }
     }, {});
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
   }
 };
