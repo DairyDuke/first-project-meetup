@@ -10,6 +10,20 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+    static async createGroup({ name, organizer, about, type, private, city, state }) {
+
+      const group = await Group.create({
+        name,
+        organizer,
+        about,
+        type,
+        private,
+        city,
+        state
+      });
+      return await Group.findByPk(group.id);
+    }
+
     static associate(models) {
       // define association here
       Group.hasMany(models.Event, { foreignKey: 'groupId' })

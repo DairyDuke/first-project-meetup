@@ -8,38 +8,70 @@ const { handleValidationErrors } = require('../../utils/validation');
 const Op = Sequelize.Op;
 
 const router = express.Router();
+// Checks req.body for potential Validation Errors
+// name, about, type, private, city, state
+const validateGroup = [
+  check('name')
+    .exists({ checkFalsy: true })
+    .isLength({ max: 60 })
+    .withMessage('Name must be 60 characters or less.'),
+  check('about')
+    .exists({ checkFalsy: true })
+    .isLength({ min: 50 })
+    .withMessage('About must be 50 characters or more.'),
+  check('type')
+    .exists({ checkFalsy: true })
+    //need to find choice validator
+    .withMessage("Type must be 'Online' or 'In person'."),
+  check('private')
+    .exists({ checkFalsy: true })
+    //boolean checker
+    .withMessage("Private must be a boolean."),
+  check('city')
+    .exists({ checkFalsy: true })
+    .withMessage('City is required.'),
+  check('state')
+    .exists({ checkFalsy: true })
+    .withMessage('State is required.'),
+  handleValidationErrors
+];
 
-const validateGroup = []
-
-// `id`, `organizerId`, `name`, `about`,
-//`type`, `private`, `city`, `state`, `createdAt`,
-// `updatedAt`, `numMembers`, and `previewImage`
 router.get(
   '/',
   async (req, res, next) => {
-    const Groups = await Group.findAll({
-      attributes: {
-        include: [
-          [Sequelize.fn("COUNT", Sequelize.col("Memberships.groupId")), "numMembers"]
-        ],
-      },
-      include: [
-        {
-          model: Membership,
-          attributes: []
-        },
-        {
-          model: GroupImage,
-          as: 'previewImage',
-          attributes: ['url'],
-          required: false,
-          where: {
-            preview: false
-          }
-        }
-      ],
-      group: ['Group.id']
+    const Groups = await Group.findAll({ raw: true })
+    await Groups.forEach(element => {
+      element.numMembers = Membership.count({ where: { groupId: element.Id } })
+    });
+    Groups.numMembers = await Membership.count({ where: { groupId: groupId } })
+    Groups.GroupImages = await GroupImage.findAll({
+      where: { groupId: groupId },
+      attributes: { exclude: ["groupId", "createdAt", "updatedAt"] }
     })
+
+    // const Groups = await Group.findAll({
+    //   attributes: {
+    //     include: [
+    //       [Sequelize.fn("COUNT", Sequelize.col("Memberships.groupId")), "numMembers"]
+    //     ],
+    //   },
+    //   include: [
+    //     {
+    //       model: Membership,
+    //       attributes: []
+    //     },
+    //     {
+    //       model: GroupImage,
+    //       as: 'previewImage',
+    //       attributes: ['url'],
+    //       required: false,
+    //       where: {
+    //         preview: false
+    //       }
+    //     }
+    //   ],
+    //   group: ['Group.id']
+    // })
 
     res.json({ Groups })
   })
@@ -128,5 +160,20 @@ router.get(
     return res.json({ Groups })
   })
 
+
+// Group Creation
+router.post(
+  '/',
+  requireAuth,
+  validateGroup,
+  async (req, res, next) => {
+    const organizer = req.user.dataValues.id
+    const { name, about, type, private, city, state } = req.body;
+    const group = await Group.createGroup({ name, organizer, about, type, private, city, state });
+    return res.json({
+      group
+    });
+
+  })
 
 module.exports = router;
