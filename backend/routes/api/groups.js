@@ -35,57 +35,56 @@ const validateGroup = [
     .withMessage('State is required.'),
   handleValidationErrors
 ];
-
+const validateImage = [
+  check('url')
+    .exists({ checkFalsy: true })
+    .isLength({ max: 60 })
+    .withMessage('Name must be 60 characters or less.'),
+  check('preview')
+    .exists({ checkFalsy: true })
+    .isLength({ min: 50 })
+    .withMessage('About must be 50 characters or more.'),
+  handleValidationErrors
+]
+// Get All Groups
 router.get(
   '/',
   async (req, res, next) => {
-    const Groups = await Group.findAll({ raw: true })
-    await Groups.forEach(element => {
-      element.numMembers = Membership.count({ where: { groupId: element.Id } })
-    });
-    Groups.numMembers = await Membership.count({ where: { groupId: groupId } })
-    Groups.GroupImages = await GroupImage.findAll({
-      where: { groupId: groupId },
-      attributes: { exclude: ["groupId", "createdAt", "updatedAt"] }
+    const Groups = await Group.findAll({
+      attributes: {
+        include: [
+          [Sequelize.fn("COUNT", Sequelize.col("Memberships.groupId")), "numMembers"]
+        ],
+      },
+      include: [
+        {
+          model: Membership,
+          attributes: []
+        },
+        {
+          model: GroupImage,
+          as: 'previewImage',
+          attributes: ['url'],
+          required: false,
+          where: {
+            preview: false
+          }
+        }
+      ],
+      group: ['Group.id']
     })
 
-    // const Groups = await Group.findAll({
-    //   attributes: {
-    //     include: [
-    //       [Sequelize.fn("COUNT", Sequelize.col("Memberships.groupId")), "numMembers"]
-    //     ],
-    //   },
-    //   include: [
-    //     {
-    //       model: Membership,
-    //       attributes: []
-    //     },
-    //     {
-    //       model: GroupImage,
-    //       as: 'previewImage',
-    //       attributes: ['url'],
-    //       required: false,
-    //       where: {
-    //         preview: false
-    //       }
-    //     }
-    //   ],
-    //   group: ['Group.id']
-    // })
-
     res.json({ Groups })
+
   })
 
-
+// Get all groups joined or organized by Current User
 router.get(
   '/current',
   requireAuth,
   async (req, res, next) => {
     const { id, firstName, lastName, email } = req.user.dataValues
-    // Search all groups like query above -
-    // grab current user Id
-    // display groups where organizerId = current user
-    // and where Membership included user when calculating numMembers
+
     const Groups = await Group.findAll({
       attributes: {
         include: [
@@ -119,36 +118,35 @@ router.get(
       ],
       group: ['Group.id']
     })
-    if (!Groups) {
-      const err = new Error('Login failed');
-      err.statusCode = 401;
-      err.title = 'Login failed';
-      err.message = 'Invalid credentials'
-      err.errors = ['The provided credentials were invalid.'];
-      return next(err);
-    }
+
+    // if (!Groups) {
+    //   const err = new Error('Login failed');
+    //   err.statusCode = 401;
+    //   err.title = 'Login failed';
+    //   err.message = 'Invalid credentials'
+    //   err.errors = ['The provided credentials were invalid.'];
+    //   return next(err);
+    // }
 
     return res.json({ Groups })
 
   })
 
-
+// Get details of a group by id
 router.get(
   '/:groupId',
   async (req, res, next) => {
     const groupId = req.params.groupId
-    // Try to Lazy Load:
     const Groups = await Group.findByPk(groupId, { raw: true })
-    // if (!Groups) {
-    //   const err = new Error('message');
-    //   err.statusCode = 403;
-    //   err.title = '';
-    //   err.message = ''
-    //   err.errors = [''];
-    //   return next(err);
-    // }
-
-
+    // NTS need to put in error handling.
+    if (!Groups) {
+      const err = new Error('Not Found');
+      err.statusCode = 404;
+      // err.title = '';
+      err.message = "Group couldn't be found"
+      // err.errors = [''];
+      return next(err);
+    }
     Groups.numMembers = await Membership.count({ where: { groupId: groupId } })
     Groups.GroupImages = await GroupImage.findAll({
       where: { groupId: groupId },
@@ -167,13 +165,29 @@ router.post(
   requireAuth,
   validateGroup,
   async (req, res, next) => {
-    const organizer = req.user.dataValues.id
+    console.log(req.user)
+    // const { id, firstName, lastName, email } = req.user.dataValues
+    const organizerId = req.user.dataValues.id
     const { name, about, type, private, city, state } = req.body;
-    const group = await Group.createGroup({ name, organizer, about, type, private, city, state });
-    return res.json({
-      group
-    });
+    const variable = private
+    const group = await Group.createGroup({ name, organizerId, about, type, variable, city, state });
+
+
+    return res.json(group);
 
   })
 
+
+router.post(
+  '/:groupId/images',
+  requireAuth,
+  validateImage,
+  async (req, res, next) => {
+    const { url, preview } = req.body
+    const groupId = req.params.groupId
+    const groupImage = await GroupImage.addGroupImage({ groupId, url, preview })
+
+    return res.json(groupImage)
+  }
+)
 module.exports = router;

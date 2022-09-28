@@ -10,14 +10,14 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static async createGroup({ name, organizer, about, type, private, city, state }) {
+    static async createGroup({ name, organizerId, about, type, variable, city, state }) {
 
       const group = await Group.create({
         name,
-        organizer,
+        organizerId,
         about,
         type,
-        private,
+        private: variable,
         city,
         state
       });
