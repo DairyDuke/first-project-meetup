@@ -1,9 +1,9 @@
-
 const jwt = require('jsonwebtoken');
 const { jwtConfig } = require('../config');
 const { User } = require('../db/models');
 
 const { secret, expiresIn } = jwtConfig;
+
 // ------------------ This function will be used in the login/signup routes later
 // Sends a JWT Cookie
 const setTokenCookie = (res, user) => {
@@ -71,9 +71,14 @@ const requireAuth = function (req, _res, next) {
   return next(err);
 }
 
+// During signup, checks for email in database.
 const uniqueUser = async function (req, _res, next) {
-  const { firstName, lastName, email, password, username } = req.body;
-  const checkEmail = await User.findOne({ where: { email: email } })
+  let { firstName, lastName, email, password, username } = req.body;
+  const checkEmail = await User.scope('newUser').findOne({
+    where: {
+      email: email
+    }
+  });
   if (checkEmail) {
     const err = new Error('User Exists')
     // err.title = 'Forbidden';
