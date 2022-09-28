@@ -38,12 +38,12 @@ const validateGroup = [
 const validateImage = [
   check('url')
     .exists({ checkFalsy: true })
-    .isLength({ max: 60 })
-    .withMessage('Name must be 60 characters or less.'),
+    .isURL()
+    .withMessage('Image URL must be a URL'),
   check('preview')
     .exists({ checkFalsy: true })
-    .isLength({ min: 50 })
-    .withMessage('About must be 50 characters or more.'),
+    .isBoolean()
+    .withMessage("Preview must be 'True' or 'False'."),
   handleValidationErrors
 ]
 // Get All Groups
@@ -177,17 +177,75 @@ router.post(
 
   })
 
-
+// Add Image to GroupImages/Group
 router.post(
   '/:groupId/images',
   requireAuth,
   validateImage,
   async (req, res, next) => {
+    const currentUser = req.user.dataValues.id
     const { url, preview } = req.body
     const groupId = req.params.groupId
-    const groupImage = await GroupImage.addGroupImage({ groupId, url, preview })
 
-    return res.json(groupImage)
+    const group = await Group.findOne({
+      where: {
+        id: groupId,
+        organizerId: currentUser
+      }
+    })
+    if (group) {
+
+      const image = await GroupImage.create({
+        groupId,
+        url,
+        preview
+      });
+
+      const verify = await GroupImage.findByPk(image.id);
+      return res.json(verify)
+    }
+    const err = new Error('Group Not Found');
+    err.statusCode = 404;
+    // err.title = 'Login failed';
+    err.message = "Group couldn't be found"
+    // err.errors = ['The provided credentials were invalid.'];
+    return next(err);
   }
 )
+
+
+//Delete a Group
+router.delete(
+  '/:groupId',
+  requireAuth,
+  async (req, res, next) => {
+    const currentUser = req.user.dataValues.id
+    const group = await Group.findOne(
+      {
+        where: {
+          id: req.params.groupId,
+          organizerId: currentUser
+        }
+      })
+    if (!group) {
+      const err = new Error('Group Not Found');
+      err.statusCode = 404;
+      // err.title = 'Login failed';
+      err.message = "Group couldn't be found"
+      // err.errors = ['The provided credentials were invalid.'];
+      return next(err);
+    }
+    await group.destroy()
+
+    return res.json({
+      message: "Successfully deleted",
+      statusCode: 200
+    })
+  }
+)
+
+
+
+
+
 module.exports = router;

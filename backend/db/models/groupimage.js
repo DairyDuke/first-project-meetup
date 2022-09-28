@@ -10,15 +10,28 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
 
-    static async addGroupImage({ groupId, url, preview }) {
+    // static async createImage({ currentUser, groupId, url, preview }) {
+    //   const group = await GroupImage.findOne({
+    //     where: {
+    //       id: groupId,
+    //       organizerId: currentUser
+    //     },
+    //     include: {
+    //       model: Group
 
-      const groupImage = await GroupImage.create({
-        groupId,
-        url,
-        preview
-      });
-      return await Group.findByPk(group.id);
-    }
+    //     }
+    //   })
+    //   if (!group) {
+    //     return
+    //   }
+    //   const groupImage = await GroupImage.create({
+    //     groupId,
+    //     url,
+    //     preview
+    //   });
+
+    //   return await GroupImage.findByPk(groupImage.id);
+    // }
 
     static associate(models) {
       // define association here
@@ -42,6 +55,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'GroupImage',
+    defaultScope: {
+      attributes: { exclude: ["groupId", "createdAt", "updatedAt"] }
+    }
+
   });
   return GroupImage;
 };
