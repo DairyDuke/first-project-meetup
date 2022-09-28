@@ -6,19 +6,32 @@ module.exports = {
 
     // NTS - actually put a URL here
     const bulkData = [
+      //Group 1 has 2 images
       {
         groupId: 1,
-        url: "this is a url",
+        url: "www.picture.group1.1",
+        preview: true
+      },
+      {
+        groupId: 1,
+        url: "www.picture.group1.2",
+        preview: false
+      },
+      //Group 2 has 2 images
+      {
+        groupId: 2,
+        url: "www.picture.group2.1",
         preview: true
       },
       {
         groupId: 2,
-        url: "this is a url",
+        url: "www.picture.group2.2",
         preview: true
       },
+      //Group 3 has 1 image
       {
         groupId: 3,
-        url: "this is a url",
+        url: "www.picture.group3.1",
         preview: false
       },
     ]

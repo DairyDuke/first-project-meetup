@@ -15,16 +15,7 @@ const validateGroup = []
 router.get(
   '/',
   async (req, res, next) => {
-    // const allGroups = await Group.findAll({
-    //   attributes: {
-    //     include: [[Sequelize.fn("COUNT", Sequelize.col("Memberships.groupId")), "numMembers"]]
-    //   },
-    //   include: [{
-    //     model: Membership,
-    //     attributes: []
-    //   }],
-    // })
-    const allGroups = await Group.findAll({
+    const Groups = await Group.findAll({
       attributes: {
         include: [[Sequelize.fn("COUNT", Sequelize.col("Memberships.groupId")), "numMembers"]]
       },
@@ -34,37 +25,8 @@ router.get(
       }],
       group: ['Group.id']
     })
-    // const Groups = await allGroups.countMembership()
-    // {
-    //   attributes: ['Group.id', [Seuqlize.fn('COUNT', Sequelize.col('Membership.groupId')), 'numMembers']],
-    //   include: [{
-    //     model: Membership,
-    //     attributes: []
-    //   }],
-    //   group: ['Group.id'],
-    //   raw: true
-    // }
-    // const Groups = [];
-    // const allMembers = await Membership.findAndCountAll()
 
-    // allGroups.forEach(element => {
-    //   element.numMembers = Membership.count({
-    //     where: {
-    //       id: element.groupId
-    //     }
-    //   })
-
-    //   Groups.push(element)
-    // });
-
-    //numMembers = search Membership for group id
-    //count memberships add value before sending.
-    //previewImage = check GroupImage table to see if preview is true,
-    // return url to add to Groups.
-
-    // Setup function in group to count members, perhaps.
-
-    res.json(allGroups)
+    res.json({ Groups })
   })
 router.get(
   '/current',

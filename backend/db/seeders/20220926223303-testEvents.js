@@ -6,7 +6,7 @@ module.exports = {
     const bulkData = [
       {
         venueId: 1,
-        groupId: 2,
+        groupId: 1,
         name: "Burger Off",
         description: "This is the default description.",
         type: "TypeA",
@@ -17,7 +17,7 @@ module.exports = {
       },
       {
         venueId: 2,
-        groupId: 1,
+        groupId: 2,
         name: "Pizza Off",
         description: "This is the default description.",
         type: "TypeB",
