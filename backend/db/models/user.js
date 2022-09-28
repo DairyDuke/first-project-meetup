@@ -118,6 +118,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         loginUser: {
           attributes: {}
+        },
+        organizer: {
+          attributes: { exclude: ["hashedPassword", "email", "username", "createdAt", "updatedAt"] }
         }
       }
     }
