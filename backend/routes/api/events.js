@@ -19,6 +19,13 @@ const router = express.Router();
 router.get(
   '/',
   async (req, res, next) => {
+    // -- Query Filter Parameter -- \\
+    // page, integer,min 1, max 10, default 1
+    // size, integer, min 1, max 20, default 20
+    // name, string, optional
+    // type, string, optional
+    // startDate, string, optional
+
     // Get All Events Requires:
     // numAttending = Attendances table --- Lazy Loaded --Success
     // numAttending returns a count
