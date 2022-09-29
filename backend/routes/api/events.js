@@ -177,49 +177,95 @@ router.get(
     // -- Check Credentials -- \\
     const currentUser = req.user.id;
     const eventId = req.params.eventId;
-    // -- Grab Event Details -- \\
-    const event = await Event.findOne({
-      where: {
-        id: eventId
-      },
-      raw: true
+
+    // // -- Grab Event Details -- \\
+    // const event = await Event.findOne({
+    //   where: {
+    //     id: eventId
+    //   },
+    //   raw: true
+    // })
+
+    // // -- Grab Group Details -- \\
+    // const group = await Group.findOne({
+    //   where: { id: event.groupId },
+    //   raw: true
+    // })
+
+    // // -- Grab Current User status in group -- \\
+    // const memberStatus = await Membership.findOne({
+    //   where: {
+    //     groupId: group.id,
+    //     userId: currentUser,
+    //     status: "co-host"
+    //   }
+    // })
+    // console.log(memberStatus)
+    // // -- Declare Return variable -- \\
+    // let Attendees = {}
+
+    // Executing(default ): SELECT`Attendance`.`id`, `Attendance`.`eventId`, `Attendance`.`userId`, `Attendance`.`status`, `Attendance`.`createdAt`, `Attendance`.`updatedAt`, `User`.`id` AS`User.id`, `User`.`firstName` AS`User.firstName`, `User`.`lastName` AS `User.lastName` FROM `Attendances` AS `Attendance` LEFT OUTER JOIN `Users` AS `User` ON`Attendance`.`userId` = `User`.`id`;
+    const Attendees = Attendance.findAll({
+      // attributes: ["status"],
+      // where: {
+      //   eventId: eventId
+      // },
+      include: [{
+        model: User,
+        attributes: ["id", "firstName", "lastName"]
+      }]
     })
 
-    // -- Grab Group Details -- \\
-    const group = await Group.findOne({
-      where: { id: event.groupId },
-      raw: true
-    })
 
-    // -- Grab Current User status in group -- \\
-    const memberStatus = await Membership.findOne({
-      where: {
-        groupId: group.id,
-        userId: currentUser,
-        status: "co-host"
-      }
-    })
-    console.log(memberStatus)
-    // -- Declare Return variable -- \\
-    let Attendees = {}
 
-    // -- Compare Status -- \\
-    if (group.organizerId == currentUser || memberStatus) {
-      //Organizer move on to next step
+    // // -- Compare Status -- \\
+    // if (group.organizerId == currentUser || memberStatus) {
+    //   //Organizer move on to next step
 
-      Attendees = await Attendance.findAll({
-        where: { eventId },
-        raw: true
-      })
-    } else {
-      Attendees = await Attendance.findAll({
-        where: {
-          eventId,
-          status: { [Op.not]: ["pending"] }
-        },
-        raw: true
-      })
-    }
+    //   Attendees = await Attendance.findAll({
+    //     where: { eventId },
+
+    //     raw: true
+    //   })
+    // } else {
+    // Attendees = await User.findAll({
+    //   attributes: ["id", "firstName", "lastName"],
+    //   // status: { [Op.not]: ["pending"] }
+    //   include: [
+    //     {
+    //       model: Attendance,
+    //       attributes: ["status"],
+    //       where: {
+    //         status: { [Op.not]: ["pending"] },
+    //         eventId: eventId
+    //       },
+    //       include: {
+    //         model: Event,
+    //         attributes: [],
+    //         where: {
+    //           id: eventId,
+    //         }
+    //       },
+    //       include: {
+    //         model: Group,
+    //         attributes: [],
+    //         where: {
+    //           id: Event.groupId,
+    //         },
+    //       },
+    //     },
+    //     {
+    //       include: {
+    //         model: Membership,
+    //         attributes: [],
+    //         where: {
+    //           groupId: Group.id,
+    //         },
+    //       }
+    //     }],
+    //   raw: true
+    // })
+    // }
 
 
 
@@ -247,8 +293,6 @@ router.get(
 
   }
 )
-
-
 
 
 module.exports = router;

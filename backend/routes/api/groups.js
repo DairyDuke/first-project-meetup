@@ -403,6 +403,63 @@ router.get(
   }
 )
 
+// --- Get all Members of a Group specified by its id --- \\
+router.get(
+  '/:groupId/members',
+  groupExists,
+  async (req, res, next) => {
+    // -- Check Credentials -- \\
+    const currentUser = req.user.id;
+    const groupId = req.params.groupId;
+
+    const credentials = await Group.findOne({
+      where: {
+        id: groupId
+      },
+      include: {
+        model: Membership,
+        attributes: [],
+        where: {
+          groupId: groupId,
+          userId: currentUser,
+          status: { [Op.or]: ["co-host", "organizer"] }
+        }
+      },
+      raw: true
+    })
+
+    const memberShips = await Membership.findAll({
+      where: {
+        groupId: groupId
+      },
+      attributes: ["userId", "status"]
+    })
+
+    let Members = []
+
+    for (member of memberShips) {
+      const user = await User.findByPk(member.userId, { raw: true })
+
+      if (member.status != "pending") {
+        Members.push({
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          Membership: { status: member.status }
+        })
+      } else if (credentials) {
+        Members.push({
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          Membership: { status: member.status }
+        })
+      }
+
+    }
+
+    return res.json({ Members })
+  })
 
 
 module.exports = router;
