@@ -6,7 +6,8 @@ const {
   uniqueUser,
   checkHostCredentials,
   checkMemberCredentials } = require('../../utils/auth');
-const { User, Group, Event, Membership, Venue, GroupImage } = require('../../db/models');
+const { groupExists } = require('../../utils/verification')
+const { User, Group, Event, Membership, Venue, GroupImage, Attendance, EventImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
@@ -341,40 +342,14 @@ router.get(
 // --- Get All Events by Group ID --- \\
 router.get(
   '/:groupId/events',
+  groupExists,
   async (req, res, next) => {
-    // Get All Events Requires:
-    // numAttending = Attendances table --- Lazy Loaded --Success
-    // numAttending returns a count
-    // previewImage = EventImages table --- Lazy Loaded --Success
-    // previewImage returns image URL
-    // Group = Group table              --- Lazy Loaded --Success
-    // Group returns id, name, city, state
-    // Venue = Venue table
-    // Venue returns id, city, state.
-    const Events = await Event.findAll({
-      // attributes: {
-      //   include: [
-      //     [Sequelize.fn("COUNT", Sequelize.col("Attendances.eventId"), Sequelize.where()), "numAttending"]
-      //   ],
-      // },
-      // include: [
-      //   {
-      //     model: Membership,
-      //     attributes: []
-      //   }
-      //   // {
-      //   //   model: GroupImage,
-      //   //   as: 'previewImage',
-      //   //   attributes: ['url'],
-      //   //   required: false,
-      //   //   where: {
-      //   //     preview: false
-      //   //   }
-      //   // }
-      // ],
-      // group: ['Group.id'],
+    const currentGroup = req.params.groupId
+    const Events = await Event.scope("event").findAll({
+      where: { groupId: currentGroup },
       raw: true
     })
+
     // -- Number Attending -- \\
     for (num of Events) {
       const eventId = num.id

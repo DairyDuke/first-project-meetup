@@ -14,9 +14,9 @@ const handleValidationErrors = (req, _res, next) => {
     err.errors = Object.fromEntries(errors);
     err.statusCode = 400;
     err.message = 'Validation error.';
-    next(err);
+    return next(err);
   }
-  next();
+  return next();
 };
 
 module.exports = {

@@ -31,6 +31,17 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'EventImage',
+    scopes: {
+      // event: {
+      //   attributes:
+      //     { exclude: ["description", "capacity", "createdAt", "updatedAt"] }//organizerId", "about", "type", "private", "createdAt", "updatedAt"]
+      // },
+      eventbyId: {
+        attributes: {
+          exclude: ["createdAt", "updatedAt"]
+        }
+      }
+    },
   });
   return EventImage;
 };

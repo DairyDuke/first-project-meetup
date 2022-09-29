@@ -86,6 +86,11 @@ module.exports = (sequelize, DataTypes) => {
         attributes: {
           exclude: ["organizerId", "about", "type", "private", "createdAt", "updatedAt"]
         }
+      },
+      eventId: {
+        attributes: {
+          exclude: ["organizerId", "about", "type", "createdAt", "updatedAt"]
+        }
       }
     }
   });

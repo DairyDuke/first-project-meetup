@@ -59,10 +59,14 @@ module.exports = (sequelize, DataTypes) => {
     scopes: {
       event: {
         attributes:
-          ["id", "city", "state"]//organizerId", "about", "type", "private", "createdAt", "updatedAt"]
-
+          { exclude: ["description", "capacity", "createdAt", "updatedAt"] }//organizerId", "about", "type", "private", "createdAt", "updatedAt"]
+      },
+      eventbyId: {
+        attributes: {
+          exclude: ["createdAt", "updatedAt"]
+        }
       }
-    }
+    },
   });
   return Event;
 };
