@@ -167,4 +167,88 @@ router.get(
     return res.json(Events)
 
   })
+
+
+// --- Get All Attendeess of an Event by its ID --- \\
+router.get(
+  '/:eventId/attendees',
+  eventExists,
+  async (req, res, next) => {
+    // -- Check Credentials -- \\
+    const currentUser = req.user.id;
+    const eventId = req.params.eventId;
+    // -- Grab Event Details -- \\
+    const event = await Event.findOne({
+      where: {
+        id: eventId
+      },
+      raw: true
+    })
+
+    // -- Grab Group Details -- \\
+    const group = await Group.findOne({
+      where: { id: event.groupId },
+      raw: true
+    })
+
+    // -- Grab Current User status in group -- \\
+    const memberStatus = await Membership.findOne({
+      where: {
+        groupId: group.id,
+        userId: currentUser,
+        status: "co-host"
+      }
+    })
+    console.log(memberStatus)
+    // -- Declare Return variable -- \\
+    let Attendees = {}
+
+    // -- Compare Status -- \\
+    if (group.organizerId == currentUser || memberStatus) {
+      //Organizer move on to next step
+
+      Attendees = await Attendance.findAll({
+        where: { eventId },
+        raw: true
+      })
+    } else {
+      Attendees = await Attendance.findAll({
+        where: {
+          eventId,
+          status: { [Op.not]: ["pending"] }
+        },
+        raw: true
+      })
+    }
+
+
+
+
+    // const Attendees = await Attendance.findAll({
+
+    //   raw: true
+    // })
+    // // -- Number Attending -- \\
+    // for (num of Events) {
+    //   const eventId = num.id
+    //   const sdd = await Attendance.findAndCountAll({
+    //     where: {
+    //       eventId: eventId,
+    //       status: { [Op.or]: ["host", "attending"] } //waitlist?
+    //     },
+    //     raw: true
+    //   })
+    //   if (numAttending) { num.numAttending = numAttending.count } else {
+    //     num.numAttending = 0
+    //   }
+    // }
+
+    return res.json({ Attendees })
+
+  }
+)
+
+
+
+
 module.exports = router;
