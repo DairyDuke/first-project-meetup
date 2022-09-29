@@ -1,6 +1,11 @@
 const express = require('express')
 const Sequelize = require('sequelize');
-const { setTokenCookie, requireAuth, uniqueUser } = require('../../utils/auth');
+const {
+  setTokenCookie,
+  requireAuth,
+  uniqueUser,
+  checkHostCredentials,
+  checkMemberCredentials } = require('../../utils/auth');
 const { User, Group, Event, Membership, Venue, GroupImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -51,7 +56,7 @@ const validateImage = [
 ]
 
 
-// --------- Groups ----------- \\
+// --- Get All Groups --- \\
 // Get All Groups
 router.get(
   '/',
@@ -66,20 +71,27 @@ router.get(
         {
           model: Membership,
           attributes: []
-        },
-        {
-          model: GroupImage,
-          as: 'previewImage',
-          attributes: ['url'],
-          required: false,
-          where: {
-            preview: false
-          }
         }
+        // {
+        //   model: GroupImage,
+        //   as: 'previewImage',
+        //   attributes: ['url'],
+        //   required: false,
+        //   where: {
+        //     preview: false
+        //   }
+        // }
       ],
-      group: ['Group.id']
+      group: ['Group.id'],
+      raw: true
     })
-
+    for (picture of Groups) {
+      const groupId = picture.id
+      const previewImage = await GroupImage.findOne({ where: { groupId, preview: true }, raw: true })
+      if (previewImage) { picture.previewImage = previewImage.url } else {
+        picture.previewImage = "Preview Image not found"
+      }
+    }
     res.json({ Groups })
 
   })
@@ -89,7 +101,7 @@ router.get(
   '/current',
   requireAuth,
   async (req, res, next) => {
-    const { id, firstName, lastName, email } = req.user.dataValues
+    const { id, firstName, lastName, email } = req.user
 
     const Groups = await Group.findAll({
       attributes: {
@@ -111,19 +123,29 @@ router.get(
                 userId: id
               }]
           }
-        },
-        {
-          model: GroupImage,
-          as: 'previewImage',
-          attributes: ['url'],
-          required: false,
-          where: {
-            preview: false
-          }
         }
+        // ,
+        // {
+        //   model: GroupImage,
+        //   as: 'previewImage',
+        //   attributes: ['url'],
+        //   required: false,
+        //   where: {
+        //     preview: false
+        //   }
+        // }
       ],
-      group: ['Group.id']
+      group: ['Group.id'],
+      raw: true
     })
+    for (picture of Groups) {
+      const groupId = picture.id
+      const previewImage = await GroupImage.findOne({ where: { groupId, preview: true }, raw: true })
+      if (previewImage) { picture.previewImage = previewImage.url } else {
+        picture.previewImage = "Preview Image not found"
+      }
+    }
+    // Groups.getGroupImage({where: {preview:true}})
 
     // if (!Groups) {
     //   const err = new Error('Login failed');
@@ -173,7 +195,7 @@ router.post(
   async (req, res, next) => {
     console.log(req.user)
     // const { id, firstName, lastName, email } = req.user.dataValues
-    const organizerId = req.user.dataValues.id
+    const organizerId = req.user.id
     const { name, about, type, private, city, state } = req.body;
     const variable = private
     const group = await Group.createGroup({ name, organizerId, about, type, variable, city, state });
@@ -189,7 +211,7 @@ router.post(
   requireAuth,
   validateImage,
   async (req, res, next) => {
-    const currentUser = req.user.dataValues.id
+    const currentUser = req.user.id
     const { url, preview } = req.body
     const groupId = req.params.groupId
 
@@ -222,7 +244,7 @@ router.post(
 //Edit a Group
 
 router.put('/:groupId', requireAuth, validateGroup, async (req, res, next) => {
-  const currentUser = req.user.dataValues.id
+  const currentUser = req.user.id
   const groupId = req.params.groupId
   const { name, about, type, private, city, state } = req.body
 
@@ -261,7 +283,7 @@ router.delete(
   '/:groupId',
   requireAuth,
   async (req, res, next) => {
-    const currentUser = req.user.dataValues.id
+    const currentUser = req.user.id
     const group = await Group.findOne(
       {
         where: {
@@ -293,32 +315,17 @@ router.delete(
 router.get(
   '/:groupId/venues',
   requireAuth,
+  checkHostCredentials,
   async (req, res, next) => {
-    const currentUser = req.user.dataValues.id
     const groupId = req.params.groupId
 
-    // need to check for member, organizer, or co-host.
-    //
     const Venues = await Venue.findAll({
       where: {
         groupId: groupId
       },
-      include: {
-        model: Group,
-        attributes: [],
-        where: {
-          [Op.or]: [{
-            organizerId: currentUser
-          },
-          {
-
-          }
-          ]
-        }
-      },
       raw: true
     })
-    // NTS need to put in error handling.
+    // This is a backup.
     if (!Venues) {
       const err = new Error('Not Found');
       err.statusCode = 404;
@@ -327,15 +334,8 @@ router.get(
       // err.errors = [''];
       return next(err);
     }
-    Groups.numMembers = await Membership.count({ where: { groupId: groupId } })
-    Groups.GroupImages = await GroupImage.findAll({
-      where: { groupId: groupId },
-      attributes: { exclude: ["groupId", "createdAt", "updatedAt"] }
-    })
-    Groups.Organizer = await User.scope("organizer").findByPk(Groups.organizerId)
-    Groups.Venues = await Venue.findAll({ where: { groupId: groupId } })
 
-    return res.json({ Groups })
+    return res.json({ Venues })
   })
 
 
