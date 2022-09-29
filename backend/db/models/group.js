@@ -82,7 +82,11 @@ module.exports = (sequelize, DataTypes) => {
     //`type`, `private`, `city`, `state`, `createdAt`,
     // `updatedAt`, `numMembers`, and `previewImage`
     scopes: {
-
+      event: {
+        attributes: {
+          exclude: ["organizerId", "about", "type", "private", "createdAt", "updatedAt"]
+        }
+      }
     }
   });
   return Group;

@@ -56,6 +56,13 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Event',
+    scopes: {
+      event: {
+        attributes:
+          ["id", "city", "state"]//organizerId", "about", "type", "private", "createdAt", "updatedAt"]
+
+      }
+    }
   });
   return Event;
 };
