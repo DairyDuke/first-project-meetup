@@ -8,6 +8,9 @@ const { handleValidationErrors } = require('../../utils/validation');
 const Op = Sequelize.Op;
 
 const router = express.Router();
+
+
+// --------- Validators ----------- \\
 // Checks req.body for potential Validation Errors
 // name, about, type, private, city, state
 const validateGroup = [
@@ -46,6 +49,9 @@ const validateImage = [
     .withMessage("Preview must be 'True' or 'False'."),
   handleValidationErrors
 ]
+
+
+// --------- Groups ----------- \\
 // Get All Groups
 router.get(
   '/',
@@ -213,6 +219,42 @@ router.post(
   }
 )
 
+//Edit a Group
+
+router.put('/:groupId', requireAuth, validateGroup, async (req, res, next) => {
+  const currentUser = req.user.dataValues.id
+  const groupId = req.params.groupId
+  const { name, about, type, private, city, state } = req.body
+
+  const group = await Group.findOne({
+    where: {
+      id: groupId,
+      organizerId: currentUser
+    }
+  })
+  if (group) {
+    await group.update(
+      {
+        name,
+        organizerId: currentUser,
+        about,
+        type,
+        private,
+        city,
+        state
+      }
+    )
+    return res.json(group)
+  }
+  const err = new Error('Group Not Found');
+  err.statusCode = 404;
+  // err.title = 'Login failed';
+  err.message = "Group couldn't be found"
+  // err.errors = ['The provided credentials were invalid.'];
+  return next(err);
+
+
+})
 
 //Delete a Group
 router.delete(
@@ -245,7 +287,56 @@ router.delete(
 )
 
 
+// --------- Venues ----------- \\
 
+
+router.get(
+  '/:groupId/venues',
+  requireAuth,
+  async (req, res, next) => {
+    const currentUser = req.user.dataValues.id
+    const groupId = req.params.groupId
+
+    // need to check for member, organizer, or co-host.
+    //
+    const Venues = await Venue.findAll({
+      where: {
+        groupId: groupId
+      },
+      include: {
+        model: Group,
+        attributes: [],
+        where: {
+          [Op.or]: [{
+            organizerId: currentUser
+          },
+          {
+
+          }
+          ]
+        }
+      },
+      raw: true
+    })
+    // NTS need to put in error handling.
+    if (!Venues) {
+      const err = new Error('Not Found');
+      err.statusCode = 404;
+      // err.title = '';
+      err.message = "Group couldn't be found"
+      // err.errors = [''];
+      return next(err);
+    }
+    Groups.numMembers = await Membership.count({ where: { groupId: groupId } })
+    Groups.GroupImages = await GroupImage.findAll({
+      where: { groupId: groupId },
+      attributes: { exclude: ["groupId", "createdAt", "updatedAt"] }
+    })
+    Groups.Organizer = await User.scope("organizer").findByPk(Groups.organizerId)
+    Groups.Venues = await Venue.findAll({ where: { groupId: groupId } })
+
+    return res.json({ Groups })
+  })
 
 
 module.exports = router;
