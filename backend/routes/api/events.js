@@ -15,6 +15,54 @@ const Op = Sequelize.Op;
 
 const router = express.Router();
 
+
+
+// --------- Validators ----------- \\
+// Checks req.body for potential Validation Errors
+// name, about, type, private, city, state
+const validateEvent = [
+  check("venueId")
+    .exists({ checkFalsy: true })
+    .withMessage('Venue does not exist'),
+  check('name')
+    .exists({ checkFalsy: true })
+    .isLength({ max: 5 })
+    .withMessage('Name must be at least 5 characters.'),
+  check('type')
+    .exists({ checkFalsy: true })
+    //need to find choice validator
+    .withMessage("Type must be 'Online' or 'In person'."),
+  check('capacity')
+    .exists({ checkFalsy: true })
+    .isNumeric()
+    .withMessage("Capacity must be an integer."),
+  check('price')
+    .exists({ checkFalsy: true })
+    .withMessage('Price is invalid.'),
+  check('description')
+    .exists({ checkFalsy: true })
+    .withMessage('Description is required.'),
+  check('startDate')
+    .exists({ checkFalsy: true })
+    .withMessage('Start date must be in the future.'),
+  check('endDate')
+    .exists({ checkFalsy: true })
+    .withMessage('End date is less than start date.'),
+  handleValidationErrors
+];
+const validateImage = [
+  check('url')
+    .exists({ checkFalsy: true })
+    .isURL()
+    .withMessage('Image URL must be a URL'),
+  check('preview')
+    .exists({ checkFalsy: true })
+    .isBoolean()
+    .withMessage("Preview must be 'True' or 'False'."),
+  handleValidationErrors
+]
+
+
 // --- Get All Events --- \\
 router.get(
   '/',
@@ -235,5 +283,74 @@ router.get(
 
     return res.json({ Attendees })
   })
+
+
+
+// --- Edit Event by Event ID --- \\
+router.put(
+  '/:eventId',
+  requireAuth,
+  checkHostCredentials,
+  eventExists,
+  validateEvent,
+  async (req, res, next) => {
+    const currentEvent = req.params.eventId
+    const Events = await Event.scope("eventbyId").findOne(
+      {
+        where: { id: currentEvent },
+        raw: true
+      }
+    )
+
+    // -- Number Attending -- \\
+    const numAttending = await Attendance.findAndCountAll({
+      where: {
+        eventId: currentEvent,
+        status: { [Op.or]: ["host", "attending"] } //waitlist?
+      },
+      raw: true
+    })
+    if (numAttending) { Events.numAttending = numAttending.count } else {
+      Events.numAttending = 0
+    }
+
+    // -- Group Associated -- \\
+    const groupId = Events.groupId
+    const groups = await Group.scope("event").findOne({
+      where: { id: groupId },
+      raw: true
+    })
+    if (groups) { Events.Group = groups } else {
+      Events.Group = "No Group Associated"
+    }
+
+
+    // -- Venue Associated -- \\
+    const venues = await Venue.findOne({
+      where: { groupId: groupId },
+      raw: true
+    })
+    if (venues) { Events.Venue = venues } else {
+      Events.Venue = "null"
+    }
+
+
+    // -- Preview Image -- \\
+
+    const previewImage = await EventImage.scope("eventbyId").findAll({
+      where: {
+        eventId: currentEvent
+      }
+    })
+    if (previewImage) { Events.previewImage = previewImage } else {
+      Events.previewImage = "Preview Image not found"
+    }
+
+
+    return res.json(Events)
+
+  })
+
+
 
 module.exports = router;
