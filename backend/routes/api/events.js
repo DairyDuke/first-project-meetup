@@ -177,122 +177,56 @@ router.get(
     // -- Check Credentials -- \\
     const currentUser = req.user.id;
     const eventId = req.params.eventId;
+    const eventDetails = await Event.findByPk(eventId, { raw: true })
+    const groupId = eventDetails.groupId
 
-    // // -- Grab Event Details -- \\
-    // const event = await Event.findOne({
-    //   where: {
-    //     id: eventId
-    //   },
-    //   raw: true
-    // })
-
-    // // -- Grab Group Details -- \\
-    // const group = await Group.findOne({
-    //   where: { id: event.groupId },
-    //   raw: true
-    // })
-
-    // // -- Grab Current User status in group -- \\
-    // const memberStatus = await Membership.findOne({
-    //   where: {
-    //     groupId: group.id,
-    //     userId: currentUser,
-    //     status: "co-host"
-    //   }
-    // })
-    // console.log(memberStatus)
-    // // -- Declare Return variable -- \\
-    // let Attendees = {}
-
-    // Executing(default ): SELECT`Attendance`.`id`, `Attendance`.`eventId`, `Attendance`.`userId`, `Attendance`.`status`, `Attendance`.`createdAt`, `Attendance`.`updatedAt`, `User`.`id` AS`User.id`, `User`.`firstName` AS`User.firstName`, `User`.`lastName` AS `User.lastName` FROM `Attendances` AS `Attendance` LEFT OUTER JOIN `Users` AS `User` ON`Attendance`.`userId` = `User`.`id`;
-    const Attendees = Attendance.findAll({
-      // attributes: ["status"],
-      // where: {
-      //   eventId: eventId
-      // },
-      include: [{
-        model: User,
-        attributes: ["id", "firstName", "lastName"]
-      }]
+    const credentials = await Group.findOne({
+      where: {
+        id: groupId
+      },
+      include: {
+        model: Membership,
+        attributes: [],
+        where: {
+          groupId: groupId,
+          userId: currentUser,
+          status: { [Op.or]: ["co-host", "organizer"] }
+        }
+      },
+      raw: true
     })
 
+    const attending = await Attendance.findAll({
+      where: {
+        eventId: eventId
+      },
+      attributes: ["userId", "status"]
+    })
 
+    let Attendees = []
 
-    // // -- Compare Status -- \\
-    // if (group.organizerId == currentUser || memberStatus) {
-    //   //Organizer move on to next step
+    for (member of attending) {
+      const user = await User.findByPk(member.userId, { raw: true })
 
-    //   Attendees = await Attendance.findAll({
-    //     where: { eventId },
+      if (member.status != "pending") {
+        Attendees.push({
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          Attendance: { status: member.status }
+        })
+      } else if (credentials) {
+        Attendees.push({
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          Attendance: { status: member.status }
+        })
+      }
 
-    //     raw: true
-    //   })
-    // } else {
-    // Attendees = await User.findAll({
-    //   attributes: ["id", "firstName", "lastName"],
-    //   // status: { [Op.not]: ["pending"] }
-    //   include: [
-    //     {
-    //       model: Attendance,
-    //       attributes: ["status"],
-    //       where: {
-    //         status: { [Op.not]: ["pending"] },
-    //         eventId: eventId
-    //       },
-    //       include: {
-    //         model: Event,
-    //         attributes: [],
-    //         where: {
-    //           id: eventId,
-    //         }
-    //       },
-    //       include: {
-    //         model: Group,
-    //         attributes: [],
-    //         where: {
-    //           id: Event.groupId,
-    //         },
-    //       },
-    //     },
-    //     {
-    //       include: {
-    //         model: Membership,
-    //         attributes: [],
-    //         where: {
-    //           groupId: Group.id,
-    //         },
-    //       }
-    //     }],
-    //   raw: true
-    // })
-    // }
-
-
-
-
-    // const Attendees = await Attendance.findAll({
-
-    //   raw: true
-    // })
-    // // -- Number Attending -- \\
-    // for (num of Events) {
-    //   const eventId = num.id
-    //   const sdd = await Attendance.findAndCountAll({
-    //     where: {
-    //       eventId: eventId,
-    //       status: { [Op.or]: ["host", "attending"] } //waitlist?
-    //     },
-    //     raw: true
-    //   })
-    //   if (numAttending) { num.numAttending = numAttending.count } else {
-    //     num.numAttending = 0
-    //   }
-    // }
+    }
 
     return res.json({ Attendees })
-
-  }
-)
-
+  })
 
 module.exports = router;
