@@ -19,10 +19,6 @@ const router = express.Router();
 
 // --------- Validators ----------- \\
 const validateVenue = [
-  check('groupId')
-    .exists({ checkFalsy: true })
-    .isNumeric()
-    .withMessage("Venue does not exist."),
   check('address')
     .exists({ checkFalsy: true })
     .bail()
@@ -38,25 +34,22 @@ const validateVenue = [
   check('state')
     .exists({ checkFalsy: true })
     .bail()
-    .withMessage('State address is required.')
-    .isNumeric()
-    .withMessage("Capacity must be an integer."),
+    .withMessage('State address is required.'),
   check('lat')
     .exists({ checkFalsy: true })
     .bail()
-    .withMessage('Latitude is required.')
-    .withMessage('Latitude is not valid.'),
+    .withMessage('Latitude is required.'),
+  // .withMessage('Latitude is not valid.'),
   check('lng')
     .exists({ checkFalsy: true })
     .bail()
-    .withMessage('Longitude is required.')
-    .withMessage('Longitude is not valid.'),
+    .withMessage('Longitude is required.'),
+  // .withMessage('Longitude is not valid.'),
   handleValidationErrors
 ];
 
-
 // --- Edit a Venue for a Group specified by its id --- \\
-router.post(
+router.put(
   '/:venueId',
   requireAuth,
   validateVenue,
@@ -64,7 +57,7 @@ router.post(
   checkHostCredentials,
   async (req, res, next) => {
     const userId = req.user.id;
-    const venueId = req.params.groupId;
+    const venueId = req.params.venueId;
     const { address, city, state, lat, lng } = req.body
 
     const create = await Venue.editVenue({ venueId, address, city, state, lat, lng });

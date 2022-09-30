@@ -117,19 +117,17 @@ const validateVenue = [
   check('state')
     .exists({ checkFalsy: true })
     .bail()
-    .withMessage('State address is required.')
-    .isNumeric()
-    .withMessage("Capacity must be an integer."),
+    .withMessage('State address is required.'),
   check('lat')
     .exists({ checkFalsy: true })
     .bail()
-    .withMessage('Latitude is required.')
-    .withMessage('Latitude is not valid.'),
+    .withMessage('Latitude is required.'),
+  // .withMessage('Latitude is not valid.'),
   check('lng')
     .exists({ checkFalsy: true })
     .bail()
-    .withMessage('Longitude is required.')
-    .withMessage('Longitude is not valid.'),
+    .withMessage('Longitude is required.'),
+  // .withMessage('Longitude is not valid.'),
   handleValidationErrors
 ];
 // --- Get All Groups --- \\

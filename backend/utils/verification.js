@@ -53,14 +53,19 @@ const groupImageExists = async (req, _res, next) => {
 
 
 const venueExists = async (req, _res, next) => {
-  const currentVenue = req.body.venueId
-  if (!currentVenue) { return next() }
+  const currentVenue = req.body.venueId ? req.body.venueId
+    : req.params.venueId ? req.params.venueId
+      : null
+
+
+  const notFound = new Error('Not Found');
+  notFound.statusCode = 404;
+  notFound.message = "Venue couldn't be found"
+
+  if (!currentVenue) { return next(notFound) }
+
   const findVenue = await Venue.findByPk(currentVenue)
   if (findVenue) { return next() } else {
-    const notFound = new Error('Not Found');
-    notFound.statusCode = 404;
-    // err.title = '';
-    notFound.message = "Venue couldn't be found"
     return next(notFound);
   }
 }
@@ -117,7 +122,6 @@ const attendanceExists = async (req, _res, next) => {
       userId: userId
     }
   });
-  console.log(findAttendance)
   if (findAttendance) { return next() } else { return next(err) };
 };
 

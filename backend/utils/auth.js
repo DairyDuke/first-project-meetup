@@ -150,7 +150,13 @@ const checkHostCredentials = async function (req, _res, next) {
   err.statusCode = 403;
   err.message = "Forbidden"
 
-  const { groupId, eventId, venueId } = req.params
+  const { groupId, eventId } = req.params
+
+  const venueId = req.body.venueId ? req.body.venueId
+    : req.params.venueId ? req.params.venueId
+      : null
+
+
 
   if (groupId) {
     const currentUser = req.user.id
@@ -183,7 +189,6 @@ const checkHostCredentials = async function (req, _res, next) {
       where: { organizerId: currentUser },
       raw: true
     })
-    console.log(checkCredentials)
     if (checkCredentials || checkPermission) { return next() } else {
       return next(err);
     }
