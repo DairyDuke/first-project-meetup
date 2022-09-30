@@ -9,6 +9,30 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+
+    // static async createImage({ currentUser, groupId, url, preview }) {
+    //   const group = await GroupImage.findOne({
+    //     where: {
+    //       id: groupId,
+    //       organizerId: currentUser
+    //     },
+    //     include: {
+    //       model: Group
+
+    //     }
+    //   })
+    //   if (!group) {
+    //     return
+    //   }
+    //   const groupImage = await GroupImage.create({
+    //     groupId,
+    //     url,
+    //     preview
+    //   });
+
+    //   return await GroupImage.findByPk(groupImage.id);
+    // }
+
     static associate(models) {
       // define association here
       GroupImage.belongsTo(models.Group, { foreignKey: 'groupId' })
@@ -31,6 +55,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'GroupImage',
+    defaultScope: {
+      attributes: { exclude: ["groupId", "createdAt", "updatedAt"] }
+    }
+
   });
   return GroupImage;
 };

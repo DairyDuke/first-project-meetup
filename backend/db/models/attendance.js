@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+    static async addToList({ userId, eventId, status }) {
+
+      const list = await Attendance.create({ userId, eventId, status })
+
+      return await Attendance.findByPk(list.id);
+    }
     static associate(models) {
       // define association here
       Attendance.belongsTo(models.Event, { foreignKey: 'eventId' })

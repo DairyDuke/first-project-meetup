@@ -1,6 +1,9 @@
 const router = require('express').Router();
+// Routers
 const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
+const groupsRouter = require('./groups.js');
+const eventsRouter = require('./events.js')
 const { restoreUser } = require('../../utils/auth.js');
 
 router.use(restoreUser);
@@ -9,6 +12,12 @@ router.use('/session', sessionRouter);
 
 //Signup
 router.use('/users', usersRouter);
+
+//Groups related routes
+router.use('/groups', groupsRouter)
+
+//Events related routes
+router.use('/events', eventsRouter)
 
 // Test Route to see if /api is connected.
 // router.post('/test', function (req, res) {

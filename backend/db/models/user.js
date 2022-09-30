@@ -56,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       // define association here
-      User.hasMany(models.Group, { foreignKey: 'organizerId' })
+      User.hasMany(models.Group, { foreignKey: 'organizerId', onDelete: 'CASCADE' })
       User.hasMany(models.Membership, { foreignKey: 'userId' })
       User.hasMany(models.Attendance, { foreignKey: 'userId' })
     }
@@ -118,6 +118,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         loginUser: {
           attributes: {}
+        },
+        organizer: {
+          attributes: { exclude: ["hashedPassword", "email", "username", "createdAt", "updatedAt"] }
         }
       }
     }
