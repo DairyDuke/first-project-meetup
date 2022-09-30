@@ -152,21 +152,23 @@ const checkHostCredentials = async function (req, _res, next) {
 
   const { groupId, eventId } = req.params
 
+  const venueId = req.body.venueId ? req.body.venueId
+    : req.params.venueId ? req.params.venueId
+      : null
+
+
+
   if (groupId) {
     const currentUser = req.user.id
     const checkCredentials = await Membership.findOne({
       where: {
         groupId: groupId,
         userId: currentUser,
-        status: "co-host"
-      },
-      raw: true
+        status: { [Op.or]: ["organizer", "co-host"] }
+      }
     })
-    const checkPermission = await Group.findOne({
-      where: { organizerId: currentUser },
-      raw: true
-    })
-    if (checkCredentials || checkPermission) { return next() } else {
+
+    if (checkCredentials) { return next() } else {
       return next(err);
     }
   }
@@ -187,11 +189,31 @@ const checkHostCredentials = async function (req, _res, next) {
       where: { organizerId: currentUser },
       raw: true
     })
-    console.log(checkCredentials)
     if (checkCredentials || checkPermission) { return next() } else {
       return next(err);
     }
   }
+
+
+  if (venueId) {
+    const currentUser = req.user.id
+    const event = await Venue.findByPk(venueId, { raw: true });
+    const groupId = event.groupId
+
+    const checkCredentials = await Membership.findOne({
+      where: {
+        groupId: groupId,
+        userId: currentUser,
+        status: { [Op.or]: ["organizer", "co-host"] }
+      }
+    })
+
+    if (checkCredentials) { return next() } else {
+      return next(err);
+    }
+  }
+
+
 }
 
 
@@ -259,9 +281,27 @@ const checkHostOrUserCredentials = async function (req, _res, next) {
 
   const currentUser = req.user.id;
   const groupId = req.params.groupId;
-  const memberId = req.body.memberId;
+  const userId = req.body.memberId;
 
-  const checkCredentials = await Membership.findByPk(memberId, { raw: true })
+  const getGroup = await Group.findByPk(groupId, { raw: true })
+
+  if (currentUser == userId) { return next() }
+  if (getGroup.organizerId == currentUser) { return next() }
+  return next(err)
+
+  // else {
+
+  // const checkCredentials = await Membership.findOne({
+  //   where: {
+  //     userId: userId
+  //   }, raw: true
+  // })
+
+  //   return next(err);
+  // }
+  // if (currentUser == checkCredentials.userId) { return next() } else {
+  //   return next(err);
+  // }
   //membership gives us:
   // id = memberId
   // UserId = see if currentUserId
@@ -270,14 +310,11 @@ const checkHostOrUserCredentials = async function (req, _res, next) {
   // status: { [Op.or]: ["organizer", "member"] }
 
   // -- Verify if Current User is Organizer -- \\
-  if (checkCredentials.groupId == groupId) { //verify we're looking at a member for the same group
-    const getGroup = await Group.findByPk(checkCredentials.groupId, { raw: true })
-    if (getGroup && getGroup.organizerId == currentUser) { return next() }
-    // -- Verify if Current User is Member of Group \\
-    if (currentUser == checkCredentials.userId) { return next() } else {
-      return next(err);
-    }
-  } else { return next(err) }
+  // if (checkCredentials.groupId == groupId) { //verify we're looking at a member for the same group
+
+  //   // -- Verify if Current User is Member of Group \\
+
+  // } else { return next(err) }
 }
 
 
