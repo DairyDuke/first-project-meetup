@@ -31,6 +31,7 @@ const eventExists = async (req, _res, next) => {
 
 const venueExists = async (req, _res, next) => {
   const currentVenue = req.body.venueId
+  if (!currentVenue) { return next() }
   const findVenue = await Venue.findByPk(currentVenue)
   if (findVenue) { return next() } else {
     const notFound = new Error('Not Found');
