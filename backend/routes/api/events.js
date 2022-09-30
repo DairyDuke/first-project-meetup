@@ -9,7 +9,7 @@ const {
   checkEventCredentials,
   checkEventHostOrUserCredentials
 } = require('../../utils/auth');
-const { eventExists, groupExists, venueExists, attendanceExists } = require('../../utils/verification')
+const { memberEventExists, memberExists, alreadyAttending, eventExists, groupExists, venueExists, attendanceExists } = require('../../utils/verification')
 const { User, Group, Event, Membership, Venue, GroupImage, Attendance, EventImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -177,69 +177,6 @@ router.get(
 )
 
 
-// --- Get Event by Event ID --- \\
-router.get(
-  '/:eventId',
-  eventExists,
-  async (req, res, next) => {
-    const currentEvent = req.params.eventId
-    const Events = await Event.scope("eventbyId").findOne(
-      {
-        where: { id: currentEvent },
-        raw: true
-      }
-    )
-
-    // -- Number Attending -- \\
-    const numAttending = await Attendance.findAndCountAll({
-      where: {
-        eventId: currentEvent,
-        status: { [Op.or]: ["host", "attending"] } //waitlist?
-      },
-      raw: true
-    })
-    if (numAttending) { Events.numAttending = numAttending.count } else {
-      Events.numAttending = 0
-    }
-
-    // -- Group Associated -- \\
-    const groupId = Events.groupId
-    const groups = await Group.scope("event").findOne({
-      where: { id: groupId },
-      raw: true
-    })
-    if (groups) { Events.Group = groups } else {
-      Events.Group = "No Group Associated"
-    }
-
-
-    // -- Venue Associated -- \\
-    const venues = await Venue.findOne({
-      where: { groupId: groupId },
-      raw: true
-    })
-    if (venues) { Events.Venue = venues } else {
-      Events.Venue = "null"
-    }
-
-
-    // -- Preview Image -- \\
-
-    const previewImage = await EventImage.scope("eventbyId").findAll({
-      where: {
-        eventId: currentEvent
-      }
-    })
-    if (previewImage) { Events.previewImage = previewImage } else {
-      Events.previewImage = "Preview Image not found"
-    }
-
-
-    return res.json(Events)
-
-  })
-
-
 // --- Get All Attendeess of an Event by its ID --- \\
 router.get(
   '/:eventId/attendees',
@@ -378,6 +315,56 @@ router.delete(
   }
 )
 
+const validateAttendanceChange = [
+  check('userId')
+    .exists({ checkFalsy: true })
+    .bail()
+    .withMessage('Member Id required.'),
+  check('status')
+    .exists({ checkFalsy: true })
+    .bail()
+    .withMessage('Status Is required.')
+    .not()
+    .isIn(['pending'])
+    .withMessage('Cannot change an attendance status to pending'),
+  handleValidationErrors
+]
+// ---- Change .put, Request .post
+// --- Request to Attend an Event based on the Event's id ---\\
+router.post(
+  '/:eventId/attendance',
+  requireAuth,
+  eventExists,
+  memberEventExists,
+  alreadyAttending,
+  async (req, res, next) => {
+    const status = "pending";
+    const userId = req.user.id;
+    const eventId = req.params.eventId;
+
+    const create = await Attendance.addToList({ userId, eventId, status })
+    return res.json(create)
+  }
+)
+
+// --- Change the status of an attendance for an event specified by id ---\\
+router.put(
+  '/:eventId/attendance',
+  requireAuth,
+  eventExists,
+  validateAttendanceChange,
+  attendanceExists,
+  checkHostCredentials,
+  alreadyAttending,
+  async (req, res, next) => {
+    const status = req.body.status;
+    const userId = req.body.userId;
+    const eventId = req.params.eventId;
+
+    const create = await Attendance.updateList({ userId, eventId, status })
+    return res.json(create)
+  }
+)
 // -- Delete Attendance to an event specified by id -- \\
 router.delete(
   '/:eventId/attendance',
@@ -411,5 +398,67 @@ router.delete(
   }
 )
 
+
+// --- Get Event by Event ID --- \\
+router.get(
+  '/:eventId',
+  eventExists,
+  async (req, res, next) => {
+    const currentEvent = req.params.eventId
+    const Events = await Event.scope("eventbyId").findOne(
+      {
+        where: { id: currentEvent },
+        raw: true
+      }
+    )
+
+    // -- Number Attending -- \\
+    const numAttending = await Attendance.findAndCountAll({
+      where: {
+        eventId: currentEvent,
+        status: { [Op.or]: ["host", "attending"] } //waitlist?
+      },
+      raw: true
+    })
+    if (numAttending) { Events.numAttending = numAttending.count } else {
+      Events.numAttending = 0
+    }
+
+    // -- Group Associated -- \\
+    const groupId = Events.groupId
+    const groups = await Group.scope("event").findOne({
+      where: { id: groupId },
+      raw: true
+    })
+    if (groups) { Events.Group = groups } else {
+      Events.Group = "No Group Associated"
+    }
+
+
+    // -- Venue Associated -- \\
+    const venues = await Venue.findOne({
+      where: { groupId: groupId },
+      raw: true
+    })
+    if (venues) { Events.Venue = venues } else {
+      Events.Venue = "null"
+    }
+
+
+    // -- Preview Image -- \\
+
+    const previewImage = await EventImage.scope("eventbyId").findAll({
+      where: {
+        eventId: currentEvent
+      }
+    })
+    if (previewImage) { Events.previewImage = previewImage } else {
+      Events.previewImage = "Preview Image not found"
+    }
+
+
+    return res.json(Events)
+
+  })
 
 module.exports = router;
