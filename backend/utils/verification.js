@@ -96,13 +96,11 @@ const alreadyAttending = async (req, _res, next) => {
     },
     raw: true
   });
-  console.log(findAttendance)
   const err = new Error('Already Attending');
   err.statusCode = 400;
   err.message = "Attendance has already been requested"
 
   if (findAttendance) {
-    console.log("THIS FIRED")
     if (findAttendance.status == "pending") {
       return next(err)
     } else
