@@ -404,7 +404,8 @@ router.delete(
   checkEventHostOrUserCredentials,
   async (req, res, next) => {
     const eventId = req.params.eventId;
-    const userId = req.body.userId
+    const userId = (req.body.userId != undefined ? req.body.userId
+      : req.body.memberId != undefined ? req.body.memberId : null)
 
 
     const findAttendance = await Attendance.findOne({

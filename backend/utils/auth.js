@@ -331,7 +331,8 @@ const checkEventHostOrUserCredentials = async function (req, _res, next) {
 
   const currentUser = req.user.id;
   const eventId = req.params.eventId;
-  const userId = req.body.userId;
+  const userId = (req.body.userId != undefined ? req.body.userId
+    : req.body.memberId != undefined ? req.body.memberId : null)
 
   const checkCredentials = await Attendance.findOne({
     where: {

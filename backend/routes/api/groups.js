@@ -132,14 +132,11 @@ const validateVenue = [
 ];
 
 const validateStatusChange = [
-  check('memberId')
-    .exists({ checkFalsy: true })
-    .bail()
-    .withMessage('Member Id required.'),
+  // check('memberId')
+  //   .exists({ checkFalsy: true })
+  //   .bail()
+  //   .withMessage('Member Id required.'),
   check('status')
-    .exists({ checkFalsy: true })
-    .bail()
-    .withMessage('Status Is required.')
     .not()
     .isIn(['pending'])
     .withMessage('Cannot change a membership status to pending'),
