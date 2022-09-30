@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     static async editVenue({ venueId, address, city, state, lat, lng }) {
 
       const venue = await Venue.findByPk(venueId)
-      console.log("reaching here " + venue)
+
       await venue.update({
         address,
         city,

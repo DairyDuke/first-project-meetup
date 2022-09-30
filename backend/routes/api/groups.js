@@ -679,7 +679,6 @@ router.post(
   requireAuth,
   validateGroup,
   async (req, res, next) => {
-    console.log(req.user)
     // const { id, firstName, lastName, email } = req.user.dataValues
     const organizerId = req.user.id
     const { name, about, type, private, city, state } = req.body;
