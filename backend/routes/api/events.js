@@ -327,4 +327,40 @@ router.post(
     return res.json(verify)
   })
 
+
+
+// --- Delete an Event specified by its id --- \\
+router.delete(
+  '/:eventId',
+  requireAuth,
+  eventExists,
+  checkHostCredentials,
+  async (req, res, next) => {
+    const currentUser = req.user.id;
+    const eventId = req.params.eventId;
+    const event = await Event.findOne(
+      {
+        where: {
+          id: eventId
+        }
+      })
+    if (!event) {
+      const err = new Error('Event Not Found');
+      err.statusCode = 404;
+      // err.title = 'Login failed';
+      err.message = "Event couldn't be found"
+      // err.errors = ['The provided credentials were invalid.'];
+      return next(err);
+    }
+    await event.destroy()
+
+    return res.json({
+      message: "Successfully deleted",
+      statusCode: 200
+    })
+  }
+)
+
+
+
 module.exports = router;

@@ -11,6 +11,7 @@ module.exports = {
       venueId: {
         type: Sequelize.INTEGER,
         allowNull: true,
+        onDelete: 'SET NULL',
         references: {
           model: 'Venues',
           key: 'id'

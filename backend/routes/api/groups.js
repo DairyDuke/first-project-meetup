@@ -129,12 +129,12 @@ router.get(
   })
 
 // Get all groups joined or organized by Current User
+// NTS Fix this.
 router.get(
   '/current',
   requireAuth,
   async (req, res, next) => {
-    const { id, firstName, lastName, email } = req.user
-
+    const userId = req.user.id
     const Groups = await Group.findAll({
       attributes: {
         include: [
@@ -149,27 +149,66 @@ router.get(
             [Op.and]: [
               {
                 status: {
-                  [Op.or]: ["member", "co-host"]
+                  [Op.or]: ["member", "co-host", "organizer"]
                 }
               }, {
-                userId: id
+                userId: userId
               }]
           }
         }
-        // ,
-        // {
-        //   model: GroupImage,
-        //   as: 'previewImage',
-        //   attributes: ['url'],
-        //   required: false,
-        //   where: {
-        //     preview: false
-        //   }
-        // }
       ],
       group: ['Group.id'],
       raw: true
     })
+
+
+    // // -- Get Group Organized by Current User and Count -- \\
+    // for (group of allGroups) {
+    //   const organizerId = group.organizerId
+    //   const membership = await Membership.findAll()
+
+    //   if (organizerId == userId) {
+    //     const numMembers = await Attendance.findAndCountAll({
+    //       where: {
+    //         groupId: group.id
+    //       },
+    //       raw: true
+    //     })
+    //     if (numMembers) { Groups.numMembers = numMembers } else {
+    //       Groups.numMembers = 0
+    //     };
+    //     Groups.push(group)
+    //   }
+    // }
+    // {
+    //   where: {
+    //     organizerId: userId
+    //   },
+    //   required: false,
+    //   attributes: {
+    //     include: [
+    //       [Sequelize.fn("COUNT", Sequelize.col("Memberships.groupId")), "numMembers"]
+    //     ],
+    //   },
+    //   include: [
+    //     {
+    //       model: Membership,
+    //       attributes: [],
+    //       where: {
+    //         [Op.and]: [
+    //           {
+    //             status: {
+    //               [Op.or]: ["member", "co-host"]
+    //             }
+    //           }, {
+    //             userId: userId
+    //           }]
+    //       }
+    //     }
+    //   ],
+    //   group: ['Group.id'],
+    //   raw: true
+    // })
     for (picture of Groups) {
       const groupId = picture.id
       const previewImage = await GroupImage.findOne({ where: { groupId, preview: true }, raw: true })
@@ -177,19 +216,8 @@ router.get(
         picture.previewImage = "Preview Image not found"
       }
     }
-    // Groups.getGroupImage({where: {preview:true}})
-
-    // if (!Groups) {
-    //   const err = new Error('Login failed');
-    //   err.statusCode = 401;
-    //   err.title = 'Login failed';
-    //   err.message = 'Invalid credentials'
-    //   err.errors = ['The provided credentials were invalid.'];
-    //   return next(err);
-    // }
 
     return res.json({ Groups })
-
   })
 
 // Get details of a group by id
@@ -231,7 +259,10 @@ router.post(
     const { name, about, type, private, city, state } = req.body;
     const variable = private
     const group = await Group.createGroup({ name, organizerId, about, type, variable, city, state });
-
+    const userId = req.user.id
+    const groupId = group.id
+    const status = "organizer"
+    const member = await Membership.addMember({ userId, groupId, status })
 
     return res.json(group);
 
@@ -502,11 +533,14 @@ router.post(
   groupExists,
   checkHostCredentials,
   async (req, res, next) => {
+    const userId = req.user.id;
     const groupId = req.params.groupId;
+    const status = "host"
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
 
-    const create = await Event.createEvent({ venueId, groupId, name, type, capacity, price, description, startDate, endDate })
-
+    const create = await Event.createEvent({ venueId, groupId, name, type, capacity, price, description, startDate, endDate });
+    // -- Creating an attendance spot for Host -- \\
+    const createAttendance = await Attendance.addToList({ userId, eventId, status });
     return res.json(create)
   })
 
