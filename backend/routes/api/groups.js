@@ -6,7 +6,7 @@ const {
   uniqueUser,
   checkHostCredentials,
   checkMemberCredentials } = require('../../utils/auth');
-const { groupExists } = require('../../utils/verification')
+const { groupExists, venueExists } = require('../../utils/verification')
 const { User, Group, Event, Membership, Venue, GroupImage, Attendance, EventImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -56,6 +56,33 @@ const validateImage = [
   handleValidationErrors
 ]
 
+const validateEvent = [
+  check('name')
+    .exists({ checkFalsy: true })
+    .isLength({ min: 5 })
+    .withMessage('Name must be at least 5 characters.'),
+  check('type')
+    .exists({ checkFalsy: true })
+    //need to find choice validator
+    .withMessage("Type must be 'Online' or 'In person'."),
+  check('capacity')
+    .exists({ checkFalsy: true })
+    .isNumeric()
+    .withMessage("Capacity must be an integer."),
+  check('price')
+    .exists({ checkFalsy: true })
+    .withMessage('Price is invalid.'),
+  check('description')
+    .exists({ checkFalsy: true })
+    .withMessage('Description is required.'),
+  check('startDate')
+    .exists({ checkFalsy: true })
+    .withMessage('Start date must be in the future.'),
+  check('endDate')
+    .exists({ checkFalsy: true })
+    .withMessage('End date is less than start date.'),
+  handleValidationErrors
+];
 
 // --- Get All Groups --- \\
 // Get All Groups
@@ -461,5 +488,22 @@ router.get(
     return res.json({ Members })
   })
 
+
+// --- Create an Event for a Group specified by its id --- \\
+router.post(
+  '/:groupId/events',
+  requireAuth,
+  validateEvent,
+  groupExists,
+  venueExists,
+  checkHostCredentials,
+  async (req, res, next) => {
+    const groupId = req.params.groupId;
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
+
+    const create = await Event.createEvent({ venueId, groupId, name, type, capacity, price, description, startDate, endDate })
+
+    return res.json(create)
+  })
 
 module.exports = router;

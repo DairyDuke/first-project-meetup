@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { jwtConfig } = require('../config');
-const { User, Membership, Group, Event } = require('../db/models');
+const { User, Membership, Group, Event, Attendance } = require('../db/models');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const { secret, expiresIn } = jwtConfig;
@@ -173,10 +173,31 @@ const checkMemberCredentials = async function (req, _res, next) {
     // err.errors = [''];
     return next(err);
   }
+}
+// --- Auth Req: Host, Attendee, or co-host --- \\
+const checkEventCredentials = async function (req, _res, next) {
 
+  const currentUser = req.user.id
+  const { groupId, eventId } = req.params
+
+  const checkCredentials = await Attendance.findOne({
+    where: {
+      eventId,
+      userId: currentUser,
+      status: { [Op.or]: ["attending", "co-host", "host"] }
+    }
+  })
+
+  if (checkCredentials) { return next() } else {
+    const err = new Error('Not Found');
+    err.statusCode = 403;
+    // err.title = '';
+    err.message = "Forbidden"
+    // err.errors = [''];
+    return next(err);
+  }
 
 }
-
 
 
 module.exports = {
@@ -185,5 +206,6 @@ module.exports = {
   requireAuth,
   uniqueUser,
   checkHostCredentials,
-  checkMemberCredentials
+  checkMemberCredentials,
+  checkEventCredentials
 };

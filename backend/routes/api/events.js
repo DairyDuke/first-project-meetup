@@ -5,7 +5,8 @@ const {
   requireAuth,
   uniqueUser,
   checkHostCredentials,
-  checkMemberCredentials
+  checkMemberCredentials,
+  checkEventCredentials
 } = require('../../utils/auth');
 const { eventExists, groupExists, venueExists } = require('../../utils/verification')
 const { User, Group, Event, Membership, Venue, GroupImage, Attendance, EventImage } = require('../../db/models');
@@ -305,5 +306,25 @@ router.put(
   })
 
 
+// Add Image to GroupImages/Group
+router.post(
+  '/:eventId/images',
+  requireAuth,
+  eventExists,
+  checkEventCredentials,
+  validateImage,
+  async (req, res, next) => {
+    const { url, preview } = req.body
+    const eventId = req.params.eventId
+
+    const image = await EventImage.create({
+      eventId,
+      url,
+      preview
+    });
+
+    const verify = await GroupImage.findByPk(image.id);
+    return res.json(verify)
+  })
 
 module.exports = router;
