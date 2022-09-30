@@ -6,9 +6,10 @@ const {
   uniqueUser,
   checkHostCredentials,
   checkMemberCredentials,
-  checkEventCredentials
+  checkEventCredentials,
+  checkEventHostOrUserCredentials
 } = require('../../utils/auth');
-const { eventExists, groupExists, venueExists } = require('../../utils/verification')
+const { eventExists, groupExists, venueExists, attendanceExists } = require('../../utils/verification')
 const { User, Group, Event, Membership, Venue, GroupImage, Attendance, EventImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -361,6 +362,38 @@ router.delete(
   }
 )
 
+// -- Delete Attendance to an event specified by id -- \\
+router.delete(
+  '/:eventId/attendance',
+  requireAuth,
+  eventExists,
+  attendanceExists,
+  checkEventHostOrUserCredentials,
+  async (req, res, next) => {
+    const eventId = req.params.eventId;
+    const userId = req.body.userId
+
+
+    const findAttendance = await Attendance.findOne({
+      where: {
+        eventId: eventId,
+        userId: userId
+      }
+    });
+
+    if (findAttendance) {
+      findAttendance.destroy()
+    } else {
+      throw new Erorr(
+        "something broke"
+      )
+    }
+    return res.json({
+      "message": "Successfully deleted membership from group",
+    })
+
+  }
+)
 
 
 module.exports = router;
