@@ -31,7 +31,7 @@ router.delete(
     if (findGroupImage) {
       findGroupImage.destroy()
     } else {
-      throw new Erorr(
+      throw new Error(
         "something broke"
       )
     }

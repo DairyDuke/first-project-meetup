@@ -31,7 +31,7 @@ router.delete(
     if (findEventImage) {
       findEventImage.destroy()
     } else {
-      throw new Erorr(
+      throw new Error(
         "something broke"
       )
     }

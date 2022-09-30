@@ -88,6 +88,7 @@ const alreadyAttending = async (req, _res, next) => {
 
   const eventId = req.params.eventId;
   const userId = req.user.id;
+  const status = req.body.status;
 
   const findAttendance = await Attendance.findOne({
     where: {
@@ -96,20 +97,25 @@ const alreadyAttending = async (req, _res, next) => {
     },
     raw: true
   });
+  console.log(findAttendance)
   const err = new Error('Already Attending');
   err.statusCode = 400;
   err.message = "Attendance has already been requested"
 
   if (findAttendance) {
     if (findAttendance.status == "pending") {
+      const err = new Error('Already Attending');
+      err.statusCode = 400;
+      err.message = "Attendance has already been requested"
       return next(err)
     } else
-      if (findAttendance.status == "attending") {
+      if (findAttendance.status == "attending" || findAttendance.status == "host") {
+        const err = new Error('Already Attending');
+        err.statusCode = 400;
         err.message = "User is already an attendee of the event"
         return next(err)
       } else {
-        err.message = "User is already an attendee of the event"
-        return next(err)
+        return next()
       }
   } else {
     return next()
@@ -169,8 +175,8 @@ const memberExists = async (req, _res, next) => {
     return next()
   } else {
     const memErr = new Error("Membership Fail");
-    err.statusCode = 404;
-    err.message = "Membership does not exist for this User"
+    memErr.statusCode = 404;
+    memErr.message = "Membership does not exist for this User"
     return next(memErr)
   }
 };
@@ -208,7 +214,8 @@ const attendanceExists = async (req, _res, next) => {
   err.statusCode = 404;
   err.message = "Attendance does not exist for this User"
   const eventId = req.params.eventId;
-  const userId = req.body.userId;
+  const userId = (req.body.userId != undefined ? req.body.userId
+    : req.body.memberId != undefined ? req.body.memberId : null)
 
   const findAttendance = await Attendance.findOne({
     where: {

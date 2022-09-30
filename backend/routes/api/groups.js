@@ -132,14 +132,11 @@ const validateVenue = [
 ];
 
 const validateStatusChange = [
-  check('memberId')
-    .exists({ checkFalsy: true })
-    .bail()
-    .withMessage('Member Id required.'),
+  // check('memberId')
+  //   .exists({ checkFalsy: true })
+  //   .bail()
+  //   .withMessage('Member Id required.'),
   check('status')
-    .exists({ checkFalsy: true })
-    .bail()
-    .withMessage('Status Is required.')
     .not()
     .isIn(['pending'])
     .withMessage('Cannot change a membership status to pending'),
@@ -608,7 +605,11 @@ router.post(
     const status = "pending"
     const member = await Membership.addMember({ userId, groupId, status })
 
-    return res.json(member);
+    const reply = {
+      memberId: member.userId,
+      status: member.status
+    }
+    return res.json(reply);
   })
 
 
