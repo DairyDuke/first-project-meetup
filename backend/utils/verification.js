@@ -29,7 +29,19 @@ const eventExists = async (req, _res, next) => {
   }
 };
 
+const venueExists = async (req, _res, next) => {
+  const currentVenue = req.body.venueId
+  const findVenue = await Venue.findByPk(currentVenue)
+  if (findVenue) { return next() } else {
+    const notFound = new Error('Not Found');
+    notFound.statusCode = 404;
+    // err.title = '';
+    notFound.message = "Venue couldn't be found"
+    return next(notFound);
+  }
+}
 module.exports = {
   groupExists,
-  eventExists
+  eventExists,
+  venueExists
 };

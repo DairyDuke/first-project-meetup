@@ -9,6 +9,38 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+    static async createEvent({ venueId, groupId, name, type, capacity, price, description, startDate, endDate }) {
+
+      const event = await Event.create({
+        venueId,
+        groupId,
+        name,
+        type,
+        capacity,
+        price,
+        description,
+        startDate,
+        endDate
+      });
+      return await Event.findByPk(event.id);
+    }
+
+    static async editEvent({ eventId, venueId, groupId, name, type, capacity, price, description, startDate, endDate }) {
+
+      const event = await Event.findByPk(eventId)
+      await event.update({
+        venueId,
+        groupId,
+        name,
+        type,
+        capacity,
+        price,
+        description,
+        startDate,
+        endDate
+      });
+      return await Event.findByPk(eventId);
+    }
     static associate(models) {
       // define association here
       Event.hasMany(models.EventImage, { foreignKey: 'eventId' })
@@ -42,7 +74,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     price: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       allowNull: false
     },
     startDate: {
@@ -56,12 +88,22 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Event',
+    defaultScope: {
+      attributes: {
+        exclude: ["createdAt", "updatedAt"]
+      }
+    },
     scopes: {
       event: {
         attributes:
           { exclude: ["description", "capacity", "createdAt", "updatedAt"] }//organizerId", "about", "type", "private", "createdAt", "updatedAt"]
       },
       eventbyId: {
+        attributes: {
+          exclude: ["createdAt", "updatedAt"]
+        }
+      },
+      edited: {
         attributes: {
           exclude: ["createdAt", "updatedAt"]
         }

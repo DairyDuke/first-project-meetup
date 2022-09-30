@@ -5,8 +5,9 @@ const {
   requireAuth,
   uniqueUser,
   checkHostCredentials,
-  checkMemberCredentials } = require('../../utils/auth');
-const { eventExists, groupExists } = require('../../utils/verification')
+  checkMemberCredentials
+} = require('../../utils/auth');
+const { eventExists, groupExists, venueExists } = require('../../utils/verification')
 const { User, Group, Event, Membership, Venue, GroupImage, Attendance, EventImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -21,12 +22,9 @@ const router = express.Router();
 // Checks req.body for potential Validation Errors
 // name, about, type, private, city, state
 const validateEvent = [
-  check("venueId")
-    .exists({ checkFalsy: true })
-    .withMessage('Venue does not exist'),
   check('name')
     .exists({ checkFalsy: true })
-    .isLength({ max: 5 })
+    .isLength({ min: 5 })
     .withMessage('Name must be at least 5 characters.'),
   check('type')
     .exists({ checkFalsy: true })
@@ -290,64 +288,19 @@ router.get(
 router.put(
   '/:eventId',
   requireAuth,
-  checkHostCredentials,
-  eventExists,
   validateEvent,
+  eventExists,
+  venueExists,
+  checkHostCredentials,
   async (req, res, next) => {
-    const currentEvent = req.params.eventId
-    const Events = await Event.scope("eventbyId").findOne(
-      {
-        where: { id: currentEvent },
-        raw: true
-      }
-    )
+    const eventId = req.params.eventId;
+    const event = await Event.findByPk(eventId, { raw: true });
+    const groupId = event.groupId;
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
 
-    // -- Number Attending -- \\
-    const numAttending = await Attendance.findAndCountAll({
-      where: {
-        eventId: currentEvent,
-        status: { [Op.or]: ["host", "attending"] } //waitlist?
-      },
-      raw: true
-    })
-    if (numAttending) { Events.numAttending = numAttending.count } else {
-      Events.numAttending = 0
-    }
+    const edit = await Event.editEvent({ eventId, venueId, groupId, name, type, capacity, price, description, startDate, endDate })
 
-    // -- Group Associated -- \\
-    const groupId = Events.groupId
-    const groups = await Group.scope("event").findOne({
-      where: { id: groupId },
-      raw: true
-    })
-    if (groups) { Events.Group = groups } else {
-      Events.Group = "No Group Associated"
-    }
-
-
-    // -- Venue Associated -- \\
-    const venues = await Venue.findOne({
-      where: { groupId: groupId },
-      raw: true
-    })
-    if (venues) { Events.Venue = venues } else {
-      Events.Venue = "null"
-    }
-
-
-    // -- Preview Image -- \\
-
-    const previewImage = await EventImage.scope("eventbyId").findAll({
-      where: {
-        eventId: currentEvent
-      }
-    })
-    if (previewImage) { Events.previewImage = previewImage } else {
-      Events.previewImage = "Preview Image not found"
-    }
-
-
-    return res.json(Events)
+    return res.json(edit)
 
   })
 

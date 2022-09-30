@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { jwtConfig } = require('../config');
-const { User, Membership, Group } = require('../db/models');
+const { User, Membership, Group, Event } = require('../db/models');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const { secret, expiresIn } = jwtConfig;
@@ -93,34 +93,53 @@ const uniqueUser = async function (req, _res, next) {
   return next()
 }
 
-//Member must be Organizer or Co-host of group
+// --- Member must be Organizer or Co-host of group --- \\
 const checkHostCredentials = async function (req, _res, next) {
+  const err = new Error('Not Found');
+  err.statusCode = 403;
+  err.message = "Forbidden"
 
-  const currentUser = req.user.id
-  const groupId = req.params.groupId
+  const { groupId, eventId } = req.params
 
-  const checkCredentials = await Membership.findOne({
-    where: {
-      groupId: groupId,
-      userId: currentUser,
-      status: "co-host"
-    },
-    include: [{
-      model: Group,
-      attributes: [],
-      required: false,
-      where: { organizerId: currentUser }
-    }],
-    raw: true
-  })
+  if (groupId) {
+    const currentUser = req.user.id
+    const checkCredentials = await Membership.findOne({
+      where: {
+        groupId: groupId,
+        userId: currentUser,
+        status: "co-host"
+      },
+      raw: true
+    })
+    const checkPermission = await Group.findOne({
+      where: { organizerId: currentUser },
+      raw: true
+    })
+    if (checkCredentials || checkPermission) { return next() } else {
+      return next(err);
+    }
+  }
 
-  if (checkCredentials) { return next() } else {
-    const err = new Error('Not Found');
-    err.statusCode = 404;
-    // err.title = '';
-    err.message = "Group couldn't be found"
-    // err.errors = [''];
-    return next(err);
+  if (eventId) {
+    const event = await Event.findByPk(eventId, { raw: true })
+    if (!event) { return next(err); }
+    const currentUser = req.user.id
+    const checkCredentials = await Membership.findOne({
+      where: {
+        groupId: event.groupId,
+        userId: currentUser,
+        status: "co-host",
+      },
+      raw: true
+    })
+    const checkPermission = await Group.findOne({
+      where: { organizerId: currentUser },
+      raw: true
+    })
+    console.log(checkCredentials)
+    if (checkCredentials || checkPermission) { return next() } else {
+      return next(err);
+    }
   }
 }
 
@@ -154,6 +173,7 @@ const checkMemberCredentials = async function (req, _res, next) {
     // err.errors = [''];
     return next(err);
   }
+
 
 }
 
