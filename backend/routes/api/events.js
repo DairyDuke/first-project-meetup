@@ -78,46 +78,10 @@ const validateImage = [
   handleValidationErrors
 ]
 
-const validateQuery = [
-  check('page')
-    .exists({ checkFalsy: true })
-    .bail()
-    .isNumeric()
-    .bail()
-    .withMessage('Page must be a number.')
-    .isLength({ min: 1 })
-    .withMessage('Page must be greater than or equal to 1'),
-  check('size')
-    .exists({ checkFalsy: true })
-    .bail()
-    .isNumeric()
-    .bail()
-    .withMessage('Size must be a number.')
-    .isLength({ min: 1 })
-    .withMessage('Size must be greater than or equal to 1'),
-  check('name')
-    .exists({ checkFalsy: true })
-    .bail()
-    .isAlpha()
-    .bail()
-    .withMessage('Name must be a string'),
-  check('type')
-    .exists({ checkFalsy: true })
-    .bail()
-    .isIn(["online", "in person"])
-    .withMessage("Type must be 'Online' or 'In Person'"),
-  check('startDate')
-    .exists({ checkFalsy: true })
-    .bail()
-    .isDate()
-    .withMessage("Start date must be a valid datetime"),
-  handleValidationErrors
 
-]
 // --- Get All Events --- \\
 router.get(
   '/',
-  validateQuery,
   async (req, res, next) => {
     // -- Query Filter Parameter -- \\
     // page, integer,min 1, max 10, default 1
@@ -126,9 +90,28 @@ router.get(
     // type, string, optional
     // startDate, string, optional
     const pagination = {}
-    const { page, size, name, type, startDate } = req.query
+    let { page, size, name, type, startDate } = req.query
     if (!page) { page = 1 }
     if (!size) { size = 20 }
+    if (page) {
+      check('page')
+        .isNumeric()
+        .bail()
+        .withMessage('Page must be a number.')
+        .isLength({ min: 1 })
+        .withMessage('Page must be greater than or equal to 1'),
+        handleValidationErrors
+    }
+
+    if (size) {
+      check('size')
+        .isNumeric()
+        .bail()
+        .withMessage('Size must be a number.')
+        .isLength({ min: 1 })
+        .withMessage('Size must be greater than or equal to 1'),
+        handleValidationErrors
+    }
     if (page > 10) { page = 10 }
     if (size > 20) { size = 20 }
 
@@ -140,9 +123,30 @@ router.get(
       pagination.offset = size * (page - 1)
     }
     const where = {}
-    if (name) { where.name = name }
-    if (type) { where.type = type }
-    if (startDate) { where.startDate = startDate }
+    if (name) {
+      check('name')
+        .isAlpha()
+        .bail()
+        .withMessage('Name must be a string'),
+        handleValidationErrors
+
+      where.name = name
+    }
+    if (type) {
+      check('type')
+        .isIn(["online", "in person"])
+        .withMessage("Type must be 'Online' or 'In Person'"),
+        handleValidationErrors
+      where.type = type
+    }
+    if (startDate) {
+      check('startDate')
+        .isDate()
+        .withMessage("Start date must be a valid datetime"),
+        handleValidationErrors
+      where.startDate = startDate
+    }
+
     const Events = await Event.scope("event").findAll({
       where,
       ...pagination,
