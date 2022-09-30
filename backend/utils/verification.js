@@ -19,9 +19,8 @@ const groupExists = async (req, _res, next) => {
 
 
 const eventExists = async (req, _res, next) => {
-
-  const currentEvent = req.params.eventId
-  const findEvent = await Group.findByPk(currentEvent)
+  const eventId = req.params.eventId
+  const findEvent = await Event.findByPk(eventId)
   if (findEvent) { return next() } else {
     const notFound = new Error('Not Found');
     notFound.statusCode = 404;
@@ -30,15 +29,19 @@ const eventExists = async (req, _res, next) => {
     return next(notFound);
   }
 };
+
+
 const eventImageExists = async (req, _res, next) => {
   const err = new Error('Not Found');
   err.statusCode = 404;
   err.message = "Event Image couldn't be found"
 
   const imageId = req.params.imageId
-  const findEventImage = await EventImage.findByPk(imageId, { raw: true });
+  const findEventImage = await EventImage.findByPk(imageId);
   if (findEventImage) { return next() } else { return next(err) };
 };
+
+
 const venueExists = async (req, _res, next) => {
   const currentVenue = req.body.venueId
   if (!currentVenue) { return next() }
@@ -74,11 +77,28 @@ const memberExists = async (req, _res, next) => {
 
 };
 
+const attendanceExists = async (req, _res, next) => {
+  const err = new Error('Not Found');
+  err.statusCode = 404;
+  err.message = "Attendance does not exist for this User"
+  const eventId = req.params.eventId;
+  const userId = req.body.userId;
+
+  const findAttendance = await Attendance.findOne({
+    where: {
+      eventId: eventId,
+      userId: userId
+    }
+  });
+
+  if (findAttendance) { return next() } else { return next(err) };
+};
 
 module.exports = {
   groupExists,
   eventExists,
   venueExists,
   eventImageExists,
-  memberExists
+  memberExists,
+  attendanceExists
 };

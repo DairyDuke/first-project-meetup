@@ -255,6 +255,59 @@ const checkHostOrUserCredentials = async function (req, _res, next) {
 }
 
 
+
+// --- Member must be Organizer of group or Currnet User--- \\
+const checkEventHostOrUserCredentials = async function (req, _res, next) {
+  const err = new Error('Forbidden');
+  err.statusCode = 403;
+  err.message = "Only the User or organizer may delete an Attendance";
+
+  const currentUser = req.user.id;
+  const eventId = req.params.eventId;
+  const userId = req.body.userId;
+
+  const checkCredentials = await Attendance.findOne({
+    where: {
+      eventId: eventId,
+      userId: userId
+    },
+    raw: true
+  })
+  const getGroup = await Group.findOne({
+    include: {
+      model: Event,
+      attributes: [],
+      where: {
+        id: eventId
+      }
+    },
+    raw: true
+  })
+
+  //membership gives us:
+  // id = memberId
+  // UserId = see if currentUserId
+  // GroupId = confirm params groupId matches
+  // Status = gives us organizer or member or pending etc.
+  // status: { [Op.or]: ["organizer", "member"] }
+
+  // -- Verify if Current User is User being deleted -- \\
+  if (userId == currentUser) { return next() }
+  else if (currentUser == getGroup.organizerId) { return next() }
+  else { return next(err) }
+
+
+
+  // if (checkCredentials.groupId == groupId) { //verify we're looking at a member for the same group
+  //   const getGroup = await Group.findByPk(checkCredentials.groupId, { raw: true })
+  //   if (getGroup && getGroup.organizerId == currentUser) { return next() }
+  //   // -- Verify if Current User is Member of Group \\
+  //   if (currentUser == checkCredentials.userId) { return next() } else {
+  //     return next(err);
+  //   }
+  // } else { return next(err) }
+}
+
 module.exports = {
   setTokenCookie,
   restoreUser,
@@ -264,5 +317,6 @@ module.exports = {
   checkMemberCredentials,
   checkEventCredentials,
   checkEICredentials,
-  checkHostOrUserCredentials
+  checkHostOrUserCredentials,
+  checkEventHostOrUserCredentials
 };
