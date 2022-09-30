@@ -28,7 +28,15 @@ const eventExists = async (req, _res, next) => {
     return next(notFound);
   }
 };
+const eventImageExists = async (req, _res, next) => {
+  const err = new Error('Not Found');
+  err.statusCode = 404;
+  err.message = "Event Image couldn't be found"
 
+  const imageId = req.params.imageId
+  const findEventImage = await EventImage.findByPk(imageId, { raw: true });
+  if (findEventImage) { return next() } else { return next(err) };
+};
 const venueExists = async (req, _res, next) => {
   const currentVenue = req.body.venueId
   if (!currentVenue) { return next() }
@@ -44,5 +52,6 @@ const venueExists = async (req, _res, next) => {
 module.exports = {
   groupExists,
   eventExists,
-  venueExists
+  venueExists,
+  eventImageExists
 };

@@ -540,6 +540,7 @@ router.post(
 
     const create = await Event.createEvent({ venueId, groupId, name, type, capacity, price, description, startDate, endDate });
     // -- Creating an attendance spot for Host -- \\
+    const eventId = create.id
     const createAttendance = await Attendance.addToList({ userId, eventId, status });
     return res.json(create)
   })

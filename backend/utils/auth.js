@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { jwtConfig } = require('../config');
-const { User, Membership, Group, Event, Attendance } = require('../db/models');
+const { User, Membership, Group, Event, Attendance, EventImage, GroupImage, Venue } = require('../db/models');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const { secret, expiresIn } = jwtConfig;
@@ -91,6 +91,31 @@ const uniqueUser = async function (req, _res, next) {
     return next(err);
   }
   return next()
+}
+
+// -- Delete Event Image - Organizer or Co-host of Group that Owns Event -- \\
+const checkEICredentials = async function (req, _res, next) {
+  const err = new Error('Not Found');
+  err.statusCode = 403;
+  err.message = "Forbidden"
+
+  const userId = req.user.id;
+  const imageId = req.params.imageId;
+
+  const eventImage = await EventImage.findByPk(imageId, { raw: true });
+  const event = await Event.findByPk(eventImage.eventId, { raw: true });
+
+  const checkCredentials = await Membership.findOne({
+    where: {
+      groupId: event.groupId,
+      userId: userId,
+      status: { [Op.or]: ["organizer", "co-host"] }
+    },
+    raw: true
+  })
+  if (checkCredentials) { return next() } else {
+    return next(err);
+  }
 }
 
 // --- Member must be Organizer or Co-host of group --- \\
@@ -207,5 +232,6 @@ module.exports = {
   uniqueUser,
   checkHostCredentials,
   checkMemberCredentials,
-  checkEventCredentials
+  checkEventCredentials,
+  checkEICredentials
 };
