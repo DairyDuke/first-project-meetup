@@ -7,7 +7,7 @@ const {
   checkHostCredentials,
   checkMemberCredentials,
   checkHostOrUserCredentials } = require('../../utils/auth');
-const { userExists, groupExists, venueExists, memberExists } = require('../../utils/verification')
+const { membershipExists, userExists, groupExists, venueExists, memberExists } = require('../../utils/verification')
 const { User, Group, Event, Membership, Venue, GroupImage, Attendance, EventImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -130,45 +130,22 @@ const validateVenue = [
   // .withMessage('Longitude is not valid.'),
   handleValidationErrors
 ];
-// --- Get All Groups --- \\
-// Get All Groups
-router.get(
-  '/',
-  async (req, res, next) => {
-    const Groups = await Group.findAll({
-      attributes: {
-        include: [
-          [Sequelize.fn("COUNT", Sequelize.col("Memberships.groupId")), "numMembers"]
-        ],
-      },
-      include: [
-        {
-          model: Membership,
-          attributes: []
-        }
-        // {
-        //   model: GroupImage,
-        //   as: 'previewImage',
-        //   attributes: ['url'],
-        //   required: false,
-        //   where: {
-        //     preview: false
-        //   }
-        // }
-      ],
-      group: ['Group.id'],
-      raw: true
-    })
-    for (picture of Groups) {
-      const groupId = picture.id
-      const previewImage = await GroupImage.findOne({ where: { groupId, preview: true }, raw: true })
-      if (previewImage) { picture.previewImage = previewImage.url } else {
-        picture.previewImage = "Preview Image not found"
-      }
-    }
-    return res.json({ Groups })
 
-  })
+const validateStatusChange = [
+  check('memberId')
+    .exists({ checkFalsy: true })
+    .bail()
+    .withMessage('Member Id required.'),
+  check('status')
+    .exists({ checkFalsy: true })
+    .bail()
+    .withMessage('Status Is required.')
+    .not()
+    .isIn(['pending'])
+    .withMessage('Cannot change a membership status to pending'),
+  handleValidationErrors
+]
+// --- Get All Groups --- \\
 
 // Get all groups joined or organized by Current User
 // NTS Fix this.
@@ -288,27 +265,6 @@ router.get(
     return res.json({ Groups })
   })
 
-
-// Group Creation
-router.post(
-  '/',
-  requireAuth,
-  validateGroup,
-  async (req, res, next) => {
-    console.log(req.user)
-    // const { id, firstName, lastName, email } = req.user.dataValues
-    const organizerId = req.user.id
-    const { name, about, type, private, city, state } = req.body;
-    const variable = private
-    const group = await Group.createGroup({ name, organizerId, about, type, variable, city, state });
-    const userId = req.user.id
-    const groupId = group.id
-    const status = "organizer"
-    const member = await Membership.addMember({ userId, groupId, status })
-
-    return res.json(group);
-
-  })
 
 // Add Image to GroupImages/Group
 router.post(
@@ -570,9 +526,9 @@ router.get(
 router.post(
   '/:groupId/events',
   requireAuth,
+  groupExists,
   validateEvent,
   venueExists,
-  groupExists,
   checkHostCredentials,
   async (req, res, next) => {
     const userId = req.user.id;
@@ -635,6 +591,107 @@ router.post(
     // const venueId = create.id
     // const createAttendance = await Attendance.addToList({ userId, eventId, status });
     return res.json(create)
+  })
+
+
+
+// --- Request a Membership for a Group based on the Group's id --- \\
+router.post(
+  '/:groupId/membership',
+  requireAuth,
+  groupExists,
+  membershipExists, //
+  async (req, res, next) => {
+    const userId = req.user.id;
+    const groupId = req.params.groupId;
+
+    const status = "pending"
+    const member = await Membership.addMember({ userId, groupId, status })
+
+    return res.json(member);
+  })
+
+
+// --- Change the status of a membership for a group specified by id --- \\
+router.put(
+  '/:groupId/membership',
+  requireAuth,
+  groupExists,
+  validateStatusChange,
+  checkHostCredentials,
+  userExists,
+  memberExists,
+  async (req, res, next) => {
+    const userId = req.body.memberId;
+    const status = req.body.status
+    const groupId = req.params.groupId;
+    const err = new Error("Forbidding")
+    err.message = "Only Organizer can make the request."
+    err.statusCode = 403
+    if (status == "co-host" && req.currentUserStatus != "organizer") { return next(err) }
+    const member = await Membership.editMember({ userId, groupId, status })
+
+    return res.json(member);
+  })
+
+// Get All Groups
+router.get(
+  '/',
+  async (req, res, next) => {
+    const Groups = await Group.findAll({
+      attributes: {
+        include: [
+          [Sequelize.fn("COUNT", Sequelize.col("Memberships.groupId")), "numMembers"]
+        ],
+      },
+      include: [
+        {
+          model: Membership,
+          attributes: []
+        }
+        // {
+        //   model: GroupImage,
+        //   as: 'previewImage',
+        //   attributes: ['url'],
+        //   required: false,
+        //   where: {
+        //     preview: false
+        //   }
+        // }
+      ],
+      group: ['Group.id'],
+      raw: true
+    })
+    for (picture of Groups) {
+      const groupId = picture.id
+      const previewImage = await GroupImage.findOne({ where: { groupId, preview: true }, raw: true })
+      if (previewImage) { picture.previewImage = previewImage.url } else {
+        picture.previewImage = "Preview Image not found"
+      }
+    }
+    return res.json({ Groups })
+
+  })
+
+// Group Creation
+router.post(
+  '/',
+  requireAuth,
+  validateGroup,
+  async (req, res, next) => {
+    console.log(req.user)
+    // const { id, firstName, lastName, email } = req.user.dataValues
+    const organizerId = req.user.id
+    const { name, about, type, private, city, state } = req.body;
+    const variable = private
+    const group = await Group.createGroup({ name, organizerId, about, type, variable, city, state });
+    const userId = req.user.id
+    const groupId = group.id
+    const status = "organizer"
+    const member = await Membership.addMember({ userId, groupId, status })
+
+    return res.json(group);
+
   })
 
 
