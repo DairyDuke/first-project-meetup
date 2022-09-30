@@ -110,13 +110,39 @@ const checkEICredentials = async function (req, _res, next) {
       groupId: event.groupId,
       userId: userId,
       status: { [Op.or]: ["organizer", "co-host"] }
-    },
-    raw: true
+    }
   })
   if (checkCredentials) { return next() } else {
     return next(err);
   }
 }
+
+
+// -- Delete Group Image - Organizer or Co-host of Group that Owns Event -- \\
+const checkGICredentials = async function (req, _res, next) {
+  const err = new Error('Not Found');
+  err.statusCode = 403;
+  err.message = "Forbidden"
+
+  const userId = req.user.id;
+  const imageId = req.params.imageId;
+
+  const findGroupImage = await GroupImage.scope("groupData").findByPk(imageId, { raw: true });
+
+  // const group = await Group.findByPk(findGroupImage.groupId, { raw: true });
+
+  const checkCredentials = await Membership.findOne({
+    where: {
+      groupId: findGroupImage.groupId,
+      userId: userId,
+      status: { [Op.or]: ["organizer", "co-host"] }
+    }
+  })
+  if (checkCredentials) { return next() } else {
+    return next(err);
+  }
+}
+
 
 // --- Member must be Organizer or Co-host of group --- \\
 const checkHostCredentials = async function (req, _res, next) {
@@ -318,5 +344,6 @@ module.exports = {
   checkEventCredentials,
   checkEICredentials,
   checkHostOrUserCredentials,
-  checkEventHostOrUserCredentials
+  checkEventHostOrUserCredentials,
+  checkGICredentials
 };

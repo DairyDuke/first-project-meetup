@@ -362,7 +362,6 @@ router.delete(
   }
 )
 
-
 // -- Delete Attendance to an event specified by id -- \\
 router.delete(
   '/:eventId/attendance',
@@ -374,9 +373,16 @@ router.delete(
     const eventId = req.params.eventId;
     const userId = req.body.userId
 
-    const findMember = await Attendance.findByPk(userId);
-    if (findMember) {
-      findMember.destroy()
+
+    const findAttendance = await Attendance.findOne({
+      where: {
+        eventId: eventId,
+        userId: userId
+      }
+    });
+
+    if (findAttendance) {
+      findAttendance.destroy()
     } else {
       throw new Erorr(
         "something broke"

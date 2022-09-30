@@ -41,6 +41,16 @@ const eventImageExists = async (req, _res, next) => {
   if (findEventImage) { return next() } else { return next(err) };
 };
 
+const groupImageExists = async (req, _res, next) => {
+  const err = new Error('Not Found');
+  err.statusCode = 404;
+  err.message = "Group Image couldn't be found"
+
+  const imageId = req.params.imageId
+  const findGroupImage = await GroupImage.findByPk(imageId);
+  if (findGroupImage) { return next() } else { return next(err) };
+};
+
 
 const venueExists = async (req, _res, next) => {
   const currentVenue = req.body.venueId
@@ -90,7 +100,7 @@ const attendanceExists = async (req, _res, next) => {
       userId: userId
     }
   });
-
+  console.log(findAttendance)
   if (findAttendance) { return next() } else { return next(err) };
 };
 
@@ -100,5 +110,6 @@ module.exports = {
   venueExists,
   eventImageExists,
   memberExists,
-  attendanceExists
+  attendanceExists,
+  groupImageExists
 };
