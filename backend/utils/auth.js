@@ -150,7 +150,7 @@ const checkHostCredentials = async function (req, _res, next) {
   err.statusCode = 403;
   err.message = "Forbidden"
 
-  const { groupId, eventId } = req.params
+  const { groupId, eventId, venueId } = req.params
 
   if (groupId) {
     const currentUser = req.user.id
@@ -158,15 +158,11 @@ const checkHostCredentials = async function (req, _res, next) {
       where: {
         groupId: groupId,
         userId: currentUser,
-        status: "co-host"
-      },
-      raw: true
+        status: { [Op.or]: ["organizer", "co-host"] }
+      }
     })
-    const checkPermission = await Group.findOne({
-      where: { organizerId: currentUser },
-      raw: true
-    })
-    if (checkCredentials || checkPermission) { return next() } else {
+
+    if (checkCredentials) { return next() } else {
       return next(err);
     }
   }
@@ -192,6 +188,27 @@ const checkHostCredentials = async function (req, _res, next) {
       return next(err);
     }
   }
+
+
+  if (venueId) {
+    const currentUser = req.user.id
+    const event = await Venue.findByPk(venueId, { raw: true });
+    const groupId = event.groupId
+
+    const checkCredentials = await Membership.findOne({
+      where: {
+        groupId: groupId,
+        userId: currentUser,
+        status: { [Op.or]: ["organizer", "co-host"] }
+      }
+    })
+
+    if (checkCredentials) { return next() } else {
+      return next(err);
+    }
+  }
+
+
 }
 
 

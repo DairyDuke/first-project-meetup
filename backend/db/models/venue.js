@@ -9,6 +9,33 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+
+
+    static async createVenue({ groupId, address, city, state, lat, lng }) {
+
+      const venue = await Venue.create({
+        groupId,
+        address,
+        city,
+        state,
+        lat,
+        lng
+      });
+      return await Venue.findByPk(venue.id);
+    }
+
+    static async editVenue({ venueId, address, city, state, lat, lng }) {
+
+      const venue = await Venue.findByPk(venueId)
+      await venue.update({
+        address,
+        city,
+        state,
+        lat,
+        lng
+      });
+      return await Venue.findByPk(venue.id);
+    }
     static associate(models) {
       // define association here
       Venue.hasMany(models.Event, { foreignKey: 'venueId' })
