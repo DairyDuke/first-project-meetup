@@ -15,6 +15,20 @@ module.exports = (sequelize, DataTypes) => {
 
       return await Attendance.findByPk(list.id);
     }
+
+    static async updateList({ userId, eventId, status }) {
+
+      const list = await Attendance.findOne({
+        where: {
+          eventId: eventId,
+          userId: userId
+        }
+      })
+      await list.update({ userId, eventId, status })
+
+      return await Attendance.findByPk(list.id);
+    }
+
     static associate(models) {
       // define association here
       Attendance.belongsTo(models.Event, { foreignKey: 'eventId' })
@@ -37,6 +51,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Attendance',
+    defaultScope: {
+      attributes: {
+        exclude: ["createdAt", "updatedAt"]
+      }
+    },
   });
   return Attendance;
 };

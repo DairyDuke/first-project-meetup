@@ -84,6 +84,68 @@ const userExists = async (req, _res, next) => {
     return next(err)
   }
 }
+const alreadyAttending = async (req, _res, next) => {
+
+  const eventId = req.params.eventId;
+  const userId = req.user.id;
+
+  const findAttendance = await Attendance.findOne({
+    where: {
+      eventId: eventId,
+      userId: userId
+    },
+    raw: true
+  });
+  console.log(findAttendance)
+  const err = new Error('Already Attending');
+  err.statusCode = 400;
+  err.message = "Attendance has already been requested"
+
+  if (findAttendance) {
+    console.log("THIS FIRED")
+    if (findAttendance.status == "pending") {
+      return next(err)
+    } else
+      if (findAttendance.status == "attending") {
+        err.message = "User is already an attendee of the event"
+        return next(err)
+      } else {
+        err.message = "User is already an attendee of the event"
+        return next(err)
+      }
+  } else {
+    return next()
+  };
+}
+
+// --- Current User must be a Member of the group --- \\
+const memberEventExists = async (req, _res, next) => {
+  const eventId = req.params.eventId;
+  const userId = req.user.id;
+
+  const findEvent = await Event.findByPk(eventId, { raw: true })
+  const groupId = findEvent.groupId
+
+  const findMember = await Membership.findOne({
+    where: {
+      userId: userId,
+      groupId: groupId,
+      status: { [Op.or]: ["organizer", "member", "co-host"] }
+    },
+    raw: true
+  });
+
+  if (findMember) {
+    return next()
+  } else {
+    const memErr = new Error("Membership Fail");
+    err.statusCode = 403;
+    err.message = "Only members may invite to Group Events."
+    return next(memErr)
+  }
+}
+
+
 const memberExists = async (req, _res, next) => {
   const err = new Error('Wrong Member');
   err.statusCode = 400;
@@ -168,5 +230,7 @@ module.exports = {
   attendanceExists,
   groupImageExists,
   userExists,
-  membershipExists
+  membershipExists,
+  alreadyAttending,
+  memberEventExists
 };
