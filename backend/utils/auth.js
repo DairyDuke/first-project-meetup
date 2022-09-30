@@ -225,6 +225,36 @@ const checkEventCredentials = async function (req, _res, next) {
 }
 
 
+// --- Member must be Organizer of group or Currnet User--- \\
+const checkHostOrUserCredentials = async function (req, _res, next) {
+  const err = new Error('Not Found');
+  err.statusCode = 403;
+  err.message = "Forbidden"
+
+  const currentUser = req.user.id;
+  const groupId = req.params.groupId;
+  const memberId = req.body.memberId;
+
+  const checkCredentials = await Membership.findByPk(memberId, { raw: true })
+  //membership gives us:
+  // id = memberId
+  // UserId = see if currentUserId
+  // GroupId = confirm params groupId matches
+  // Status = gives us organizer or member or pending etc.
+  // status: { [Op.or]: ["organizer", "member"] }
+
+  // -- Verify if Current User is Organizer -- \\
+  if (checkCredentials.groupId == groupId) { //verify we're looking at a member for the same group
+    const getGroup = await Group.findByPk(checkCredentials.groupId, { raw: true })
+    if (getGroup && getGroup.organizerId == currentUser) { return next() }
+    // -- Verify if Current User is Member of Group \\
+    if (currentUser == checkCredentials.userId) { return next() } else {
+      return next(err);
+    }
+  } else { return next(err) }
+}
+
+
 module.exports = {
   setTokenCookie,
   restoreUser,
@@ -233,5 +263,6 @@ module.exports = {
   checkHostCredentials,
   checkMemberCredentials,
   checkEventCredentials,
-  checkEICredentials
+  checkEICredentials,
+  checkHostOrUserCredentials
 };

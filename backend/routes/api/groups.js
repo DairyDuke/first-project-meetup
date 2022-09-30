@@ -5,8 +5,9 @@ const {
   requireAuth,
   uniqueUser,
   checkHostCredentials,
-  checkMemberCredentials } = require('../../utils/auth');
-const { groupExists, venueExists } = require('../../utils/verification')
+  checkMemberCredentials,
+  checkHostOrUserCredentials } = require('../../utils/auth');
+const { groupExists, venueExists, memberExists } = require('../../utils/verification')
 const { User, Group, Event, Membership, Venue, GroupImage, Attendance, EventImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -494,7 +495,7 @@ router.get(
       where: {
         groupId: groupId
       },
-      attributes: ["userId", "status"]
+      attributes: ["id", "userId", "status"]
     })
 
     let Members = []
@@ -504,7 +505,7 @@ router.get(
 
       if (member.status != "pending") {
         Members.push({
-          id: user.id,
+          id: member.id,
           firstName: user.firstName,
           lastName: user.lastName,
           Membership: { status: member.status }
@@ -544,5 +545,34 @@ router.post(
     const createAttendance = await Attendance.addToList({ userId, eventId, status });
     return res.json(create)
   })
+
+
+
+// -- Delete membership to a group specified by id -- \\
+router.delete(
+  '/:groupId/membership',
+  requireAuth,
+  groupExists,
+  memberExists,
+  checkHostOrUserCredentials,
+  async (req, res, next) => {
+    const groupId = req.params.groupId;
+    const memberId = req.body.memberId
+
+    const findMember = await Membership.findByPk(memberId);
+    if (findMember) {
+      findMember.destroy()
+    } else {
+      throw new Erorr(
+        "something broke"
+      )
+    }
+    return res.json({
+      "message": "Successfully deleted membership from group",
+    })
+
+  }
+)
+
 
 module.exports = router;

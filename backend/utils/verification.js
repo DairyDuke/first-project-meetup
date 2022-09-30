@@ -10,12 +10,14 @@ notFound.message = "Group couldn't be found"
 
 const groupExists = async (req, _res, next) => {
 
-  const currentGroup = req.params.groupId
-  const findGroup = await Group.findByPk(currentGroup)
+  const groupId = req.params.groupId
+  const findGroup = await Group.findByPk(groupId)
   if (findGroup) { return next() } else {
     return next(notFound);
   }
 };
+
+
 const eventExists = async (req, _res, next) => {
 
   const currentEvent = req.params.eventId
@@ -49,9 +51,34 @@ const venueExists = async (req, _res, next) => {
     return next(notFound);
   }
 }
+
+const memberExists = async (req, _res, next) => {
+  const err = new Error('Wrong Member');
+  err.statusCode = 400;
+  err.message = "Validation Error";
+  err.errors = { memberId: "User couldn't be found" };
+
+  const { memberId } = req.body;
+  const findMember = await Membership.findByPk(memberId);
+
+  if (findMember) {
+    const findUser = await User.findByPk(findMember.userId)
+
+    if (findUser) { return next() } else {
+      const memErr = new Error("Membership Fail");
+      err.statusCode = 404;
+      err.message = "Membership does not exist for this User"
+      return next(memErr)
+    }
+  } else { return next(err) }
+
+};
+
+
 module.exports = {
   groupExists,
   eventExists,
   venueExists,
-  eventImageExists
+  eventImageExists,
+  memberExists
 };
