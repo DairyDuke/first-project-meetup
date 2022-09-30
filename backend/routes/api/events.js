@@ -26,27 +26,43 @@ const router = express.Router();
 const validateEvent = [
   check('name')
     .exists({ checkFalsy: true })
+    .withMessage("Message Here")
+    .bail()
     .isLength({ min: 5 })
     .withMessage('Name must be at least 5 characters.'),
   check('type')
     .exists({ checkFalsy: true })
+    .withMessage("Message Here")
+    .bail()
     //need to find choice validator
+    .isIn(["Online", "in person"])
     .withMessage("Type must be 'Online' or 'In person'."),
   check('capacity')
     .exists({ checkFalsy: true })
+    .withMessage("Message Here")
+    .bail()
     .isNumeric()
     .withMessage("Capacity must be an integer."),
   check('price')
     .exists({ checkFalsy: true })
+    .withMessage("Message Here")
+    .bail()
     .withMessage('Price is invalid.'),
   check('description')
     .exists({ checkFalsy: true })
+    .withMessage("Message Here")
+    .bail()
     .withMessage('Description is required.'),
   check('startDate')
     .exists({ checkFalsy: true })
+    .withMessage("Message Here")
+    .bail()
     .withMessage('Start date must be in the future.'),
   check('endDate')
+    //.optional() -- not required.
     .exists({ checkFalsy: true })
+    .withMessage("Message Here")
+    .bail()
     .withMessage('End date is less than start date.'),
   handleValidationErrors
 ];

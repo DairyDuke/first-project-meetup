@@ -65,26 +65,43 @@ const venueExists = async (req, _res, next) => {
   }
 }
 
+const userExists = async (req, _res, next) => {
+  const err = new Error('Wrong Member');
+  err.statusCode = 400;
+  err.message = "Validation Error";
+  err.errors = { memberId: "User couldn't be found" };
+
+  const groupId = req.params.groupId
+  const userId = req.body.memberId;
+  const findUser = await User.findByPk(userId)
+
+  if (findUser) { return next() } else {
+    return next(err)
+  }
+}
 const memberExists = async (req, _res, next) => {
   const err = new Error('Wrong Member');
   err.statusCode = 400;
   err.message = "Validation Error";
   err.errors = { memberId: "User couldn't be found" };
 
-  const { memberId } = req.body;
-  const findMember = await Membership.findByPk(memberId);
+  const groupId = req.params.groupId
+  const userId = req.body.memberId;
+  const findMember = await Membership.findOne({
+    where: {
+      userId: userId,
+      groupId: groupId
+    }
+  });
 
   if (findMember) {
-    const findUser = await User.findByPk(findMember.userId)
-
-    if (findUser) { return next() } else {
-      const memErr = new Error("Membership Fail");
-      err.statusCode = 404;
-      err.message = "Membership does not exist for this User"
-      return next(memErr)
-    }
-  } else { return next(err) }
-
+    return next()
+  } else {
+    const memErr = new Error("Membership Fail");
+    err.statusCode = 404;
+    err.message = "Membership does not exist for this User"
+    return next(memErr)
+  }
 };
 
 const attendanceExists = async (req, _res, next) => {
@@ -111,5 +128,6 @@ module.exports = {
   eventImageExists,
   memberExists,
   attendanceExists,
-  groupImageExists
+  groupImageExists,
+  userExists
 };

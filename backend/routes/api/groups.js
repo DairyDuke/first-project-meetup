@@ -7,7 +7,7 @@ const {
   checkHostCredentials,
   checkMemberCredentials,
   checkHostOrUserCredentials } = require('../../utils/auth');
-const { groupExists, venueExists, memberExists } = require('../../utils/verification')
+const { userExists, groupExists, venueExists, memberExists } = require('../../utils/verification')
 const { User, Group, Event, Membership, Venue, GroupImage, Attendance, EventImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -20,6 +20,14 @@ const router = express.Router();
 // --------- Validators ----------- \\
 // Checks req.body for potential Validation Errors
 // name, about, type, private, city, state
+// const validateUser = [
+//   check('memberId')
+//     .custom(((value, { req }) => User.findByPk(memberId))
+//       .then((data) => { if (data) return true })
+//     )
+//     .withMessage("User couldn't be found"),
+//   handleValidationErrors
+// ]
 const validateGroup = [
   check('name')
     .exists({ checkFalsy: true })
@@ -505,7 +513,7 @@ router.get(
 
       if (member.status != "pending") {
         Members.push({
-          id: member.id,
+          id: member.userId,
           firstName: user.firstName,
           lastName: user.lastName,
           Membership: { status: member.status }
@@ -553,13 +561,16 @@ router.delete(
   '/:groupId/membership',
   requireAuth,
   groupExists,
+  userExists,
   memberExists,
   checkHostOrUserCredentials,
   async (req, res, next) => {
     const groupId = req.params.groupId;
-    const memberId = req.body.memberId
+    const userId = req.body.memberId
 
-    const findMember = await Membership.findByPk(memberId);
+    const findMember = await Membership.findOne({
+      where: { userId: userId }
+    });
     if (findMember) {
       findMember.destroy()
     } else {
