@@ -608,7 +608,11 @@ router.post(
     const status = "pending"
     const member = await Membership.addMember({ userId, groupId, status })
 
-    return res.json(member);
+    const reply = {
+      memberId: member.userId,
+      status: member.status
+    }
+    return res.json(reply);
   })
 
 
