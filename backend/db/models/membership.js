@@ -25,9 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       })
       list.update({
-        userId,
-        groupId,
-        status
+        status: status
       })
 
       return await Membership.findByPk(list.id);

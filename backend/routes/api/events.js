@@ -78,10 +78,46 @@ const validateImage = [
   handleValidationErrors
 ]
 
+const validateQuery = [
+  check('page')
+    .exists({ checkFalsy: true })
+    .bail()
+    .isNumeric()
+    .bail()
+    .withMessage('Page must be a number.')
+    .isLength({ min: 1 })
+    .withMessage('Page must be greater than or equal to 1'),
+  check('size')
+    .exists({ checkFalsy: true })
+    .bail()
+    .isNumeric()
+    .bail()
+    .withMessage('Size must be a number.')
+    .isLength({ min: 1 })
+    .withMessage('Size must be greater than or equal to 1'),
+  check('name')
+    .exists({ checkFalsy: true })
+    .bail()
+    .isAlpha()
+    .bail()
+    .withMessage('Name must be a string'),
+  check('type')
+    .exists({ checkFalsy: true })
+    .bail()
+    .isIn(["online", "in person"])
+    .withMessage("Type must be 'Online' or 'In Person'"),
+  check('startDate')
+    .exists({ checkFalsy: true })
+    .bail()
+    .isDate()
+    .withMessage("Start date must be a valid datetime"),
+  handleValidationErrors
 
+]
 // --- Get All Events --- \\
 router.get(
   '/',
+  validateQuery,
   async (req, res, next) => {
     // -- Query Filter Parameter -- \\
     // page, integer,min 1, max 10, default 1
@@ -89,47 +125,37 @@ router.get(
     // name, string, optional
     // type, string, optional
     // startDate, string, optional
+    const pagination = {}
+    const { page, size, name, type, startDate } = req.query
+    if (!page) { page = 1 }
+    if (!size) { size = 20 }
+    if (page > 10) { page = 10 }
+    if (size > 20) { size = 20 }
 
-    // Get All Events Requires:
-    // numAttending = Attendances table --- Lazy Loaded --Success
-    // numAttending returns a count
-    // previewImage = EventImages table --- Lazy Loaded --Success
-    // previewImage returns image URL
-    // Group = Group table              --- Lazy Loaded --Success
-    // Group returns id, name, city, state
-    // Venue = Venue table
-    // Venue returns id, city, state.
+    page = parseInt(page)
+    size = parseInt(size)
+
+    if (page >= 1 && size >= 1) {
+      pagination.limit = size
+      pagination.offset = size * (page - 1)
+    }
+    const where = {}
+    if (name) { where.name = name }
+    if (type) { where.type = type }
+    if (startDate) { where.startDate = startDate }
     const Events = await Event.scope("event").findAll({
-      // attributes: {
-      //   include: [
-      //     [Sequelize.fn("COUNT", Sequelize.col("Attendances.eventId"), Sequelize.where()), "numAttending"]
-      //   ],
-      // },
-      // include: [
-      //   {
-      //     model: Membership,
-      //     attributes: []
-      //   }
-      //   // {
-      //   //   model: GroupImage,
-      //   //   as: 'previewImage',
-      //   //   attributes: ['url'],
-      //   //   required: false,
-      //   //   where: {
-      //   //     preview: false
-      //   //   }
-      //   // }
-      // ],
-      // group: ['Group.id'],
+      where,
+      ...pagination,
       raw: true
     })
+
     // -- Number Attending -- \\
     for (num of Events) {
       const eventId = num.id
       const numAttending = await Attendance.findAndCountAll({
         where: {
           eventId: eventId,
-          status: { [Op.or]: ["host", "attending"] } //waitlist?
+          status: { [Op.or]: ["host", "attending"] }
         },
         raw: true
       })
