@@ -90,13 +90,19 @@ const memberExists = async (req, _res, next) => {
   err.message = "Validation Error";
   err.errors = { memberId: "User couldn't be found" };
 
+  const perr = new Error('Already Pending');
+  err.statusCode = 400;
+  err.message = "Membership has already been requested"
+
   const groupId = req.params.groupId
   const userId = req.body.memberId;
+  const status = req.body.status;
   const findMember = await Membership.findOne({
     where: {
       userId: userId,
       groupId: groupId
-    }
+    },
+    raw: true
   });
 
   if (findMember) {
@@ -106,6 +112,34 @@ const memberExists = async (req, _res, next) => {
     err.statusCode = 404;
     err.message = "Membership does not exist for this User"
     return next(memErr)
+  }
+};
+
+
+const membershipExists = async (req, _res, next) => {
+  const perr = new Error('Already Pending');
+  perr.statusCode = 400;
+  perr.message = "Membership has already been requested"
+
+  const aerr = new Error('Already Meember');
+  aerr.statusCode = 400;
+  aerr.message = "User is already a member of the group"
+
+  const groupId = req.params.groupId
+  const userId = req.user.id;
+  const findMember = await Membership.findOne({
+    where: {
+      userId: userId,
+      groupId: groupId
+    },
+    raw: true
+  });
+
+  if (findMember) {
+    if (findMember.status == "pending") { return next(perr) }
+    if (findMember.status == "member") { return next(aerr) }
+  } else {
+    return next()
   }
 };
 
@@ -133,5 +167,6 @@ module.exports = {
   memberExists,
   attendanceExists,
   groupImageExists,
-  userExists
+  userExists,
+  membershipExists
 };

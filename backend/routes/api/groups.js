@@ -7,7 +7,7 @@ const {
   checkHostCredentials,
   checkMemberCredentials,
   checkHostOrUserCredentials } = require('../../utils/auth');
-const { userExists, groupExists, venueExists, memberExists } = require('../../utils/verification')
+const { membershipExists, userExists, groupExists, venueExists, memberExists } = require('../../utils/verification')
 const { User, Group, Event, Membership, Venue, GroupImage, Attendance, EventImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -130,6 +130,21 @@ const validateVenue = [
   // .withMessage('Longitude is not valid.'),
   handleValidationErrors
 ];
+
+const validateStatusChange = [
+  check('memberId')
+    .exists({ checkFalsy: true })
+    .bail()
+    .withMessage('Member Id required.'),
+  check('status')
+    .exists({ checkFalsy: true })
+    .bail()
+    .withMessage('Status Is required.')
+    .not()
+    .isIn(['pending'])
+    .withMessage('Cannot change a membership status to pending'),
+  handleValidationErrors
+]
 // --- Get All Groups --- \\
 
 // Get all groups joined or organized by Current User
@@ -576,6 +591,47 @@ router.post(
     // const venueId = create.id
     // const createAttendance = await Attendance.addToList({ userId, eventId, status });
     return res.json(create)
+  })
+
+
+
+// --- Request a Membership for a Group based on the Group's id --- \\
+router.post(
+  '/:groupId/membership',
+  requireAuth,
+  groupExists,
+  membershipExists, //
+  async (req, res, next) => {
+    const userId = req.user.id;
+    const groupId = req.params.groupId;
+
+    const status = "pending"
+    const member = await Membership.addMember({ userId, groupId, status })
+
+    return res.json(member);
+  })
+
+
+// --- Change the status of a membership for a group specified by id --- \\
+router.put(
+  '/:groupId/membership',
+  requireAuth,
+  groupExists,
+  validateStatusChange,
+  checkHostCredentials,
+  userExists,
+  memberExists,
+  async (req, res, next) => {
+    const userId = req.body.memberId;
+    const status = req.body.status
+    const groupId = req.params.groupId;
+    const err = new Error("Forbidding")
+    err.message = "Only Organizer can make the request."
+    err.statusCode = 403
+    if (status == "co-host" && req.currentUserStatus != "organizer") { return next(err) }
+    const member = await Membership.editMember({ userId, groupId, status })
+
+    return res.json(member);
   })
 
 // Get All Groups

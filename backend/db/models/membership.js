@@ -15,6 +15,23 @@ module.exports = (sequelize, DataTypes) => {
 
       return await Membership.findByPk(list.id);
     }
+
+    static async editMember({ userId, groupId, status }) {
+
+      const list = await Membership.findOne({
+        where: {
+          userId: userId,
+          groupId: groupId
+        }
+      })
+      list.update({
+        userId,
+        groupId,
+        status
+      })
+
+      return await Membership.findByPk(list.id);
+    }
     static associate(models) {
       // define association here
       Membership.belongsTo(models.User, { foreignKey: 'userId' })
@@ -37,6 +54,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Membership',
+    defaultScope: {
+      attributes: { exclude: ["createdAt", "updatedAt"] }
+    }
   });
   return Membership;
 };

@@ -165,10 +165,14 @@ const checkHostCredentials = async function (req, _res, next) {
         groupId: groupId,
         userId: currentUser,
         status: { [Op.or]: ["organizer", "co-host"] }
-      }
+      },
+      raw: true
     })
 
-    if (checkCredentials) { return next() } else {
+    if (checkCredentials) {
+      req.currentUserStatus = checkCredentials.status
+      return next()
+    } else {
       return next(err);
     }
   }
