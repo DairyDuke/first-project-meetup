@@ -373,7 +373,11 @@ router.post(
     const eventId = req.params.eventId;
 
     const create = await Attendance.addToList({ userId, eventId, status })
-    return res.json(create)
+    const display = {
+      userId: create.userId,
+      status: create.status
+    }
+    return res.json({ display })
   }
 )
 
