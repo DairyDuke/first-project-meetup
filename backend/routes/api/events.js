@@ -9,7 +9,7 @@ const {
   checkEventCredentials,
   checkEventHostOrUserCredentials
 } = require('../../utils/auth');
-const { memberEventExists, memberExists, alreadyAttending, eventExists, groupExists, venueExists, attendanceExists } = require('../../utils/verification')
+const { alreadyEditAttending, memberEventExists, memberExists, alreadyAttending, eventExists, groupExists, venueExists, attendanceExists } = require('../../utils/verification')
 const { User, Group, Event, Membership, Venue, GroupImage, Attendance, EventImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -389,7 +389,7 @@ router.put(
   validateAttendanceChange,
   attendanceExists,
   checkHostCredentials,
-  alreadyAttending,
+  // alreadyEditAttending,
   async (req, res, next) => {
     const status = req.body.status;
     const userId = req.body.userId;

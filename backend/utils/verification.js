@@ -84,6 +84,31 @@ const userExists = async (req, _res, next) => {
     return next(err)
   }
 }
+
+const alreadyEditAttending = async (req, _res, next) => {
+  const userId = req.body.userId;
+  const status = req.body.status;
+  const eventId = req.param.eventId;
+
+
+  const findAttendance = await Attendance.findOne({
+    where: {
+      eventId: eventId,
+      userId: userId
+    },
+    raw: true
+  });
+  if (findAttendance.status == "attending"
+    || findAttendance.status == "host") {
+    const err = new Error('Already Attending');
+    err.statusCode = 400;
+    err.message = "Attendance has already been requested"
+    return next(err)
+  }
+
+
+}
+
 const alreadyAttending = async (req, _res, next) => {
 
   const eventId = req.params.eventId;
@@ -241,5 +266,6 @@ module.exports = {
   userExists,
   membershipExists,
   alreadyAttending,
-  memberEventExists
+  memberEventExists,
+  alreadyEditAttending
 };
