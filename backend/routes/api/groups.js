@@ -259,7 +259,7 @@ router.get(
     Groups.Organizer = await User.scope("organizer").findByPk(Groups.organizerId)
     Groups.Venues = await Venue.findAll({ where: { groupId: groupId } })
 
-    return res.json({ Groups })
+    return res.json(Groups)
   })
 
 
@@ -298,43 +298,6 @@ router.post(
     return next(err);
   }
 )
-
-//Edit a Group
-
-router.put('/:groupId', requireAuth, validateGroup, async (req, res, next) => {
-  const currentUser = req.user.id
-  const groupId = req.params.groupId
-  const { name, about, type, private, city, state } = req.body
-
-  const group = await Group.findOne({
-    where: {
-      id: groupId,
-      organizerId: currentUser
-    }
-  })
-  if (group) {
-    await group.update(
-      {
-        name,
-        organizerId: currentUser,
-        about,
-        type,
-        private,
-        city,
-        state
-      }
-    )
-    return res.json(group)
-  }
-  const err = new Error('Group Not Found');
-  err.statusCode = 404;
-  // err.title = 'Login failed';
-  err.message = "Group couldn't be found"
-  // err.errors = ['The provided credentials were invalid.'];
-  return next(err);
-
-
-})
 
 //Delete a Group
 router.delete(
@@ -640,6 +603,43 @@ router.put(
 
     return res.json(display);
   })
+
+//Edit a Group
+
+router.put('/:groupId', requireAuth, validateGroup, async (req, res, next) => {
+  const currentUser = req.user.id
+  const groupId = req.params.groupId
+  const { name, about, type, private, city, state } = req.body
+
+  const group = await Group.findOne({
+    where: {
+      id: groupId,
+      organizerId: currentUser
+    }
+  })
+  if (group) {
+    await group.update(
+      {
+        name,
+        organizerId: currentUser,
+        about,
+        type,
+        private,
+        city,
+        state
+      }
+    )
+    return res.json(group)
+  }
+  const err = new Error('Group Not Found');
+  err.statusCode = 404;
+  // err.title = 'Login failed';
+  err.message = "Group couldn't be found"
+  // err.errors = ['The provided credentials were invalid.'];
+  return next(err);
+
+
+})
 
 // Get All Groups
 router.get(
