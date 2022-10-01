@@ -638,7 +638,7 @@ router.put(
       status: member.status
     }
 
-    return res.json({ display });
+    return res.json(display);
   })
 
 // Get All Groups
@@ -696,7 +696,7 @@ router.post(
     const status = "organizer"
     const member = await Membership.addMember({ userId, groupId, status })
 
-    return res.json({ group });
+    return res.json(group);
 
   })
 
