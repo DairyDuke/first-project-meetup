@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
           groupId: groupId
         }
       })
-      list.update({
+      await list.update({
         status: status
       })
 

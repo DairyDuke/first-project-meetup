@@ -377,7 +377,7 @@ router.post(
       userId: create.userId,
       status: create.status
     }
-    return res.json({ display })
+    return res.json(display)
   }
 )
 
