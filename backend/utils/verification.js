@@ -87,7 +87,11 @@ const userExists = async (req, _res, next) => {
 const alreadyAttending = async (req, _res, next) => {
 
   const eventId = req.params.eventId;
-  const userId = req.user.id;
+  const userId = (req.body.userId != undefined ? req.body.userId
+    : req.body.memberId != undefined ? req.body.memberId
+      : req.user.id != undefined ? req.user.id
+        : null)
+
   const status = req.body.status;
 
   const findAttendance = await Attendance.findOne({

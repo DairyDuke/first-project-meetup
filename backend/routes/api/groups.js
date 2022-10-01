@@ -631,8 +631,14 @@ router.put(
     err.statusCode = 403
     if (status == "co-host" && req.currentUserStatus != "organizer") { return next(err) }
     const member = await Membership.editMember({ userId, groupId, status })
+    const display = {
+      id: member.id,
+      groupId: member.groupId,
+      memberId: member.userId,
+      status: member.status
+    }
 
-    return res.json(member);
+    return res.json({ display });
   })
 
 // Get All Groups
@@ -690,7 +696,7 @@ router.post(
     const status = "organizer"
     const member = await Membership.addMember({ userId, groupId, status })
 
-    return res.json(group);
+    return res.json({ group });
 
   })
 
