@@ -170,6 +170,7 @@ router.get(
     })
 
     for (picture of Groups) {
+      picture.numMembers = parseInt(picture.numMembers)
       const groupId = picture.id
       const previewImage = await GroupImage.findOne({ where: { groupId, preview: true }, raw: true })
       if (previewImage) { picture.previewImage = previewImage.url } else {
@@ -442,6 +443,7 @@ router.post(
     const status = "host"
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
 
+
     const create = await Event.createEvent({ venueId, groupId, name, type, capacity, price, description, startDate, endDate });
     // -- Creating an attendance spot for Host -- \\
     const eventId = create.id
@@ -613,7 +615,9 @@ router.get(
       group: ['Group.id'],
       raw: true
     })
+
     for (picture of Groups) {
+      picture.numMembers = parseInt(picture.numMembers)
       const groupId = picture.id
       const previewImage = await GroupImage.findOne({ where: { groupId, preview: true }, raw: true })
       if (previewImage) { picture.previewImage = previewImage.url } else {

@@ -12,8 +12,9 @@ module.exports = (sequelize, DataTypes) => {
 
 
     static async createVenue({ groupId, address, city, state, lat, lng }) {
-      parseInt(lat)
-      parseInt(lng)
+      parseFloat(lat)
+      parseFloat(lng)
+
       const venue = await Venue.create({
         groupId,
         address,
@@ -26,8 +27,8 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static async editVenue({ venueId, address, city, state, lat, lng }) {
-      parseInt(lat)
-      parseInt(lng)
+      parseFloat(lat)
+      parseFloat(lng)
 
       const venue = await Venue.findByPk(venueId)
 

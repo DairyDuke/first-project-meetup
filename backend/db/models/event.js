@@ -11,7 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static async createEvent({ venueId, groupId, name, type, capacity, price, description, startDate, endDate }) {
       parseInt(capacity)
-      parseInt(price)
+      parseFloat(price).toFixed(2);
+
+      // parseFloat(price).toFixed(2)
+      console.log("PRICE PRICE PRICE " + price)
+
       const event = await Event.create({
         venueId,
         groupId,
@@ -28,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
 
     static async editEvent({ eventId, venueId, groupId, name, type, capacity, price, description, startDate, endDate }) {
       parseInt(capacity)
-      parseInt(price)
+      parseFloat(price).toFixed(2);
 
       const event = await Event.findByPk(eventId)
       await event.update({
