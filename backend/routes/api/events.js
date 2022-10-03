@@ -456,8 +456,7 @@ router.get(
 
     // -- Venue Associated -- \\
     const venues = await Venue.scope("event").findOne({
-      where: { groupId: groupId },
-      raw: true
+      where: { groupId: groupId }
     })
     if (venues) { Events.Venue = venues } else {
       Events.Venue = "null"
