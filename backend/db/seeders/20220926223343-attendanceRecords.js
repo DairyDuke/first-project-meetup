@@ -13,12 +13,12 @@ module.exports = {
       {
         eventId: 1,
         userId: 1,
-        status: "attending"
+        status: "host"
       },
       {
         eventId: 1,
         userId: 2,
-        status: "waitlist"
+        status: "attending"
       },
       {
         eventId: 1,
@@ -34,22 +34,22 @@ module.exports = {
       {
         eventId: 2,
         userId: 1,
-        status: "waitlist"
+        status: "attending"
       },
       {
         eventId: 2,
         userId: 5,
-        status: "waitlist"
+        status: "attending"
       },
       {
         eventId: 2,
         userId: 4,
-        status: "waitlist"
+        status: "pending"
       },
       {
         eventId: 2,
         userId: 3,
-        status: "waitlist"
+        status: "pending"
       },
 
       //Event 3 has 4 entries

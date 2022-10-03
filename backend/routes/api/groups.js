@@ -39,11 +39,11 @@ const validateGroup = [
     .withMessage('About must be 50 characters or more.'),
   check('type')
     .exists({ checkFalsy: true })
-    //need to find choice validator
+    .isIn(["online", "in person", "Online", "In Person", "In person", "ONLINE", "IN PERSON"])
     .withMessage("Type must be 'Online' or 'In person'."),
   check('private')
     .exists({ checkFalsy: true })
-    //boolean checker
+    .isBoolean()
     .withMessage("Private must be a boolean."),
   check('city')
     .exists({ checkFalsy: true })
@@ -76,7 +76,7 @@ const validateEvent = [
     .withMessage('Name must be at least 5 characters.'),
   check('type')
     .exists({ checkFalsy: true })
-    //need to find choice validator
+    .isIn(["online", "in person", "Online", "In Person", "In person", "ONLINE", "IN PERSON"])
     .withMessage("Type must be 'Online' or 'In person'."),
   check('capacity')
     .exists({ checkFalsy: true })
@@ -84,6 +84,7 @@ const validateEvent = [
     .withMessage("Capacity must be an integer."),
   check('price')
     .exists({ checkFalsy: true })
+    .isDecimal()
     .withMessage('Price is invalid.'),
   check('description')
     .exists({ checkFalsy: true })
@@ -106,28 +107,19 @@ const validateVenue = [
     .exists({ checkFalsy: true })
     .bail()
     .withMessage('Street address is required.'),
-  // .isLength({ min: 5 })
-  // .withMessage('Address must be at least 5 characters.'),
   check('city')
     .exists({ checkFalsy: true })
     .bail()
-    .withMessage('City is required.')
-    //need to find choice validator
-    .withMessage("Type must be 'Online' or 'In person'."),
+    .withMessage('City is required.'),
   check('state')
     .exists({ checkFalsy: true })
-    .bail()
     .withMessage('State address is required.'),
   check('lat')
     .exists({ checkFalsy: true })
-    .bail()
     .withMessage('Latitude is required.'),
-  // .withMessage('Latitude is not valid.'),
   check('lng')
     .exists({ checkFalsy: true })
-    .bail()
     .withMessage('Longitude is required.'),
-  // .withMessage('Longitude is not valid.'),
   handleValidationErrors
 ];
 
@@ -138,7 +130,7 @@ const validateStatusChange = [
   //   .withMessage('Member Id required.'),
   check('status')
     .not()
-    .isIn(['pending'])
+    .isIn(['pending', 'PENDING', 'Pending'])
     .withMessage('Cannot change a membership status to pending'),
   handleValidationErrors
 ]
@@ -177,54 +169,6 @@ router.get(
       raw: true
     })
 
-
-    // // -- Get Group Organized by Current User and Count -- \\
-    // for (group of allGroups) {
-    //   const organizerId = group.organizerId
-    //   const membership = await Membership.findAll()
-
-    //   if (organizerId == userId) {
-    //     const numMembers = await Attendance.findAndCountAll({
-    //       where: {
-    //         groupId: group.id
-    //       },
-    //       raw: true
-    //     })
-    //     if (numMembers) { Groups.numMembers = numMembers } else {
-    //       Groups.numMembers = 0
-    //     };
-    //     Groups.push(group)
-    //   }
-    // }
-    // {
-    //   where: {
-    //     organizerId: userId
-    //   },
-    //   required: false,
-    //   attributes: {
-    //     include: [
-    //       [Sequelize.fn("COUNT", Sequelize.col("Memberships.groupId")), "numMembers"]
-    //     ],
-    //   },
-    //   include: [
-    //     {
-    //       model: Membership,
-    //       attributes: [],
-    //       where: {
-    //         [Op.and]: [
-    //           {
-    //             status: {
-    //               [Op.or]: ["member", "co-host"]
-    //             }
-    //           }, {
-    //             userId: userId
-    //           }]
-    //       }
-    //     }
-    //   ],
-    //   group: ['Group.id'],
-    //   raw: true
-    // })
     for (picture of Groups) {
       const groupId = picture.id
       const previewImage = await GroupImage.findOne({ where: { groupId, preview: true }, raw: true })
@@ -236,12 +180,14 @@ router.get(
     return res.json({ Groups })
   })
 
-// Get details of a group by id
+// --- Get details of a Group from an id --- \\
 router.get(
   '/:groupId',
   async (req, res, next) => {
     const groupId = req.params.groupId
-    const Groups = await Group.findByPk(groupId, { raw: true })
+    const groupPull = await Group.findByPk(groupId)
+
+    const Groups = groupPull.toJSON()
     // NTS need to put in error handling.
     if (!Groups) {
       const err = new Error('Not Found');
@@ -251,6 +197,7 @@ router.get(
       // err.errors = [''];
       return next(err);
     }
+
     Groups.numMembers = await Membership.count({ where: { groupId: groupId } })
     Groups.GroupImages = await GroupImage.findAll({
       where: { groupId: groupId },
@@ -262,8 +209,7 @@ router.get(
     return res.json(Groups)
   })
 
-
-// Add Image to GroupImages/Group
+// --- Add a Group Image to a Group based on its id --- \\
 router.post(
   '/:groupId/images',
   requireAuth,
@@ -299,7 +245,7 @@ router.post(
   }
 )
 
-//Delete a Group
+// --- Delete a Group specified by its id --- \\
 router.delete(
   '/:groupId',
   requireAuth,
@@ -332,7 +278,7 @@ router.delete(
 
 // --------- Venues ----------- \\
 
-
+// --- Get All Venues for a Group specified by its id --- \\
 router.get(
   '/:groupId/venues',
   requireAuth,
@@ -403,7 +349,7 @@ router.get(
     // -- Group Associated -- \\
     for (group of Events) {
       const id = group.groupId
-      const groups = await Group.scope("event").findOne({ id, raw: true })
+      const groups = await Group.scope("eventid").findOne({ id, raw: true })
       if (groups) { group.Group = groups } else {
         group.Group = "No Group Associated"
       }
@@ -412,7 +358,7 @@ router.get(
     // -- Venue Associated -- \\
     for (venue of Events) {
       const id = group.venueId
-      const venues = await Venue.findOne({ id, raw: true })
+      const venues = await Venue.scope("eventid").findOne({ id, raw: true })
       if (venues) { venue.Venue = venues } else {
         venue.Venue = "null"
       }
@@ -547,9 +493,7 @@ router.post(
     const { address, city, state, lat, lng } = req.body
 
     const create = await Venue.createVenue({ groupId, address, city, state, lat, lng });
-    // -- Creating an attendance spot for Host -- \\
-    // const venueId = create.id
-    // const createAttendance = await Attendance.addToList({ userId, eventId, status });
+
     return res.json(create)
   })
 
@@ -604,7 +548,7 @@ router.put(
     return res.json(display);
   })
 
-//Edit a Group
+// --- Edit a Group specified by its Id --- \\
 
 router.put('/:groupId', requireAuth, validateGroup, async (req, res, next) => {
   const currentUser = req.user.id
@@ -641,7 +585,7 @@ router.put('/:groupId', requireAuth, validateGroup, async (req, res, next) => {
 
 })
 
-// Get All Groups
+// --- Get All Groups --- \\
 router.get(
   '/',
   async (req, res, next) => {
@@ -680,7 +624,7 @@ router.get(
 
   })
 
-// Group Creation
+// --- Create A Group --- \\
 router.post(
   '/',
   requireAuth,

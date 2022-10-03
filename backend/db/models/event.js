@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static async createEvent({ venueId, groupId, name, type, capacity, price, description, startDate, endDate }) {
-
+      parseInt(capacity)
+      parseInt(price)
       const event = await Event.create({
         venueId,
         groupId,
@@ -26,6 +27,8 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static async editEvent({ eventId, venueId, groupId, name, type, capacity, price, description, startDate, endDate }) {
+      parseInt(capacity)
+      parseInt(price)
 
       const event = await Event.findByPk(eventId)
       await event.update({
@@ -97,7 +100,7 @@ module.exports = (sequelize, DataTypes) => {
     scopes: {
       event: {
         attributes:
-          { exclude: ["description", "capacity", "createdAt", "updatedAt"] }//organizerId", "about", "type", "private", "createdAt", "updatedAt"]
+          { exclude: ["description", "price", "capacity", "createdAt", "updatedAt"] }//organizerId", "about", "type", "private", "createdAt", "updatedAt"]
       },
       eventbyId: {
         attributes: {

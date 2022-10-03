@@ -33,7 +33,7 @@ router.post(
       err.statusCode = 401;
       err.title = 'Login failed';
       err.message = 'Invalid credentials'
-      err.errors = ['The provided credentials were invalid.'];
+      err.errors = 'The provided credentials were invalid.';
       return next(err);
     }
 

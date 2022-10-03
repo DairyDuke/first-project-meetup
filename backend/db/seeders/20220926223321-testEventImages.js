@@ -6,19 +6,19 @@ module.exports = {
     const bulkData = [
       {
         eventId: 1,
-        url: "this is a url",
+        url: "www.picture.event.1",
         preview: true
       },
       {
         eventId: 2,
-        url: "this is a url",
+        url: "www.picture.event.2",
         preview: true
       },
       {
         eventId: 3,
-        url: "this is a url",
+        url: "www.picture.event.3",
         preview: false
-      },
+      }
     ]
     return queryInterface.bulkInsert('EventImages', bulkData, {});
     /**
