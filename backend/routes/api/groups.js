@@ -170,6 +170,7 @@ router.get(
     })
 
     for (picture of Groups) {
+      picture.numMembers = parseInt(picture.numMembers)
       const groupId = picture.id
       const previewImage = await GroupImage.findOne({ where: { groupId, preview: true }, raw: true })
       if (previewImage) { picture.previewImage = previewImage.url } else {
