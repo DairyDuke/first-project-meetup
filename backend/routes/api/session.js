@@ -39,7 +39,7 @@ router.post(
 
     const token = await setTokenCookie(res, user);
     //raw = true in a query to allow manipulation otherwise
-
+    const tokenUser = user.toJSON()
     tokenUser.token = token
     return res.json({
       // user
