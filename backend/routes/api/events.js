@@ -26,43 +26,28 @@ const router = express.Router();
 const validateEvent = [
   check('name')
     .exists({ checkFalsy: true })
-    .withMessage("Message Here")
-    .bail()
     .isLength({ min: 5 })
     .withMessage('Name must be at least 5 characters.'),
   check('type')
     .exists({ checkFalsy: true })
-    .withMessage("Message Here")
-    .bail()
-    //need to find choice validator
-    .isIn(["Online", "in person"])
+    .isIn(["online", "in person", "Online", "In Person", "ONLINE", "IN PERSON"])
     .withMessage("Type must be 'Online' or 'In person'."),
   check('capacity')
     .exists({ checkFalsy: true })
-    .withMessage("Message Here")
-    .bail()
     .isNumeric()
     .withMessage("Capacity must be an integer."),
   check('price')
     .exists({ checkFalsy: true })
-    .withMessage("Message Here")
-    .bail()
+    .isDecimal()
     .withMessage('Price is invalid.'),
   check('description')
     .exists({ checkFalsy: true })
-    .withMessage("Message Here")
-    .bail()
     .withMessage('Description is required.'),
   check('startDate')
     .exists({ checkFalsy: true })
-    .withMessage("Message Here")
-    .bail()
     .withMessage('Start date must be in the future.'),
   check('endDate')
-    //.optional() -- not required.
     .exists({ checkFalsy: true })
-    .withMessage("Message Here")
-    .bail()
     .withMessage('End date is less than start date.'),
   handleValidationErrors
 ];
@@ -290,7 +275,7 @@ router.put(
   })
 
 
-// Add Image to GroupImages/Group
+// --- Add an Image to an Event based on the Event's id --- \\
 router.post(
   '/:eventId/images',
   requireAuth,
@@ -462,8 +447,7 @@ router.get(
     // -- Group Associated -- \\
     const groupId = Events.groupId
     const groups = await Group.scope("event").findOne({
-      where: { id: groupId },
-      raw: true
+      where: { id: groupId }
     })
     if (groups) { Events.Group = groups } else {
       Events.Group = "No Group Associated"
@@ -471,7 +455,7 @@ router.get(
 
 
     // -- Venue Associated -- \\
-    const venues = await Venue.findOne({
+    const venues = await Venue.scope("event").findOne({
       where: { groupId: groupId },
       raw: true
     })
@@ -482,13 +466,13 @@ router.get(
 
     // -- Preview Image -- \\
 
-    const previewImage = await EventImage.scope("eventbyId").findAll({
+    const EventImages = await EventImage.scope("event").findAll({
       where: {
         eventId: currentEvent
       }
     })
-    if (previewImage) { Events.previewImage = previewImage } else {
-      Events.previewImage = "Preview Image not found"
+    if (EventImages) { Events.EventImages = EventImages } else {
+      Events.EventImages = "Event Images not found"
     }
 
 

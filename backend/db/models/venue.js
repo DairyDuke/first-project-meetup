@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
 
 
     static async createVenue({ groupId, address, city, state, lat, lng }) {
-
+      parseInt(lat)
+      parseInt(lng)
       const venue = await Venue.create({
         groupId,
         address,
@@ -25,6 +26,8 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static async editVenue({ venueId, address, city, state, lat, lng }) {
+      parseInt(lat)
+      parseInt(lng)
 
       const venue = await Venue.findByPk(venueId)
 
@@ -79,7 +82,7 @@ module.exports = (sequelize, DataTypes) => {
     scopes: {
       event: {
         attributes:
-          ["id", "city", "state"]//organizerId", "about", "type", "private", "createdAt", "updatedAt"]
+          ["id", "address", "city", "state", "lat", "lng"]//organizerId", "about", "type", "private", "createdAt", "updatedAt"]
 
       }
     }

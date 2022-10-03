@@ -23,14 +23,10 @@ const validateVenue = [
     .exists({ checkFalsy: true })
     .bail()
     .withMessage('Street address is required.'),
-  // .isLength({ min: 5 })
-  // .withMessage('Address must be at least 5 characters.'),
   check('city')
     .exists({ checkFalsy: true })
     .bail()
-    .withMessage('City is required.')
-    //need to find choice validator
-    .withMessage("Type must be 'Online' or 'In person'."),
+    .withMessage('City is required.'),
   check('state')
     .exists({ checkFalsy: true })
     .bail()
@@ -39,12 +35,12 @@ const validateVenue = [
     .exists({ checkFalsy: true })
     .bail()
     .withMessage('Latitude is required.'),
-  // .withMessage('Latitude is not valid.'),
+  // .isDecimal()
+  // .withMessage('Latitude must be coordinates'),
   check('lng')
     .exists({ checkFalsy: true })
     .bail()
     .withMessage('Longitude is required.'),
-  // .withMessage('Longitude is not valid.'),
   handleValidationErrors
 ];
 
@@ -61,9 +57,7 @@ router.put(
     const { address, city, state, lat, lng } = req.body
 
     const create = await Venue.editVenue({ venueId, address, city, state, lat, lng });
-    // -- Creating an attendance spot for Host -- \\
-    // const venueId = create.id
-    // const createAttendance = await Attendance.addToList({ userId, eventId, status });
+
     return res.json(create)
   })
 
