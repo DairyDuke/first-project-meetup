@@ -39,7 +39,7 @@ const validateGroup = [
     .withMessage('About must be 50 characters or more.'),
   check('type')
     .exists({ checkFalsy: true })
-    .isIn(["online", "in person", "Online", "In Person", "ONLINE", "IN PERSON"])
+    .isIn(["online", "in person", "Online", "In Person", "In person", "ONLINE", "IN PERSON"])
     .withMessage("Type must be 'Online' or 'In person'."),
   check('private')
     .exists({ checkFalsy: true })
@@ -76,7 +76,7 @@ const validateEvent = [
     .withMessage('Name must be at least 5 characters.'),
   check('type')
     .exists({ checkFalsy: true })
-    .isIn(["online", "in person", "Online", "In Person", "ONLINE", "IN PERSON"])
+    .isIn(["online", "in person", "Online", "In Person", "In person", "ONLINE", "IN PERSON"])
     .withMessage("Type must be 'Online' or 'In person'."),
   check('capacity')
     .exists({ checkFalsy: true })
@@ -110,9 +110,7 @@ const validateVenue = [
   check('city')
     .exists({ checkFalsy: true })
     .bail()
-    .withMessage('City is required.')
-    .isIn(["online", "in person", "Online", "In Person", "ONLINE", "IN PERSON"])
-    .withMessage("Type must be 'Online' or 'In person'."),
+    .withMessage('City is required.'),
   check('state')
     .exists({ checkFalsy: true })
     .withMessage('State address is required.'),
@@ -351,7 +349,7 @@ router.get(
     // -- Group Associated -- \\
     for (group of Events) {
       const id = group.groupId
-      const groups = await Group.scope("event").findOne({ id, raw: true })
+      const groups = await Group.scope("eventid").findOne({ id, raw: true })
       if (groups) { group.Group = groups } else {
         group.Group = "No Group Associated"
       }
@@ -360,7 +358,7 @@ router.get(
     // -- Venue Associated -- \\
     for (venue of Events) {
       const id = group.venueId
-      const venues = await Venue.findOne({ id, raw: true })
+      const venues = await Venue.scope("eventid").findOne({ id, raw: true })
       if (venues) { venue.Venue = venues } else {
         venue.Venue = "null"
       }

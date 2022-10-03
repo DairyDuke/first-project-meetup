@@ -83,7 +83,9 @@ module.exports = (sequelize, DataTypes) => {
       event: {
         attributes:
           ["id", "address", "city", "state", "lat", "lng"]//organizerId", "about", "type", "private", "createdAt", "updatedAt"]
-
+      },
+      eventid: {
+        attributes: ["id", "city", "state"]
       }
     }
   });
