@@ -185,9 +185,9 @@ router.get(
   '/:groupId',
   async (req, res, next) => {
     const groupId = req.params.groupId
-    const groupPull = await Group.findByPk(groupId)
+    const Groups = await Group.findByPk(groupId, { raw: true })
 
-    const Groups = groupPull.toJSON()
+    // const Groups = groupPull.toJSON()
     // NTS need to put in error handling.
     if (!Groups) {
       const err = new Error('Not Found');
