@@ -443,6 +443,7 @@ router.post(
     const status = "host"
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
 
+
     const create = await Event.createEvent({ venueId, groupId, name, type, capacity, price, description, startDate, endDate });
     // -- Creating an attendance spot for Host -- \\
     const eventId = create.id
