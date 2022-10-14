@@ -1,8 +1,12 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 
+// Reducer Imports
+import sessionReducer from './session';
+
 // Reducers Combined
 const rootReducer = combineReducers({
+  session: sessionReducer,
 });
 
 // Enhancer -- Production will only use middleware
