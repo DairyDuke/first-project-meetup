@@ -11,7 +11,7 @@ const LoginFormPage = ()=> {
   const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState([]);
-
+  console.log(sessionUser)
   if (sessionUser) return (
     <Redirect to="/" />
   );
@@ -23,13 +23,14 @@ const LoginFormPage = ()=> {
       .catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) setErrors(data.errors);
+        console.log(data)
       });
   }
 
   return (
     <div>
       <h1>This is the Login Page</h1>
-    </div>
+
     <form onSubmit={handleSubmit}>
       <ul>
         {errors.map((error, idx) => <li key={idx}>{error}</li>)}
@@ -54,6 +55,7 @@ const LoginFormPage = ()=> {
       </label>
       <button type="submit">Log In</button>
     </form>
+    </div>
   );
 }
 
