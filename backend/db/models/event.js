@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       parseFloat(price).toFixed(2);
 
       // parseFloat(price).toFixed(2)
-      console.log("PRICE PRICE PRICE " + price)
+      // console.log("PRICE PRICE PRICE " + price)
 
       const event = await Event.create({
         venueId,
@@ -82,7 +82,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     price: {
-      type: DataTypes.DECIMAL,
+      type: DataTypes.FLOAT,
       allowNull: false
     },
     startDate: {
