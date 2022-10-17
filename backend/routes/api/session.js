@@ -37,14 +37,15 @@ router.post(
       return next(err);
     }
 
-    const token = await setTokenCookie(res, user);
+    user.token = await setTokenCookie(res, user);
+
+    // --- In an effort to give the user a .token I commented out the below for line 40.
     //raw = true in a query to allow manipulation otherwise
-    const tokenUser = user.toJSON()
-    tokenUser.token = token
-    return res.json({
-      // user
-      ...tokenUser
-    });
+    // user.token = token
+    // const tokenUser = await user.toJSON()
+    // tokenUser.token = token
+    // //user
+    return res.json({user});
   }
 );
 
@@ -58,8 +59,8 @@ router.delete(
 
 router.get(
   '/',
-  requireAuth,
   restoreUser,
+  // requireAuth, --- This was blocking things. Need to figure out if this is needed or not.
   (req, res) => {
     const { user } = req;
     if (user) {
