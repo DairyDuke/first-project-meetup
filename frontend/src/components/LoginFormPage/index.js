@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useHistory, Redirect } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import './LoginForm.css';
 import * as sessionActions from '../../store/session';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, Redirect } from 'react-router-dom';
+import './LoginForm.css';
 
 const LoginFormPage = ()=> {
   const history = useHistory();
@@ -11,7 +11,8 @@ const LoginFormPage = ()=> {
   const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState([]);
-  console.log(sessionUser)
+
+
   if (sessionUser) return (
     <Redirect to="/" />
   );
@@ -22,9 +23,10 @@ const LoginFormPage = ()=> {
     return dispatch(sessionActions.login({ credential, password }))
       .catch(async (res) => {
         const data = await res.json();
+
         if (data && data.errors) setErrors(data.errors);
-        console.log(data)
       });
+
   }
 
   return (

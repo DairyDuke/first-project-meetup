@@ -59,8 +59,8 @@ router.delete(
 
 router.get(
   '/',
-  requireAuth,
   restoreUser,
+  // requireAuth, --- This was blocking things. Need to figure out if this is needed or not.
   (req, res) => {
     const { user } = req;
     if (user) {

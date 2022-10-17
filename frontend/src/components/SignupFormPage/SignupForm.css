@@ -1,0 +1,11 @@
+div {
+  all: unset
+}
+
+.container {
+  display: flex;
+  width: 484px;
+  height: 824px;
+  flex-direction: column;
+  flex-wrap: wrap;
+}

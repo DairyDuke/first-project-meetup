@@ -4,6 +4,7 @@
   "description": "## Database Schema Design",
   "main": "index.js",
   "scripts": {
+    "heroku-postbuild": "npm run build --prefix frontend",
     "test": "echo \"Error: no test specified\" && exit 1",
     "install": "npm --prefix backend install backend",
     "dev:backend": "npm install --prefix backend start",
@@ -24,5 +25,6 @@
   "homepage": "https://github.com/DairyDuke/first-project-meetup#readme",
   "dependencies": {
     "pg": "^8.8.0"
-  }
+  },
+  "proxy": "http://localhost:3000"
 }
