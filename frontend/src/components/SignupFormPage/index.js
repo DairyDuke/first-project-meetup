@@ -15,7 +15,9 @@ function SignupFormPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
 
-  if (sessionUser) return <Redirect to="/" />;
+  if (sessionUser) return (
+  <Redirect to="/" />
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,16 +35,16 @@ function SignupFormPage() {
   return (
     <div className="container">
     <span>
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="form-box">
     <div>
-      <h2>Finish Signing Up</h2>
+      <h1 className="font-title">Finish Signing Up</h1>
     </div>
       <ul>
         {errors.map((error, idx) => <li key={idx}>{error}</li>)}
       </ul>
       <label>
         Your first name
-        <input
+        <input className="input-box"
           type="text"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
@@ -51,7 +53,7 @@ function SignupFormPage() {
       </label>
       <label>
         Your last name
-        <input
+        <input className="input-box"
           type="text"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
@@ -60,7 +62,7 @@ function SignupFormPage() {
       </label>
       <label>
         Email addresss
-        <input
+        <input className="input-box"
           type="text"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -69,7 +71,7 @@ function SignupFormPage() {
       </label>
       <label>
         Username
-        <input
+        <input className="input-box"
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -78,7 +80,7 @@ function SignupFormPage() {
       </label>
       <label>
         Password
-        <input
+        <input className="input-box"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -87,7 +89,7 @@ function SignupFormPage() {
       </label>
       <label>
         Confirm Password
-        <input
+        <input className="input-box"
           type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
