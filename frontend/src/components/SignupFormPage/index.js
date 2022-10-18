@@ -15,7 +15,9 @@ function SignupFormPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
 
-  if (sessionUser) return <Redirect to="/" />;
+  if (sessionUser) return (
+  <Redirect to="/" />
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,19 +32,21 @@ function SignupFormPage() {
     return setErrors(['Confirm Password field must be the same as the Password field']);
   };
 
+  const tooltipclasses = "signup-tooltip signup-tooltip-text"
+
   return (
-    <div className="container">
-    <span>
-    <form onSubmit={handleSubmit}>
+    <div className="signup-container">
+    <span className="signup-content">
+    <form onSubmit={handleSubmit} className="signup-form-box">
     <div>
-      <h2>Finish Signing Up</h2>
+      <h1 className="font-title">Finish Signing Up</h1>
     </div>
       <ul>
         {errors.map((error, idx) => <li key={idx}>{error}</li>)}
       </ul>
       <label>
         Your first name
-        <input
+        <input className="signup-input-box"
           type="text"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
@@ -51,7 +55,7 @@ function SignupFormPage() {
       </label>
       <label>
         Your last name
-        <input
+        <input className="signup-input-box"
           type="text"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
@@ -60,7 +64,7 @@ function SignupFormPage() {
       </label>
       <label>
         Email addresss
-        <input
+        <input className="signup-input-box"
           type="text"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -69,7 +73,7 @@ function SignupFormPage() {
       </label>
       <label>
         Username
-        <input
+        <input className="signup-input-box"
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -78,7 +82,13 @@ function SignupFormPage() {
       </label>
       <label>
         Password
-        <input
+        <div className="tooltip">Hover over me
+          <span classname="tooltiptext">
+          Your password must be at least 10 characters, and can't have 3 of the same characters in a row. To improve password strength, use a mix of upper case, lower case, numbers, and symbols. Learn more...
+          </span>
+        </div>
+
+        <input className="signup-input-box"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -87,14 +97,14 @@ function SignupFormPage() {
       </label>
       <label>
         Confirm Password
-        <input
+        <input className="signup-input-box"
           type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
       </label>
-      <button type="submit">Sign Up</button>
+      <button type="submit" className="signup-form-button">Sign Up</button>
     </form>
     </span>
     </div>

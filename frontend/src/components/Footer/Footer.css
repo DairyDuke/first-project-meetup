@@ -1,0 +1,45 @@
+.footer-container {
+  display: block;
+  box-sizing: border-box;
+
+  background-color: rgb(33, 33, 33);
+  color: #F6F7F8;
+
+  width: 100%;
+  padding: 0.25rem;
+
+  height: 515px;
+  margin-top: auto;
+}
+
+.create-button {
+  display: flex;
+  width: 100%;
+  padding-bottom: 1.5rem;
+  border-color: rgb(117, 117, 117);
+  border-bottom-width: 1px;
+  border-style: solid;
+
+}
+
+.get-started-button {
+  padding-left: 16px;
+}
+
+.bottom-menu {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: left;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+}
+
+.width-third {
+  width: 33.333333%;
+}
+
+.item-padding {
+  margin: 4px 0px;
+}

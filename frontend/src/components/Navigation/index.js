@@ -25,12 +25,15 @@ function Navigation({ isLoaded }){
   }
 
   return (
-    <ul>
-      <li>
-        <NavLink exact to="/"><img src={iconImg} alt="G logo" /></NavLink>
-        {isLoaded && sessionLinks}
-      </li>
-    </ul>
+    <>
+      <NavLink exact to="/"><img src={iconImg} alt="G logo" /></NavLink>
+      <ul>
+        <li>
+          {isLoaded && sessionLinks}
+        </li>
+      </ul>
+
+    </>
   );
 }
 

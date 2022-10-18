@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, NavLink } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
+import Footer from "./components/Footer";
+import iconImg from './assets/images/favicon.ico'
 
 function App() {
   const dispatch = useDispatch();
@@ -18,9 +20,11 @@ function App() {
       {isLoaded && (
         <Switch>
           <Route path="/signup">
+            <NavLink exact to="/"><img src={iconImg} alt="G logo" /></NavLink>
             <SignupFormPage />
           </Route>
           <Route path="/login">
+            <NavLink exact to="/"><img src={iconImg} alt="G logo" /></NavLink>
             <LoginFormPage />
           </Route>
           <Route>
@@ -28,6 +32,12 @@ function App() {
           </Route>
         </Switch>
       )}
+      <div>
+        The body will be rendered here.
+      </div>
+      <div>
+      <Footer />
+      </div>
     </>
   );
 }

@@ -2,10 +2,99 @@ div {
   all: unset
 }
 
-.container {
+.signup-container {
   display: flex;
   width: 484px;
   height: 824px;
   flex-direction: column;
+  align-items: center;
   flex-wrap: wrap;
+  margin: auto;
+}
+
+.signup-content {
+  position: absolute;
+  background-color: white;
+  border-color: beige;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0.5rem;
+  padding: 2.5rem;
+}
+
+
+.font-title {
+  /* 28px,  graphik meetup, */
+  margin: 0px 0px 8px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 1.75rem;
+  line-height: 36px;
+  box-sizing: border-box;
+  border: 0 solid;
+  font-family: Helvetica, sans-serif;
+}
+
+.signup-form-box {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  align-items: center;
+  padding: 0;
+  width: 344px;
+}
+
+.signup-input-box {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 100%;
+  border-radius: 0.5rem;
+  opacity: 1;
+  border-width: 1px;
+  height: auto;
+  width: 344px;
+  padding: 8px 40px 8px 12px;
+  border-color: gray;
+  box-shadow: inset;
+}
+
+.signup-form-button {
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 100%;
+  border-radius: 0.5rem;
+  opacity: 1;
+  border-width: 1px;
+  width: 344px;
+  height: 1.5rem;
+  background-color: #F65858;
+}
+
+/* TODO: Work on a tooltip popup via click */
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+  /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }
