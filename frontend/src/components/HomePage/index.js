@@ -14,7 +14,6 @@ import {
 import './HomePage.css'
 const HomePage = ()=> {
 
-  console.log(chatting)
   return (
     <>
     <div className="homepage-container">

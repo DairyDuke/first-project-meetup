@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import './SignupForm.css';
 import * as sessionActions from "../../store/session";
 
@@ -14,6 +14,7 @@ function SignupFormPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
+  const history = useHistory()
 
   if (sessionUser) return (
   <Redirect to="/" />
@@ -24,12 +25,15 @@ function SignupFormPage() {
     if (password === confirmPassword) {
       setErrors([]);
       return dispatch(sessionActions.signup({ firstName, lastName, email, username, password }))
+      .then(()=>{
+        history.push('/')
+      })
         .catch(async (res) => {
           const data = await res.json();
           if (data && data.errors) setErrors(data.errors);
         });
     }
-    return setErrors(['Confirm Password field must be the same as the Password field']);
+    return setErrors({confirmPassword: 'Confirm Password field must be the same as the Password field'});
   };
 
   const tooltipclasses = "signup-tooltip signup-tooltip-text"
@@ -42,7 +46,7 @@ function SignupFormPage() {
       <h1 className="font-title">Finish Signing Up</h1>
     </div>
       <ul>
-        {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+        {/* {errors?.map((error, idx) => <li key={idx}>{error}</li>)} */}
       </ul>
       <label>
         Your first name
@@ -52,6 +56,8 @@ function SignupFormPage() {
           onChange={(e) => setFirstName(e.target.value)}
           required
         />
+
+        <div>{errors.firstName ? errors.firstName : null} </div>
       </label>
       <label>
         Your last name
@@ -61,6 +67,7 @@ function SignupFormPage() {
           onChange={(e) => setLastName(e.target.value)}
           required
         />
+        <div>{errors.lastName ? errors.lastName : null} </div>
       </label>
       <label>
         Email addresss
@@ -70,6 +77,7 @@ function SignupFormPage() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
+        <div>{errors.email ? errors.email : null} </div>
       </label>
       <label>
         Username
@@ -79,11 +87,12 @@ function SignupFormPage() {
           onChange={(e) => setUsername(e.target.value)}
           required
         />
+        <div>{errors.username ? errors.username : null} </div>
       </label>
       <label>
         Password
         <div className="tooltip">Hover over me
-          <span classname="tooltiptext">
+          <span className="tooltiptext">
           Your password must be at least 10 characters, and can't have 3 of the same characters in a row. To improve password strength, use a mix of upper case, lower case, numbers, and symbols. Learn more...
           </span>
         </div>
@@ -94,6 +103,7 @@ function SignupFormPage() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+        <div>{errors.password ? errors.password : null} </div>
       </label>
       <label>
         Confirm Password
@@ -103,6 +113,7 @@ function SignupFormPage() {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
+        <div>{errors.confirmPassword ? errors.confirmPassword : null} </div>
       </label>
       <button type="submit" className="signup-form-button">Sign Up</button>
     </form>
