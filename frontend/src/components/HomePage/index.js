@@ -10,8 +10,9 @@ import {
   pencilGroup,
   taxesGroup,
   ticket
-} from '../../assets/images/index.js'
-import './HomePage.css'
+} from '../../assets/images/index.js';
+import {NavLink} from 'react-router-dom';
+import './HomePage.css';
 const HomePage = ()=> {
 
   return (
