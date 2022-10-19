@@ -3,3 +3,26 @@ ul {
   margin: 0;
   padding: 0;
 }
+
+button {
+  clear: all;
+  margin-left: 20px;
+}
+
+.navigation-container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+}
+
+/* .navigation-home-button {
+  justify-self: left;
+} */
+
+.navigation-data-links {
+  /* justify-self: right; */
+  /* align-items: center; */
+  margin-left: 20px;
+}
