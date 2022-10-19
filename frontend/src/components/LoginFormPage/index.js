@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory, Redirect, NavLink } from 'react-router-dom';
 import './LoginForm.css';
+import SignupFormPage from '../SignupFormPage'
 
 const LoginFormPage = ()=> {
   const history = useHistory();
@@ -58,6 +59,11 @@ const LoginFormPage = ()=> {
       </label>
       <button type="submit">Log In</button>
     </form>
+    <div>
+      <NavLink to="/signup">
+        Signup?
+      </NavLink>
+    </div>
     </div>
           </>
   );

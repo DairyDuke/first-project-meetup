@@ -1,0 +1,13 @@
+export const datingGroup = require('./HomePageImages/datingGroup.png');
+export const pencilGroup = require('./HomePageImages/pencilGroup.png');
+export const taxesGroup = require('./HomePageImages/taxesGroup.png');
+export const meetGroup = require('./HomePageImages/meetGroup.png');
+export const chatting = require('./HomePageImages/chatting.png');
+export const handsUp = require('./HomePageImages/handsUp.svg');
+export const hiking = require('./HomePageImages/hiking.png');
+export const joinGroup = require('./HomePageImages/joinGroup.svg');
+export const laptopSmile = require('./HomePageImages/laptopSmile.png');
+export const online_events = require('./HomePageImages/online_events.svg');
+export const ticket = require('./HomePageImages/ticket.svg');
+// export const = require('./HomePageImages/');
+// export const = require('./HomePageImages/');

@@ -1,0 +1,63 @@
+.homepage-container {
+  display: flex;
+  flex-flow: column nowrap;
+  max-width: 1120px;
+  margin: auto;
+}
+
+.image-resizing {
+  width: 360px;
+  height: 200px;
+}
+
+.block {
+  display: inline-flex;
+  width: fit-content;
+}
+
+.homepage-leftside {
+  width: 520px;
+  margin: 0 80px 0 0;
+}
+
+.homepage-rightside {
+  width: 520px;
+}
+
+.homepage-points-of-interest {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin: 20px 0px;
+
+}
+
+.option-card {
+  flex-flow: column wrap;
+  width: 33.33333%;
+  margin: auto;
+}
+
+.option-card-button {
+  margin: 8px 0 0 0;
+  color: #008294;
+  font-weight: 900;
+  font-size: 16px;
+}
+
+.option-card-navigation {
+  flex-flow: column wrap;
+  width: 23.33333%;
+  padding: 0 24px;
+
+}
+
+
+.option-card-navigation-button {
+  margin: 0 0 8px 0;
+  color: #008294;
+  font-weight: 900;
+  font-size: 16px;
+}

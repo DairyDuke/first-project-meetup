@@ -33,9 +33,6 @@ function App() {
         </Switch>
       )}
       <div>
-        The body will be rendered here.
-      </div>
-      <div>
       <Footer />
       </div>
     </>

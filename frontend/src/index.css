@@ -1,1 +1,204 @@
-/* TODO Add site wide styles */
+/* --- Correct Line Height Throughout and Prevent Font Size adjustment after orientation change --- */
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* --- Remove the margin from all pages --- */
+body {
+  margin: 0;
+}
+
+/* --- Main element is consistent ---  */
+main {
+  display: block;
+}
+
+/* --- Correction for font size and margin in h1 elements --- */
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+/* --- Correct box sizing for FF and overflow issues with Edge/IE ---  */
+hr {
+  box-sizing: content-box;
+  height: 0;
+  overflow: visible;
+}
+
+/* --- Correct inheritance/scaling of font size and odd em sizing ---  */
+pre {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+/* --- Remove the gray backgroun of active links in IE --- */
+a {
+  background-color: transparent;
+  /* text-decoration: none; */
+}
+
+/* --- Remove bottom border and correct text decoration in other browsers ---  */
+abbr[title] {
+  border-bottom: none;
+  text-decoration: underline;
+  text-decoration: underline dotted;
+}
+
+/* --- correct font weight in chrome/edge/safari ---  */
+b,
+strong {
+  font-weight: bolder;
+}
+
+/* --- remove border on images ---  */
+img {
+  border-style: none;
+}
+
+/* --- Remove margin/fix line height/font family, size in forms --- */
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+  border: 0;
+  background-color: white;
+
+}
+
+/* --- onhover and focus and active actions --- */
+button:hover,
+button:focus {
+  color: #0053ba;
+}
+
+button:focus {
+  outline: 1px solid #fff;
+  outline-offset: -4px;
+}
+
+button:active {
+  transform: scale(0.99);
+}
+
+
+/* --- Show the overflow in Edge/IE ---  */
+button,
+input {
+  overflow: visible;
+}
+
+--- Remove text-transform inheritance --- button,
+select {
+  /* 1 */
+  text-transform: none;
+}
+
+/* --- fix inability to style clickable types in ios/safari ---  */
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+}
+
+/* --- remove inner border/padding --- */
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+/* --- restore focus styles unset by the previous rule ---  */
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+
+/* --- Fix padding issues in FF ---  */
+fieldset {
+  padding: 0.35em 0.75em 0.625em;
+}
+
+/* --- Correcty text wrapping, color inheritance, and fieldset issues ---  */
+legend {
+  box-sizing: border-box;
+  color: inherit;
+  display: table;
+  max-width: 100%;
+  padding: 0;
+  white-space: normal;
+}
+
+/* --- Fix veritcal alignment ---  */
+progress {
+  vertical-align: baseline;
+}
+
+/* --- remove default scrollbar ---  */
+textarea {
+  overflow: auto;
+}
+
+/* --- Fix box sizing in IE--- */
+[type="checkbox"],
+[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+/* --- correct cursor style of increment and decrement buttons --- */
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/* --- fix appearance ---  */
+[type="search"] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+}
+
+/* --- remove inner padding --- */
+[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/* --- corrects display in edge/ie/ff ---  */
+details {
+  display: block;
+}
+
+/* --- corrects display ---  */
+summary {
+  display: list-item;
+}
+
+/* --- Custom Stuff Test ---  */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.width-third {
+  width: 33.333333%;
+}
+
+.item-padding {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.heavy-text {
+  font-size: 16px;
+  font-weight: 900;
+}

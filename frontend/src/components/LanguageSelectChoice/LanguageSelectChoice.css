@@ -1,8 +1,4 @@
-div {
-  all: unset
-}
-
-.login-container {
+.language-select-container {
   display: flex;
   width: 484px;
   height: 824px;
@@ -12,7 +8,7 @@ div {
   margin: auto;
 }
 
-.login-content {
+.language-select-content {
   position: absolute;
   background-color: white;
   border-color: beige;
