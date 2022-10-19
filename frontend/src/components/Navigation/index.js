@@ -5,6 +5,7 @@ import ProfileButton from './ProfileButton';
 import {LoginFormModal, SignupFormModal, LanguageSelectModal} from '../Modals';
 import './Navigation.css';
 import iconImg from '../../assets/images/favicon.ico'
+import HomePage from '../HomePage'
 
 // {/* <NavLink to="/signup">Sign Up</NavLink> */}
 function Navigation({ isLoaded }){
@@ -42,7 +43,7 @@ function Navigation({ isLoaded }){
     </div>
 
       <div>
-        This is where I will load the main page.
+       <HomePage />
       </div>
     </>
   );

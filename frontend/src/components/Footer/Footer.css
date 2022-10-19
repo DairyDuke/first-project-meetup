@@ -73,3 +73,8 @@
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
 }
+
+.text-gray1 {
+  --tw-text-opacity: 1;
+  color: rgb(246 247 248/var(--tw-text-opacity));
+}
