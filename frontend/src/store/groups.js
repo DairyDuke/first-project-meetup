@@ -1,5 +1,5 @@
-
 import { csrfFetch } from './csrf';
+
 // TYPES
 const GROUPS_GET = 'groups/getGroups';
 const GROUP_GET = 'groups/getGroup';
@@ -23,10 +23,11 @@ const getGroup = (group) => {
 export const grabAllGroups = () => async (dispatch) => {
 
   const response = await csrfFetch('/api/groups');
-
+  if (response.ok) {
   const data = await response.json();
   dispatch(getGroups(data));
-  return response
+  return data
+  } else {console.log("Response was not OK")}
 };
 
 export const grabOneGroup = (groupId) => async dispatch => {
@@ -67,15 +68,21 @@ export const grabOneGroup = (groupId) => async dispatch => {
 
 
 // REDUCER STUFF
-const initialState = grabAllGroups();
+const initialState = {groups: {}};
 
 const groupsReducer = (state = initialState, action) => {
-  const newState = Object.assign({}, state);
+  const newState ={ ...state };
   switch (action.type) {
     case GROUPS_GET:
+      newState.groups = {}
+      action.payload.Groups.forEach(
+        group => {
+          newState.groups[group.id] = group;
+        }
+      )
 
       return newState;
-    case GROUPS_GET:
+    case GROUP_GET:
 
       return newState;
     default:

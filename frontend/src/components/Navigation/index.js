@@ -6,16 +6,21 @@ import {LoginFormModal, SignupFormModal, LanguageSelectModal} from '../Modals';
 import './Navigation.css';
 import iconImg from '../../assets/images/favicon.ico'
 import HomePage from '../HomePage'
+import ShowGroups from '../ShowGroups'
 
 // {/* <NavLink to="/signup">Sign Up</NavLink> */}
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
 
   let sessionLinks;
+  let bodyLinks;
 
   if (sessionUser) {
     sessionLinks = (
       <ProfileButton user={sessionUser} />
+    );
+    bodyLinks = (
+      <ShowGroups />
     );
   } else {
     sessionLinks = (
@@ -24,6 +29,10 @@ function Navigation({ isLoaded }){
         <LoginFormModal />
         <SignupFormModal />
       </>
+    );
+
+    bodyLinks = (
+      <ShowGroups />
     );
   }
 
@@ -43,7 +52,7 @@ function Navigation({ isLoaded }){
     </div>
 
       <div>
-       <HomePage />
+          {isLoaded && bodyLinks}
       </div>
     </>
   );
