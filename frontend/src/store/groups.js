@@ -1,79 +1,136 @@
 import { csrfFetch } from './csrf';
 
-// TYPES
-const GROUPS_GET = 'groups/getGroups';
-const GROUP_GET = 'groups/getGroup';
+// -------------- TYPES --------------- \\
+const GET_ALL_GROUPS = 'groups/getAllGroups';
+const GET_ONE_GROUP = 'groups/getOneGroup';
+const CREATE_GROUP = 'groups/createGroup'
+const DELETE_GROUP = 'groups/deleteGroup'
+const EDIT_GROUP = 'groups/editGroup'
 
-// ACTION CREATORS
-const getGroups = (groups) => {
+// ---------- ACTION CREATORS ----------- \\
+const getAllGroups = (groups) => {
   return {
-    type: GROUPS_GET,
+    type: GET_ALL_GROUPS,
     payload: groups,
   };
 };
 
-const getGroup = (group) => {
+const getOneGroup = (group) => {
   return {
-    type: GROUP_GET,
+    type: GET_ONE_GROUP,
     payload: group
   };
 };
 
-// THUNKS
-export const grabAllGroups = () => async (dispatch) => {
-
-  const response = await csrfFetch('/api/groups');
-  if (response.ok) {
-  const data = await response.json();
-  dispatch(getGroups(data));
-  return data
-  } else {console.log("Response was not OK")}
+const createGroup = (newGroup) => {
+  return {
+    type: CREATE_GROUP,
+    payload: newGroup
+  };
 };
 
+const deleteGroup = (groupId) => {
+  return {
+    type: DELETE_GROUP,
+    payload: groupId
+  };
+};
+
+const editGroup = (groupId) => {
+  return {
+    type: EDIT_GROUP,
+    payload: groupId
+  };
+};
+
+// -------------- THUNKS --------------- \\
+
+//GET /api/groups/current -- line 141 backend/routes/api/groups.js
+/// TODO make a thunk for current user groups.
+
+//GET /api/groups -- line 590 backend/routes/api/groups.js
+export const grabAllGroups = () => async (dispatch) => {
+  const response = await csrfFetch('/api/groups');
+  const data = await response.json();
+  dispatch(getAllGroups(data));
+  return response
+};
+
+//GET /api/groups/:groupId/members -- line 373 backend/routes/api/groups.js
+//TODO get all members thunk
+
+//GET /api/groups/:groupId -- line 184 backend/routes/api/groups.js
+// Details page thunk
 export const grabOneGroup = (groupId) => async dispatch => {
   const response = await csrfFetch(`/api/groups/${groupId}`);
   const data = await response.json();
-  dispatch(getGroup(data));
+  dispatch(getOneGroup(data));
   return response;
 };
 
-// // Signup
-// export const signup = (user) => async (dispatch) => {
-//   const { firstName, lastName, username, email, password } = user;
-//   const response = await csrfFetch("/api/users", {
-//     method: "POST",
-//     body: JSON.stringify({
-//       firstName,
-//       lastName,
-//       username,
-//       email,
-//       password,
-//     }),
-//   });
-//   const data = await response.json();
-//   dispatch(setUser(data.user));
-//   return response;
-// };
+//POST /api/groups -- line 631 backend/routes/api/groups.js
+export const createGroupThunk = (newGroup) => async (dispatch) => {
+  const { name, about, type, private, city, state } = newGroup;
+  const response = await csrfFetch("/api/groups", {
+    method: "POST",
+    body: JSON.stringify({
+      name,
+      about,
+      type,
+      private,
+      city,
+      state
+    }),
+  });
+  const data = await response.json();
+  dispatch(createGroup(data));
+  return response;
+};
+
+//DELEETE /api/groups/:groupId -- line 250 backend/routes/api/groups.js
+export const deleteGroupThunk = (groupId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/groups/${groupId}`, {
+    method: 'DELETE',
+  });
+
+  dispatch(deleteGroup());
+
+  return response;
+};
+
+//PUT /api/groups/:groupId -- line 555 backend/routes/api/groups.js
+export const editGroupThunk = (groupId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/groups/${groupId}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      name,
+      about,
+      type,
+      private,
+      city,
+      state
+    }),
+  });
+
+  const data = await response.json();
+  dispatch(editGroup(data));
+  return response;
+};
 
 
-// // Logout
-// export const logout = () => async (dispatch) => {
-//   const response = await csrfFetch('/api/session', {
-//     method: 'DELETE',
-//   });
-//   dispatch(removeUser());
-//   return response;
-// };
+// -------------- REDUCER STUFF --------------- \\
 
-
-
-// REDUCER STUFF
+// --- NORMALIZE DATA SPACE --- \\
 const initialState = {groups: {}};
 
+// -- REDUCER -- \\
 const groupsReducer = (state = initialState, action) => {
+  //shallow copy of current STATE
   const newState ={ ...state };
+
   switch (action.type) {
-    case GROUPS_GET:
+
+    case GET_ALL_GROUPS:
       newState.groups = {}
       action.payload.Groups.forEach(
         group => {
@@ -82,9 +139,24 @@ const groupsReducer = (state = initialState, action) => {
       )
 
       return newState;
-    case GROUP_GET:
 
+    case GET_ONE_GROUP:
+      newState.groups[action.payload.id] = action.payload
       return newState;
+
+
+    // case CREATE_GROUP:
+
+    //   return newState
+
+    case DELETE_GROUP:
+        delete newState.groups[action.payload.id]
+       return newState
+
+    case EDIT_GROUP:
+        newState.groups[action.payload.groupId] = action.payload
+       return newState
+
     default:
       return state;
   }
