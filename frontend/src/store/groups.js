@@ -154,7 +154,7 @@ const groupsReducer = (state = initialState, action) => {
        return newState
 
     case EDIT_GROUP:
-        newState.groups[action.payload.groupId] = action.payload
+        newState.groups[action.payload.id] = action.payload
        return newState
 
     default:

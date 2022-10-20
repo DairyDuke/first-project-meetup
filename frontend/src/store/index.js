@@ -4,11 +4,13 @@ import thunk from 'redux-thunk';
 // Reducer Imports
 import sessionReducer from './session';
 import groupsReducer from './groups';
+import eventsReducer from './events'
 
 // Reducers Combined
 const rootReducer = combineReducers({
   session: sessionReducer,
   groups: groupsReducer
+  events: eventsReducer
 });
 
 // Enhancer -- Production will only use middleware
