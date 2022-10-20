@@ -9,7 +9,7 @@ import eventsReducer from './events'
 // Reducers Combined
 const rootReducer = combineReducers({
   session: sessionReducer,
-  groups: groupsReducer
+  groups: groupsReducer,
   events: eventsReducer
 });
 

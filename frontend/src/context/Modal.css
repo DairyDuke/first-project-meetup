@@ -24,3 +24,17 @@
   border-radius: 0.5rem;
   padding: 2.5rem;
 } */
+
+/*
+@media screen and (400px <=width <=700px) {
+  .modal {
+    padding-top: 25%;
+    top: 75%;
+  }
+} */
+
+@media screen and (max-height: 750px) {
+  #modal {
+    top: 50%;
+  }
+}

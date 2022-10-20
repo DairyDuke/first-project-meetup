@@ -7,6 +7,7 @@ import './Navigation.css';
 import iconImg from '../../assets/images/favicon.ico'
 import HomePage from '../HomePage'
 import ShowGroups from '../ShowGroups'
+import ShowEvents from '../ShowEvents'
 
 // {/* <NavLink to="/signup">Sign Up</NavLink> */}
 function Navigation({ isLoaded }){
@@ -20,7 +21,10 @@ function Navigation({ isLoaded }){
       <ProfileButton user={sessionUser} />
     );
     bodyLinks = (
+      <>
       <ShowGroups />
+      <ShowEvents />
+      </>
     );
   } else {
     sessionLinks = (
@@ -32,7 +36,10 @@ function Navigation({ isLoaded }){
     );
 
     bodyLinks = (
+      <>
       <ShowGroups />
+      <ShowEvents />
+      </>
     );
   }
 

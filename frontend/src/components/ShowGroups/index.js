@@ -15,6 +15,8 @@ const ShowGroups = ()=> {
     dispatch(groupActions.grabAllGroups())
   },[dispatch])
 
+
+  //about, city, createdAt, id, name, numMembers, organizerId, previewImage, private, state, type, updatedAt
   return(
     <div>
       {groups.map(group =>(

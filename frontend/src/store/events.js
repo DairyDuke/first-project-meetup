@@ -69,8 +69,8 @@ export const grabOneEvent = (eventId) => async dispatch => {
 };
 
 //POST /api/groups/:groupId/events -- line 631 backend/routes/api/groups.js
-export const createGroupThunk = (groupId, newEvent) => async (dispatch) => {
-  const { name, about, type, private, city, state } = newEvent;
+export const createGroupThunk = (newEvent, groupId) => async (dispatch) => {
+  const { venueId, name, type, capacity, price, description, startDate, endDate } = newEvent;
   const response = await csrfFetch(`/api/groups/${groupId}/events`, {
     method: "POST",
     body: JSON.stringify({
@@ -101,7 +101,8 @@ export const deleteEventThunk = (eventId) => async (dispatch) => {
 };
 
 //PUT /api/events/:eventId -- line 257 backend/routes/api/events.js
-export const editEventThunk = (eventId) => async (dispatch) => {
+export const editEventThunk = (newEvent, eventId) => async (dispatch) => {
+  const {  venueId, name, type, capacity, price, description, startDate, endDate } = newEvent;
   const response = await csrfFetch(`/api/events/${eventId}`, {
     method: 'PUT',
     body: JSON.stringify({

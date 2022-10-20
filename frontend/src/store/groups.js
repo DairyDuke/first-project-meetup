@@ -70,14 +70,14 @@ export const grabOneGroup = (groupId) => async dispatch => {
 
 //POST /api/groups -- line 631 backend/routes/api/groups.js
 export const createGroupThunk = (newGroup) => async (dispatch) => {
-  const { name, about, type, private, city, state } = newGroup;
+  const { name, about, type, city, state } = newGroup;
   const response = await csrfFetch("/api/groups", {
     method: "POST",
     body: JSON.stringify({
       name,
       about,
       type,
-      private,
+      private: newGroup.private,
       city,
       state
     }),
@@ -99,14 +99,15 @@ export const deleteGroupThunk = (groupId) => async (dispatch) => {
 };
 
 //PUT /api/groups/:groupId -- line 555 backend/routes/api/groups.js
-export const editGroupThunk = (groupId) => async (dispatch) => {
+export const editGroupThunk = (newGroup, groupId) => async (dispatch) => {
+  const { name, about, type, city, state } = newGroup;
   const response = await csrfFetch(`/api/groups/${groupId}`, {
     method: 'PUT',
     body: JSON.stringify({
       name,
       about,
       type,
-      private,
+      private: newGroup.private,
       city,
       state
     }),
