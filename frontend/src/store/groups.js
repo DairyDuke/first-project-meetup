@@ -69,15 +69,14 @@ export const grabOneGroup = (groupId) => async dispatch => {
 };
 
 //POST /api/groups -- line 631 backend/routes/api/groups.js
-export const createGroupThunk = (newGroup) => async (dispatch) => {
-  const { name, about, type, city, state } = newGroup;
+export const createGroupThunk = ({ name, about, type, visibility, city, state }) => async (dispatch) => {
   const response = await csrfFetch("/api/groups", {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify({
       name,
       about,
       type,
-      private: newGroup.private,
+      private: visibility,
       city,
       state
     }),

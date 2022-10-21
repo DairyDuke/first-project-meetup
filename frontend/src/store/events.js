@@ -69,7 +69,7 @@ export const grabOneEvent = (eventId) => async dispatch => {
 };
 
 //POST /api/groups/:groupId/events -- line 631 backend/routes/api/groups.js
-export const createGroupThunk = (newEvent, groupId) => async (dispatch) => {
+export const createEventThunk = (newEvent, groupId) => async (dispatch) => {
   const { venueId, name, type, capacity, price, description, startDate, endDate } = newEvent;
   const response = await csrfFetch(`/api/groups/${groupId}/events`, {
     method: "POST",

@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import './FindPage.css'
-import ShowGroups from '../ShowGroups'
-import ShowEvents from '../ShowEvents'
-import Navigation from "../Navigation";
+import './FindPage.css';
+import ShowGroups from '../ShowGroups';
+import ShowEvents from '../ShowEvents';
+import Navigation from '../Navigation';
+import CreateGroupForm from '../CreateGroup';
+import CreateEventForm from '../CreateEvent';
 
 const FindPage = ({ isLoaded })=>{
+  const [current, setCurrent] = useState(true)
 
   return(
     <>
@@ -16,15 +19,23 @@ const FindPage = ({ isLoaded })=>{
         <div className="find-page-main-container">
           <div className="find-page-selection">
             <div className="find-page-toggle">
-              <span className="find-page-selectors">Groups</span>
-              <span className="find-page-selectors">Events</span>
+              <button className="find-page-selectors"
+              onClick={()=>setCurrent(true)}
+              >Groups</button>
+              <button className="find-page-selectors"
+              onClick={()=>setCurrent(false)}
+              >Events</button>
+            </div>
+            <div>
+
+            {/* {current ? <CreateGroupForm /> : <CreateEventForm />} */}
             </div>
           </div>
 
           <div className="find-page-display-content-space-container">
             <div className="find-page-display-actual-content">
             <div>
-              <ShowGroups />
+              {current ? <ShowGroups /> : <ShowEvents />}
             </div>
             </div>
           </div>
