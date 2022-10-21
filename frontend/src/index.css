@@ -191,6 +191,7 @@ summary {
 
 .width-third {
   width: 33.333333%;
+  margin-bottom: 12px;
 }
 
 .item-padding {

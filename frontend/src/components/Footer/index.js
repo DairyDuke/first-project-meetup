@@ -1,72 +1,72 @@
 import React, { useState } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory, Redirect, NavLink } from 'react-router-dom';
 import './Footer.css';
 
 const Footer = () => {
 
   return (
-    <div className="footer-container">
-      <div className="footer-content">
-      <div className="create-button">
-        <span className="heavy-text"> Create your own Groupup group. </span>
-        <button
-          className="get-started-button"
-          onClick={()=> alert("This is an alert")}
-          >Get Started   </button>
-      </div>
-      <br />
-
+  <div className="footer-container">
+    <div className="footer-content">
+        <div className="create-button-box">
+          <span className="footer-heavy-text"> Create your own Groupup group. </span>
+            <NavLink to="" className="get-started-button"
+              onClick={()=> alert("This is an alert")}>Get Started</NavLink>
+        </div>
+        <br />
+        <br />
       <span className="bottom-menu">
         <div className="width-third">
-          <span className="heavy-text">Your Account</span>
-        <ul className="item-padding">
-          <li className="item-padding">Sign up</li>
-          <li className="item-padding">Log in</li>
-          <li className="item-padding">Help</li>
-          <li className="item-padding">Become an Affilliate</li>
-        </ul>
+          <span className="footer-heavy-text">Your Account</span>
+            <ul className="footer-item-padding">
+              <li className="footer-item-padding"><NavLink to="/signup" className="footer-menu-links">Sign up</NavLink>
+              </li>
+              <li className="footer-item-padding">
+              <NavLink to="/login" className="footer-menu-links">Log in</NavLink></li>
+          {/* <li className="footer-item-padding">Help</li>
+          <li className="footer-item-padding">Become an Affilliate</li> */}
+            </ul>
         </div>
         <div className="width-third">
-          <span className="heavy-text">Discover</span>
-        <ul className="item-padding">
-          <li className="item-padding">Groups</li>
-          <li className="item-padding">Calendar</li>
-          <li className="item-padding">Topics</li>
-          <li className="item-padding">Cities</li>
-          <li className="item-padding">Online Events</li>
-          <li className="item-padding">Local Guides</li>
-        </ul>
+          <span className="footer-heavy-text">Discover</span>
+            <ul className="footer-item-padding">
+              <li className="footer-item-padding"><NavLink to="" className="footer-menu-links">Groups</NavLink></li>
+          {/* <li className="footer-item-padding">Calendar</li>
+          <li className="footer-item-padding">Topics</li>
+          <li className="footer-item-padding">Cities</li> */}
+              <li className="footer-item-padding"><NavLink to="" className="footer-menu-links">Online Events</NavLink></li>
+          {/* <li className="footer-item-padding">Local Guides</li> */}
+            </ul>
         </div>
         <div className="width-third">
-          <span className="heavy-text">Groupup</span>
-        <ul className="item-padding">
-          <li className="item-padding">About</li>
-          <li className="item-padding">Blog</li>
-          <li className="item-padding">Groupup Pro</li>
-          <li className="item-padding">Careers</li>
-          <li className="item-padding">Apps</li>
-          <li className="item-padding">Podcast</li>
-        </ul>
+          <span className="footer-heavy-text">Groupup</span>
+            <ul className="footer-item-padding">
+              <li className="footer-item-padding"><NavLink to="" className="footer-menu-links">About</NavLink></li>
+          {/* <li className="footer-item-padding">Blog</li>
+          <li className="footer-item-padding">Groupup Pro</li>
+          <li className="footer-item-padding">Careers</li>
+          <li className="footer-item-padding">Apps</li>
+          <li className="footer-item-padding">Podcast</li> */}
+            </ul>
         </div>
       </span>
-        <div>SPACER</div>
-          <div className="bottom-menu">
-            <span className="heavy-text">Follow us</span>
+        <br />
+        <br />
+          {/* <div className="bottom-menu">
+            <span className="footer-heavy-text">Follow us</span>
             <span> multiple icons here </span>
             <span> get it on links </span>
-          </div>
-          <div className="footer-menu-link">
-            <span className="heavy-text">@ 2022 Groupup</span>
-             <div>Terms of Service</div>
+          </div>*/}
+        <div className="footer-menu-copyright">
+          <span>@ 2022 Groupup</span>
+             {/* <div>Terms of Service</div>
              <div>Privacy Policy</div>
              <div>Cookie Policy</div>
-             <div>Help</div>
-
-          </div>
+             <div>Help</div> */}
         </div>
     </div>
+  </div>
   )
 }
 

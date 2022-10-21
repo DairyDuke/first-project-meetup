@@ -7,6 +7,7 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import iconImg from './assets/images/favicon.ico'
+import FindPage from './components/FindPage'
 
 function App() {
   const dispatch = useDispatch();
@@ -26,6 +27,9 @@ function App() {
           <Route path="/login">
             <NavLink exact to="/"><img src={iconImg} alt="G logo" /></NavLink>
             <LoginFormPage />
+          </Route>
+          <Route path="/find">
+            <FindPage isLoaded={isLoaded} />
           </Route>
           <Route>
             <Navigation isLoaded={isLoaded} />

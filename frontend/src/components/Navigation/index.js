@@ -8,6 +8,7 @@ import iconImg from '../../assets/images/favicon.ico'
 import HomePage from '../HomePage'
 import ShowGroups from '../ShowGroups'
 import ShowEvents from '../ShowEvents'
+import FindPage from '../FindPage'
 
 // {/* <NavLink to="/signup">Sign Up</NavLink> */}
 function Navigation({ isLoaded }){
@@ -20,25 +21,12 @@ function Navigation({ isLoaded }){
     sessionLinks = (
       <ProfileButton user={sessionUser} />
     );
-    bodyLinks = (
-      <>
-      <ShowGroups />
-      <ShowEvents />
-      </>
-    );
   } else {
     sessionLinks = (
       <>
         <LanguageSelectModal />
         <LoginFormModal />
         <SignupFormModal />
-      </>
-    );
-
-    bodyLinks = (
-      <>
-      <ShowGroups />
-      <ShowEvents />
       </>
     );
   }
@@ -57,10 +45,6 @@ function Navigation({ isLoaded }){
       </ul>
       </div>
     </div>
-
-      <div>
-          {isLoaded && bodyLinks}
-      </div>
     </>
   );
 }
