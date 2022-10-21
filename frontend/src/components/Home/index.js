@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 import './Home.css'
+import FindPage from '../FindPage'
 
 const Home = ()=>{
 
@@ -16,7 +17,7 @@ const Home = ()=>{
           Calendar/Left column
         </div>
         <div>
-            <div> Events Navbar </div>
+            <div> <FindPage /> </div>
         </div>
       </div>
     </>

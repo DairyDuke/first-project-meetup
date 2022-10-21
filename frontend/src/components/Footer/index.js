@@ -6,7 +6,7 @@ import './Footer.css';
 
 const Footer = () => {
   const location = useLocation()
-  console.log("History "+location)
+  // console.log("History "+location)
   const sessionUser = useSelector(state => state.session.user)
   const dispatch = useDispatch()
   const logout = () => {

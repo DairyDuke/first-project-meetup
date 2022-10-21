@@ -5,7 +5,7 @@
 <!-- ![Database Schema Design image](./backend/assets/databaseSchemaDraft.png "Database Schema") -->
 ![meetup-dbdiagram]
 
-[meetup-dbdiagram]: ./backend/assets/databaseSchemaDraft.png
+[meetup-dbdiagram]: ./assets/databaseSchemaDraft.png
 
 ## API Documentation
 
