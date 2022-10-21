@@ -8,6 +8,8 @@ import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import iconImg from './assets/images/favicon.ico'
 import FindPage from './components/FindPage'
+import CreateGroupForm from './components/CreateGroup'
+import CreateEventForm from './components/CreateEvent'
 
 import Home from './components/Home'
 
@@ -35,6 +37,14 @@ function App() {
           </Route>
           <Route path="/find">
             <FindPage isLoaded={isLoaded} />
+          </Route>
+          <Route path="/new-group">
+            <Navigation isLoaded={isLoaded} />
+            <CreateGroupForm isLoaded={isLoaded} />
+          </Route>
+          <Route path="/new-event">
+            <Navigation isLoaded={isLoaded} />
+            <CreateEventForm isLoaded={isLoaded} />
           </Route>
           <Route>
             <Navigation isLoaded={isLoaded} />

@@ -28,7 +28,7 @@ const FindPage = ({ isLoaded })=>{
             </div>
             <div>
 
-            {/* {current ? <CreateGroupForm /> : <CreateEventForm />} */}
+            {current ? <NavLink to="/new-group">Why not create a new Group?</NavLink> : <NavLink to="new-event">Let's create a new Event!</NavLink>}
             </div>
           </div>
 

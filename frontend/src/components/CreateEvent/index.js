@@ -7,12 +7,14 @@ import * as eventActions from "../../store/events";
 function CreateEventForm() {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
+  // const [name, setName] = useState("");
   const [name, setName] = useState("");
-  const [about, setAbout] = useState("");
+  const [description, setDescription] = useState("");
   const [type, setType] = useState("");
-  const [visibility, setVisibility] = useState(false);
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
+  const [capacity, setCapacity] = useState(0);
+  const [price, setPrice] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [errors, setErrors] = useState([]);
   const history = useHistory()
 
@@ -21,7 +23,7 @@ function CreateEventForm() {
     e.preventDefault();
     // if (password === confirmPassword) {
       setErrors([]);
-      return dispatch(eventActions.createEventThunk({ name, about, type, visibility, city, state }))
+      return dispatch(eventActions.createEventThunk({ name, description, type, capacity, price, startDate, endDate }))
       .then(()=>{
         history.push(`/find`)
       })
@@ -40,30 +42,31 @@ function CreateEventForm() {
     <span className="signup-content">
     <form onSubmit={handleSubmit} className="signup-form-box">
     <div>
-      <h1 className="font-title">Let's setup your Group!</h1>
+      <h1 className="font-title">Let's setup your Event!</h1>
     </div>
       <ul>
         {/* {errors?.map((error, idx) => <li key={idx}>{error}</li>)} */}
       </ul>
       <label>
-        Location
+        Start date:
         <input className="signup-input-box"
-          type="text"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
+          type="date"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
           required
         />
+        End date:
         <input className="signup-input-box"
-          type="text"
-          value={state}
-          onChange={(e) => setState(e.target.value)}
+          type="date"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
           required
         />
-        <div>{errors.city ? errors.city : null} </div>
-        <div>{errors.state ? errors.state : null} </div>
+        <div>{errors.startDate ? errors.startDate : null} </div>
+        <div>{errors.endDate ? errors.endDate : null} </div>
       </label>
       <label>
-        Group name
+        Event name
         <input className="signup-input-box"
           type="text"
           value={name}
@@ -73,38 +76,54 @@ function CreateEventForm() {
         <div>{errors.name ? errors.name : null} </div>
       </label>
       <label>
-        Tell us about your Group
+        Give your Event a description
         <input className="signup-input-box"
           type="text"
-          value={about}
-          onChange={(e) => setAbout(e.target.value)}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
           required
         />
-        <div>{errors.about ? errors.about : null} </div>
+        <div>{errors.description ? errors.description : null} </div>
+      </label>
+
+      <label>
+        What will your event cost?
+        <input className="signup-input-box"
+          type="number"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          required
+        />
+        <div>{errors.price ? errors.price : null} </div>
+      </label>
+
+      <label>
+        What is the capacity?
+        <input className="signup-input-box"
+          type="number"
+          value={capacity}
+          onChange={(e) => setCapacity(e.target.value)}
+          required
+        />
+        <div>{errors.capacity ? errors.capacity : null} </div>
       </label>
       <label>
-        Is it Online or In-Person?
-        <input className="signup-input-box"
+        How will your Event meet?
+        <input
           type="radio"
           value="online"
+          name="type"
           onChange={(e) => setType(e.target.value)}
-        >Online</input>
-               <input className="signup-input-box"
+        />Online
+        <input
           type="radio"
           value="in-person"
           onChange={(e) => setType(e.target.value)}
-        >In-person</input>
+          name="type"
+          />In-Person
         <div>{errors.type ? errors.type : null} </div>
       </label>
-      <label>
-        Private?
-        <input className="signup-input-box"
-          type="checkbox"
-          value="true"
-          onChange={(e) => setVisibility(e.target.value)}
-        />
-        <div>{errors.private ? errors.private : null} </div>
-      </label>
+
       <button type="submit" className="signup-form-button">Sign Up</button>
     </form>
     </span>

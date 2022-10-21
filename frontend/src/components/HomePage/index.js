@@ -29,17 +29,19 @@ const HomePage = ()=> {
 
         <div className="option-card" >
           <img src={(laptopSmile)} alt={(laptopSmile)} className="image-resizing"/>
-          <button className="option-card-button" >Make new friends -></button>
+          <button className="option-card-button" >
+            <NavLink to="/find">Make new friends -></NavLink></button>
         </div>
 
         <div className="option-card" >
           <img src={(pencilGroup)} alt={(hiking)} className="image-resizing"/>
-          <button className="option-card-button">Explore the outdoors -></button>
+          <button className="option-card-button">
+          <NavLink to="/find">Explore the outdoors -></NavLink></button>
         </div>
 
         <div className="option-card" >
           <img src={(chatting)} alt={(chatting)} className="image-resizing"/>
-          <button className="option-card-button">Connect over tect -></button>
+          <button className="option-card-button"><NavLink to="/find">Connect over tect -></NavLink></button>
           </div>
       </div>
         <span>"How Groupup Works"</span>
