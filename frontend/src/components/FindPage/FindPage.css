@@ -10,7 +10,7 @@
 .find-page-container {
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: center;
   justify-content: center;
   flex-grow: 1;
   background-color: white;
@@ -33,9 +33,9 @@
   background-color: white;
   position: sticky;
   height: 63px;
-  z-index: 999;
-  top: 70px;
-  padding-top: 12px;
+  z-index: 5;
+  top: 64px;
+  /* padding-top: 12px; */
   padding-bottom: 6px;
   margin-bottom: 16px;
   border-bottom: 1px solid gray;
@@ -80,13 +80,13 @@
 
 }
 
-/* @media screen and (min-width: 1024px) {
+@media screen and (max-width: 900px) {
   .find-page-container {
-    align-items: center;
+    align-items: flex-start;
   }
 
   .find-page-display-content-space-container {
-    align-items: center;
-  }
+    align-items: flex-start;
 
-} */
+  }
+}

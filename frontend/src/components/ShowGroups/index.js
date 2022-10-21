@@ -33,7 +33,7 @@ const ShowGroups = ()=> {
               <p>{group.about}</p>
             </div>
             <div>
-              <span>{group.numMembers}</span>
+              <span>Total Members:{group.numMembers}</span>
               <img/>
             </div>
           </div>

@@ -10,7 +10,7 @@ function CreateGroupForm() {
   const [name, setName] = useState("");
   const [about, setAbout] = useState("");
   const [type, setType] = useState("in-person");
-  const [visibility, setVisibility] = useState(false);
+  const [visibility, setVisibility] = useState("false");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [errors, setErrors] = useState([]);
@@ -89,33 +89,39 @@ function CreateGroupForm() {
         <input
           type="radio"
           value="online"
-          name="type"
+          // name="type"
           onChange={(e) => setType(e.target.value)}
+          checked={type=="online"}
         />Online
         <input
           type="radio"
           value="in-person"
           onChange={(e) => setType(e.target.value)}
-          name="type"
+          // name="type"
+          checked={type=="in-person"}
           />In-Person
         <div>{errors.type ? errors.type : null} </div>
       </label>
+      {/* <div> */}
       <label>
         Do you want your group to be private?
       <input
           type="radio"
           value="true"
-          name="type"
+          // name="visibility"
           onChange={(e) => setVisibility(e.target.value)}
+          checked={visibility=="true"}
         />Yes
         <input
           type="radio"
           value="false"
           onChange={(e) => setVisibility(e.target.value)}
-          name="type"
+          // name="visibility"
+          checked={visibility=="false"}
           />No
         <div>{errors.private ? errors.private : null} </div>
       </label>
+      {/* </div> */}
       <button type="submit" className="signup-form-button">Sign Up</button>
     </form>
     </span>

@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
-import {LoginFormModal, SignupFormModal, LanguageSelectModal} from '../Modals';
+import ModalFunctions from '../Modals';
 import './Navigation.css';
 import iconImg from '../../assets/images/favicon.ico'
 import HomePage from '../HomePage'
@@ -15,7 +15,6 @@ function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
 
   let sessionLinks;
-  let bodyLinks;
 
   if (sessionUser) {
     sessionLinks = (
@@ -24,9 +23,7 @@ function Navigation({ isLoaded }){
   } else {
     sessionLinks = (
       <>
-        <LanguageSelectModal />
-        <LoginFormModal />
-        <SignupFormModal />
+        <ModalFunctions />
       </>
     );
   }
