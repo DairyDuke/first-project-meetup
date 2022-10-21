@@ -10,13 +10,8 @@ const FindPage = ({ isLoaded })=>{
 
   return(
     <>
-    <div className="find-page-spacer">
+      <Navigation isLoaded={isLoaded} />
 
-    <Navigation isLoaded={isLoaded} />
-    <br />
-    <span>                             </span>
-
-    </div>
       <div className="find-page-container">
         <div className="find-page-main-container">
           <div className="find-page-selection">
@@ -27,8 +22,10 @@ const FindPage = ({ isLoaded })=>{
           </div>
 
           <div className="find-page-display-content-space-container">
+            <div className="find-page-display-actual-content">
             <div>
               <ShowGroups />
+            </div>
             </div>
           </div>
 

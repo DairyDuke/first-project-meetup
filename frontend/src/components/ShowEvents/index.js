@@ -21,10 +21,24 @@ const ShowEvents = ()=> {
   return(
     <div>
       {events.map(event =>(
-        <div>
-          <div><img src={`${event.previewImage}`} alt={event.name}/> </div>
-          <div>Details </div>
+        <div className="show-main-container">
+        <div className="show-image-container">
+          <img src={`${event.previewImage}`} alt={event.name}/>
         </div>
+        <div className="show-details-container">
+          <span>{event.name}</span>
+          <div>
+            <span>{event.city},{event.state}</span>
+          </div>
+          <div>
+            <p>{event.about}</p>
+          </div>
+          <div>
+            <span>{event.numMembers}</span>
+            <img/>
+          </div>
+        </div>
+      </div>
       ))}
     </div>
   )

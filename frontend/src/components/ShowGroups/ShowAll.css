@@ -1,0 +1,15 @@
+.show-main-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.show-image-container {
+  width: 33%;
+}
+
+.show-details-container {
+  width: 66%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}

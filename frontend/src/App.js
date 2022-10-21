@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch, NavLink } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
@@ -9,8 +9,13 @@ import Footer from "./components/Footer";
 import iconImg from './assets/images/favicon.ico'
 import FindPage from './components/FindPage'
 
+import Home from './components/Home'
+
+import HomePage from './components/HomePage'
+
 function App() {
   const dispatch = useDispatch();
+  const sessionUser = useSelector(state => state.session.user);
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
@@ -33,6 +38,7 @@ function App() {
           </Route>
           <Route>
             <Navigation isLoaded={isLoaded} />
+            {sessionUser ? <Home/> : <HomePage/>}
           </Route>
         </Switch>
       )}

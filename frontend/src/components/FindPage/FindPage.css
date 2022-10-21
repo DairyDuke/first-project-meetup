@@ -1,16 +1,20 @@
 .find-page-spacer {
-  border: 0px solid gray;
   box-sizing: border-box;
   width: 100%;
-  padding-top: 5px;
+  background-color: white;
+  position: fixed;
+  top: 0;
 }
 
 /* Overall body of the page container */
 .find-page-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
+  justify-content: center;
   flex-grow: 1;
+  background-color: white;
+  border-bottom: 1px solid gray;
 }
 
 /* Center content container */
@@ -22,13 +26,19 @@
 
 /* Top portion that houses the Events/Groups Links */
 .find-page-selection {
-  /* display: flex; */
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: white;
   position: sticky;
-  z-index: 10;
-  top: 100px;
+  height: 63px;
+  z-index: 999;
+  top: 70px;
   padding-top: 12px;
   padding-bottom: 6px;
-  height: 180px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid gray;
 }
 
 /* Div for the links themselves */
@@ -52,9 +62,31 @@
 }
 
 .find-page-display-content-space-container {
+
+
+  overflow: hidden;
   display: flex;
-  overflow: auto;
+  box-sizing: border-box;
+  align-items: left;
   justify-content: left;
   flex-direction: column;
-  align-items: center;
+  margin-top: 20px;
 }
+
+.find-page-display-actual-content {
+  display: block;
+  z-index: 20;
+  background-color: white;
+
+}
+
+/* @media screen and (min-width: 1024px) {
+  .find-page-container {
+    align-items: center;
+  }
+
+  .find-page-display-content-space-container {
+    align-items: center;
+  }
+
+} */

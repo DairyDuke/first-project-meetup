@@ -18,11 +18,25 @@ const ShowGroups = ()=> {
 
   //about, city, createdAt, id, name, numMembers, organizerId, previewImage, private, state, type, updatedAt
   return(
-    <div>
+    <div >
       {groups.map(group =>(
-        <div>
-          <div><img src={`${group.previewImage}`} alt={group.name}/> </div>
-          <div>Details </div>
+        <div className="show-main-container">
+          <div className="show-image-container">
+            <img src={`${group.previewImage}`} alt={group.name}/>
+          </div>
+          <div className="show-details-container">
+            <span>{group.name}</span>
+            <div>
+              <span>{group.city},{group.state}</span>
+            </div>
+            <div>
+              <p>{group.about}</p>
+            </div>
+            <div>
+              <span>{group.numMembers}</span>
+              <img/>
+            </div>
+          </div>
         </div>
       ))}
     </div>
