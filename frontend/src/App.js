@@ -38,13 +38,13 @@ function App() {
     e.preventDefault()
      history.push("/")
   }
+
   return (
     <>
       {isLoaded && (
         <Switch>
 
           <Route exact path="/">
-            <Navigation isLoaded={isLoaded} />
             {sessionUser ? <Home/> : <HomePage/>}
           </Route>
 

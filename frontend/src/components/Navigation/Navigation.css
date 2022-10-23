@@ -5,15 +5,16 @@ ul {
 }
 
 button {
+  background-color: transparent;
   clear: all;
   margin-left: 20px;
 }
 
 .navigation-container {
-  background-color: white;
+  background-color: transparent;
   display: flex;
   min-height: 64px;
-  position: sticky;
+  position: relative;
   top: 0;
   z-index: 50;
   flex-flow: row nowrap;

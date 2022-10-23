@@ -3,7 +3,14 @@
   flex-flow: column nowrap;
   max-width: 1120px;
   margin: auto;
+
+  z-index: 10;
 }
+
+.homepage-h1 {
+  font-size: 3rem;
+}
+
 
 .image-resizing {
   width: 360px;
@@ -45,6 +52,42 @@
   color: #008294;
   font-weight: 900;
   font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+
+.blob-red {
+  position: absolute;
+  z-index: -4;
+  left: 2%;
+  top: 75%;
+  vertical-align: middle;
+  max-width: 100%;
+  fill-opacity: 0.01;
+  transform: unset;
+  visibility: inherit;
+  overflow: hidden;
+
+}
+
+.blob-yellow {
+  z-index: -3;
+  position: absolute;
+  max-width: 75%;
+  left: 15%;
+  top: 15%;
+  transform: unset;
+
+}
+
+.blob-green {
+  z-index: -2;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: unset;
+  transform: unset;
 }
 
 .option-card-navigation {
@@ -60,4 +103,14 @@
   color: #008294;
   font-weight: 900;
   font-size: 16px;
+}
+
+.homepage-center-information {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  max-width: 50%;
+  margin: auto;
+
 }
