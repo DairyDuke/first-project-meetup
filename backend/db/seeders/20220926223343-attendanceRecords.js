@@ -97,13 +97,6 @@ module.exports = {
         eventId: 5,
         userId: 3,
         status: "host"
-      },
-
-      //Event 6
-      {
-        eventId: 6,
-        userId: 5,
-        status: "host"
       }
     ]
     return queryInterface.bulkInsert('Attendances', bulkData, {});

@@ -3,9 +3,10 @@ import { csrfFetch } from './csrf';
 // -------------- TYPES --------------- \\
 const GET_ALL_GROUPS = 'groups/getAllGroups';
 const GET_ONE_GROUP = 'groups/getOneGroup';
-const CREATE_GROUP = 'groups/createGroup'
-const DELETE_GROUP = 'groups/deleteGroup'
-const EDIT_GROUP = 'groups/editGroup'
+const REMOVE_SINGLE_GROUP = 'groups/removeSingleGroup';
+const CREATE_GROUP = 'groups/createGroup';
+const DELETE_GROUP = 'groups/deleteGroup';
+const EDIT_GROUP = 'groups/editGroup';
 
 // ---------- ACTION CREATORS ----------- \\
 const getAllGroups = (groups) => {
@@ -19,6 +20,11 @@ const getOneGroup = (group) => {
   return {
     type: GET_ONE_GROUP,
     payload: group
+  };
+};
+const removeSingleGroup = () => {
+  return {
+    type: REMOVE_SINGLE_GROUP
   };
 };
 
@@ -67,6 +73,11 @@ export const grabOneGroup = (groupId) => async dispatch => {
   dispatch(getOneGroup(data));
   return response;
 };
+
+export const removeSingleGroupThunk = ()=> async dispatch =>{
+  dispatch(removeSingleGroup());
+  return
+}
 
 //POST /api/groups -- line 631 backend/routes/api/groups.js
 export const createGroupThunk = ({ name, about, type, visibility, city, state }) => async (dispatch) => {
@@ -141,9 +152,12 @@ const groupsReducer = (state = initialState, action) => {
       return newState;
 
     case GET_ONE_GROUP:
-      newState.groups[action.payload.id] = action.payload
+      newState["singleGroup"] = action.payload
       return newState;
 
+    case REMOVE_SINGLE_GROUP:
+      newState["singleGroup"] = {}
+      return newState
 
     // case CREATE_GROUP:
 

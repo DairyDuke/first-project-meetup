@@ -9,51 +9,51 @@ module.exports = {
       //Group 1 has 2 images
       {
         groupId: 1,
-        url: "/defaultGroup.jpg",
+        url: "/images/defaultGroup.jpg",
         preview: true
       },
       {
         groupId: 1,
-        url: "/defaultGroupClean.jpeg",
+        url: "/images/defaultGroupClean.jpeg",
         preview: false
       },
       //Group 2 has 2 images
       {
         groupId: 2,
-        url: "/datingGroup.png",
+        url: "/images/datingGroup.png",
         preview: true
       },
       {
         groupId: 2,
-        url: "/aquaGroup.jpeg",
+        url: "/images/aquaGroup.jpeg",
         preview: false
       },
       //Group 3 has 1 image
       {
         groupId: 3,
-        url: "/meetGroup.png",
+        url: "/images/meetGroup.png",
         preview: true
       },
       //Group 4 has 1 image
       {
         groupId: 4,
-        url: "/hammerGroup.png",
-        preview: false
+        url: "/images/hammerGroup.png",
+        preview: true
       },
       //Group 3 has 1 image
       {
         groupId: 5,
-        url: "/defaultGroup.jpg",
+        url: "/images/defaultGroup.jpg",
         preview: true
       },
       {
         groupId: 5,
-        url: "/defaultGroupClean.jpeg",
+        url: "/images/defaultGroupClean.jpeg",
         preview: false
       },
       {
         groupId: 5,
-        url: "/hammerGroup.png",
+        url: "/images/hammerGroup.png",
         preview: false
       },
     ]

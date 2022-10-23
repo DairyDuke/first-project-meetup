@@ -27,6 +27,14 @@ module.exports = {
         state: "KA",
         lat: 72.7852369,
         lng: 442.1254789,
+      },
+      {
+        groupId: 5,
+        address: "1 Prior DR.",
+        city: "Kansas",
+        state: "AR",
+        lat: 72.7852369,
+        lng: 442.1254789,
       }
     ]
     return queryInterface.bulkInsert('Venues', bulkData, {});
@@ -46,7 +54,7 @@ module.exports = {
 
     return queryInterface.bulkDelete('Venues', {
       // what to use to delete the above.
-      groupId: { [Op.in]: [1, 2, 3] }
+      groupId: { [Op.in]: [1, 2, 3, 5] }
     }, {});
     /**
      * Add commands to revert seed here.

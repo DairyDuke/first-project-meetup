@@ -7,34 +7,34 @@ module.exports = {
       //6
       {
         eventId: 1,
-        url: "/defaultEventImage.png",
+        url: "/images/defaultEventImage.png",
         preview: true
       },
       {
         eventId: 2,
-        url: "/defaultEventImage.png",
+        url: "/images/defaultEventImage.png",
         preview: true
       },
       {
         eventId: 3,
-        url: "/defaultEventImage.png",
+        url: "/images/defaultEventImage.png",
         preview: true
       },
       {
         eventId: 4,
-        url: "/defaultEventImage.png",
+        url: "/images/defaultEventImage.png",
         preview: true
       },
       {
         eventId: 5,
-        url: "/defaultEventImage.png",
-        preview: true
-      },
-      {
-        eventId: 6,
-        url: "/defaultEventImage.png",
+        url: "/images/defaultEventImage.png",
         preview: true
       }
+      // {
+      //   eventId: 6,
+      //   url: "/defaultEventImage.png",
+      //   preview: true
+      // }
     ]
     return queryInterface.bulkInsert('EventImages', bulkData, {});
     /**

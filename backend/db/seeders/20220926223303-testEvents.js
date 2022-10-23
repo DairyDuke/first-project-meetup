@@ -23,7 +23,7 @@ module.exports = {
         description: "Learn to cook and enjoy great food. Grace Isaato wants to show everyone they can accomplish cooking. From careers exploring recipes using locally raised sustainable seasonings, educating them to write of family traditions at upcoming cooking books teaching them.",
         type: "In Person",
         capacity: 100,
-        price: 00.00,
+        price: 10.00,
         startDate: "11/21/2022",
         endDate: "11/23/2022"
       },
@@ -64,17 +64,17 @@ module.exports = {
       },
       // Group 4 will have no events
       // Group 5 will have 1 Event
-      {
-        venueId: 5,
-        groupId: 5,
-        name: "Reading Marathon",
-        description: "Vivamus vestibulum ipsum massa, id accumsan ipsum tristique ac. Integer vel est eu orci fermentum tristique et eu enim. Mauris scelerisque, lorem blandit tempor accumsan, dolor nisi auctor libero, ut dictum ligula elit et eros. Praesent faucibus libero vitae leo venenatis, eget pharetra neque ornare. Vestibulum nulla erat, porttitor vitae laoreet ut, congue eget metus. Nulla non sem porta, pellentesque metus sit amet, aliquet lacus. Sed at lacus mauris. Nulla id urna eu quam condimentum pellentesque vitae ac ligula. Cras vitae dui vel massa porta semper.",
-        type: "Online",
-        capacity: 300,
-        price: 30.00,
-        startDate: "11/03/2022",
-        endDate: "12/03/2022"
-      }
+      // {
+      //   venueId: 5,
+      //   groupId: 5,
+      //   name: "Reading Marathon",
+      //   description: "Vivamus vestibulum ipsum massa, id accumsan ipsum tristique ac. Integer vel est eu orci fermentum tristique et eu enim. Mauris scelerisque, lorem blandit tempor accumsan, dolor nisi auctor libero, ut dictum ligula elit et eros. Praesent faucibus libero vitae leo venenatis, eget pharetra neque ornare. Vestibulum nulla erat, porttitor vitae laoreet ut, congue eget metus. Nulla non sem porta, pellentesque metus sit amet, aliquet lacus. Sed at lacus mauris. Nulla id urna eu quam condimentum pellentesque vitae ac ligula. Cras vitae dui vel massa porta semper.",
+      //   type: "Online",
+      //   capacity: 300,
+      //   price: 30.00,
+      //   startDate: "11/03/2022",
+      //   endDate: "12/03/2022"
+      // }
     ]
     return queryInterface.bulkInsert('Events', bulkData, {});
     /**

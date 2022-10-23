@@ -33,7 +33,7 @@ const LoginFormPage = ()=> {
   }
   const demoUser = () => {
     setPassword("password")
-    setCredential("usernameusername")
+    setCredential("Demo-lition")
   }
   return (
     <>

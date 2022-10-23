@@ -13,8 +13,6 @@ const FindPage = ({ isLoaded })=>{
 
   return(
     <>
-      <Navigation isLoaded={isLoaded} />
-
       <div className="find-page-container">
         <div className="find-page-main-container">
           <div className="find-page-selection">

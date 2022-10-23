@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory, NavLink } from "react-router-dom";
 import './ShowAll.css';
 import * as groupActions from "../../store/groups";
+import GroupDetail from '../GroupDetail'
 
 const ShowGroups = ()=> {
   const dispatch = useDispatch();
@@ -15,31 +16,22 @@ const ShowGroups = ()=> {
     dispatch(groupActions.grabAllGroups())
   },[dispatch])
 
+  let DisplayGroups;
+  if (groups.length > 1 ) {
+    DisplayGroups =  groups.map((group) => <GroupDetail group={group}/>)
 
-  //about, city, createdAt, id, name, numMembers, organizerId, previewImage, private, state, type, updatedAt
+  } else {
+    DisplayGroups = (
+    <>
+     <h2> No groups yet! </h2>
+    </>
+    )
+  }
+
   return(
-    <div >
-      {groups.map(group =>(
-        <div className="show-main-container">
-          <div className="show-image-container">
-            <img src={`${group.previewImage}`} alt={group.name}/>
-          </div>
-          <div className="show-details-container">
-            <span>{group.name}</span>
-            <div>
-              <span>{group.city},{group.state}</span>
-            </div>
-            <div>
-              <p>{group.about}</p>
-            </div>
-            <div>
-              <span>Total Members:{group.numMembers}</span>
-              <img/>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
+    <>
+      {DisplayGroups}
+    </>
   )
 }
 
