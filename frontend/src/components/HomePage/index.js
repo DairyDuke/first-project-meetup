@@ -51,13 +51,17 @@ const HomePage = ()=> {
       <img src={(redBlob).default} className="blob-red"/>
       <img src={(yellowBlob).default} className="blob-yellow"/>
       <img src={(greenBlob).default} className="blob-green"/>
-      <div className="block">
+      <div className="homepage-block">
         <div className="homepage-leftside">
-          <h1 className="homepage-h1">Celebrating 20 years of real connections on Groupup</h1>
-          <p>Whatever you’re looking to do this year, Groupup can help. For 20 years, people have turned to Groupup to meet people, make friends, find support, grow a business, and explore their interests. Thousands of events are happening every day—join the fun.</p>
+          <h1 className="homepage-h1">
+            Celebrating 20 years of real connections on Groupup
+          </h1>
+          <p>
+            Whatever you’re looking to do this year, Groupup can help. For 20 years, people have turned to Groupup to meet people, make friends, find support, grow a business, and explore their interests. Thousands of events are happening every day—join the fun.
+          </p>
         </div>
         <div className="homepage-rightside">
-          <img src={(online_events).default} alt="Online Events" />
+          <img src={(online_events).default} alt="Online Events" className="image-rightside"/>
         </div>
       </div>
       <div  className="homepage-points-of-interest">
@@ -74,18 +78,23 @@ const HomePage = ()=> {
         <div className="option-card" >
           <img src={(chatting)} alt={(chatting)} className="image-resizing"/>
           <button className="option-card-button" onClick={handleNotLoggedIn}>
-            Connect over tect {arrow}</button>
+            Connect over tech {arrow}</button>
         </div>
       </div>
       <div className="homepage-center-information">
         <h2>How Groupup Works</h2>
-        <p>Meet new people who share your interests through online and in-person events. It’s free to create an account.</p>
+        <p className="homepage-p-text">
+          Meet new people who share your interests through online and in-person events. It’s free to create an account.
+        </p>
       </div>
       <div  className="homepage-points-of-interest">
         <div className="option-card-navigation" >
           <img src={(handsUp).default} alt={(handsUp).default} />
           <div>
-            <button className="option-card-navigation-button">Join a group(link)</button>
+            <button className="option-card-navigation-button"
+            onClick={handleNotLoggedIn}>
+              Join a group
+            </button>
           </div>
           <div>
             Do what you love, meet others who love it, find your community. The rest is history!
@@ -94,7 +103,10 @@ const HomePage = ()=> {
         <div className="option-card-navigation" >
           <img src={(ticket).default} alt={(ticket).default} />
           <div>
-            <button className="option-card-navigation-button"> , Find an event(link)</button>
+            <button className="option-card-navigation-button"
+            onClick={handleNotLoggedIn}>
+              Find an event
+            </button>
           </div>
           <div>
             Events are happening on just about any topic you can think of, from online gaming and photography to yoga and hiking.
@@ -103,15 +115,18 @@ const HomePage = ()=> {
         <div className="option-card-navigation" >
           <img src={(joinGroup).default} alt={(joinGroup).default} />
           <div>
-            <button className="option-card-navigation-button"> , Start a group(link)</button>
+            <button className="option-card-navigation-button">
+              Start a group
+            </button>
           </div>
           <div>
             You don’t have to be an expert to gather people together and explore shared interests.
           </div>
         </div>
-        <div>
-         <button>Join Meetup</button>
-        </div>
+            <button className="join-card-button" >
+             Join Groupup
+            </button>
+
       </div>
     </div>
     </>
