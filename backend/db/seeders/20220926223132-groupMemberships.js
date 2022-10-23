@@ -74,7 +74,31 @@ module.exports = {
         userId: 5,
         groupId: 3,
         status: "member"
-      }
+      },
+      // Group 4 has 2 member
+
+      {
+        userId: 4,
+        groupId: 4,
+        status: "organizer"
+      },
+      {
+        userId: 1,
+        groupId: 4,
+        status: "member"
+      },
+      // Group 5 has 2 member
+
+      {
+        userId: 5,
+        groupId: 5,
+        status: "organizer"
+      },
+      {
+        userId: 1,
+        groupId: 5,
+        status: "member"
+      },
     ]
     return queryInterface.bulkInsert('Memberships', bulkData, {});
     /**
@@ -92,7 +116,7 @@ module.exports = {
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete('Memberships', {
       // what to use to delete the above.
-      groupId: { [Op.in]: [1, 2, 3] }
+      groupId: { [Op.in]: [1, 2, 3, 4, 5] }
     }, {});
   }
 };

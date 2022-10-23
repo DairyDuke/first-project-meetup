@@ -21,7 +21,7 @@ const LoginFormPage = ()=> {
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors([]);
-    return dispatch(sessionActions.login( {credential: "bob@gmail.com"}, {password: "password"} ))
+    return dispatch(sessionActions.login({ credential, password }))
     .then(()=>{
       history.push('/')
     })
@@ -32,16 +32,8 @@ const LoginFormPage = ()=> {
       });
   }
   const demoUser = () => {
-
-    return dispatch(sessionActions.login({ credential, password }))
-    .then(()=>{
-      history.push('/')
-    })
-      .catch(async (res) => {
-        const data = await res.json();
-
-        if (data && data.errors) setErrors(data.errors);
-      });
+    setPassword("password")
+    setCredential("usernameusername")
   }
   return (
     <>
