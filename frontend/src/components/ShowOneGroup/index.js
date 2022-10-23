@@ -54,7 +54,7 @@ if (sessionUser && sessionUser.id === group.organizerId){
   return (
     <>
     <div>
-      <img src={group.GroupImages[0].url} />
+      <img src={"/images/defaultGroup.jpg"} />
       <div>
         <span>Group name {group.name}</span>
         <div>

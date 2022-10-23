@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory, useParams } from "react-router-dom";
 import './EditGroup.css';
@@ -7,22 +7,44 @@ import * as groupActions from "../../store/groups";
 function EditGroup() {
   const { groupId, eventId } = useParams();
   const dispatch = useDispatch();
-  const sessionUser = useSelector((state) => state.session.user);
-  const [name, setName] = useState("");
-  const [about, setAbout] = useState("");
-  const [type, setType] = useState("in-person");
-  const [visibility, setVisibility] = useState("false");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [errors, setErrors] = useState([]);
   const history = useHistory()
+  const sessionUser = useSelector((state) => state.session.user);
+  const group = useSelector(state => state.groups.singleGroup);
+
+  const [name, setName] = useState('');
+  const [about, setAbout] = useState('');
+  const [type, setType] = useState('In person');
+  const [visibility, setVisibility] = useState(false);
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [errors, setErrors] = useState([]);
+
+  useEffect(()=>{
+    dispatch(groupActions.grabOneGroup(groupId))
+    .catch(async (res)=>{
+      const data = await res.json()
+      if (data && data.message) {
+        setErrors(data.message)
+      }
+    })
+    setVisibility(group && group.private ? group.private : "false");
+    setName(group && group.name ? group.name : '');
+    setAbout(group && group.about ? group.about : '');
+    setType(group && group.type ? group.type : 'In person');
+    setCity(group && group.city ? group.city : '');
+    setState(group && group.state ? group.state : '');
+    return (()=> dispatch(groupActions.removeSingleGroupThunk()))
+  }, [dispatch, groupId])
+
+  if (group == undefined) {return null}
+
 
 
   const handleSubmit = (e) => {
     e.preventDefault();
       setErrors([]);
 
-      return dispatch(groupActions.createGroupThunk({ name, about, type, visibility, city, state }))
+      return dispatch(groupActions.editGroupThunk({ name, about, type, visibility, city, state }, groupId))
       .then(()=>{
         history.push(`/find`)
       })
@@ -96,10 +118,10 @@ function EditGroup() {
         />Online
         <input
           type="radio"
-          value="in-person"
+          value="In person"
           onChange={(e) => setType(e.target.value)}
           // name="type"
-          checked={type=="in-person"}
+          checked={type=="In person"}
           />In-Person
         <div>{errors.type ? errors.type : null} </div>
       </label>

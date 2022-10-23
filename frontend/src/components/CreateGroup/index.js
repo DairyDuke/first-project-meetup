@@ -9,7 +9,7 @@ function CreateGroupForm() {
   const sessionUser = useSelector((state) => state.session.user);
   const [name, setName] = useState("");
   const [about, setAbout] = useState("");
-  const [type, setType] = useState("in-person");
+  const [type, setType] = useState("In person");
   const [visibility, setVisibility] = useState("false");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
@@ -95,10 +95,10 @@ function CreateGroupForm() {
         />Online
         <input
           type="radio"
-          value="in-person"
+          value="In person"
           onChange={(e) => setType(e.target.value)}
           // name="type"
-          checked={type=="in-person"}
+          checked={type=="In person"}
           />In-Person
         <div>{errors.type ? errors.type : null} </div>
       </label>

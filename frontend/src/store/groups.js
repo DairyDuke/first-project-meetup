@@ -109,15 +109,15 @@ export const deleteGroupThunk = (groupId) => async (dispatch) => {
 };
 
 //PUT /api/groups/:groupId -- line 555 backend/routes/api/groups.js
-export const editGroupThunk = (newGroup, groupId) => async (dispatch) => {
-  const { name, about, type, city, state } = newGroup;
+export const editGroupThunk = ({ name, about, type, visibility, city, state }, groupId) => async (dispatch) => {
+
   const response = await csrfFetch(`/api/groups/${groupId}`, {
     method: 'PUT',
     body: JSON.stringify({
       name,
       about,
       type,
-      private: newGroup.private,
+      private: visibility,
       city,
       state
     }),

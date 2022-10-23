@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Event.hasMany(models.EventImage, { foreignKey: 'eventId' }, { onDelete: 'cascade' })
       Event.belongsTo(models.Venue, { foreignKey: 'venueId' })
-      Event.belongsTo(models.Group, { foreignKey: 'groupId', onDelete: 'CASCADE' })
+      Event.belongsTo(models.Group, { foreignKey: 'groupId' })
     }
   }
   Event.init({
