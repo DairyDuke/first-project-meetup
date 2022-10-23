@@ -1,0 +1,10 @@
+.navigation-container {
+  position: sticky;
+  background-color: white;
+}
+
+.home-main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

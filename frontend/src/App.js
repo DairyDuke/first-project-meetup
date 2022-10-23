@@ -38,6 +38,12 @@ function App() {
     e.preventDefault()
      history.push("/")
   }
+  const loginHome = (
+    <>
+    <Navigation isLoaded={isLoaded} />
+    <Home/>
+    </>
+  )
 
   return (
     <>
@@ -45,7 +51,7 @@ function App() {
         <Switch>
 
           <Route exact path="/">
-            {sessionUser ? <Home/> : <HomePage/>}
+            {sessionUser ? loginHome : <HomePage/>}
           </Route>
 
           <Route path="/signup">

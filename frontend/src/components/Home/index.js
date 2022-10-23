@@ -8,13 +8,9 @@ const Home = ()=>{
   return(
     <>
       <div>
-        <div>
-          <h1>Welcome, Username (handwavemoji)</h1>
+        <div className="home-main-container">
+          <h1>Welcome, Username 👋</h1>
           <h2>Events from your groups</h2>
-        </div>
-
-        <div>
-          Calendar/Left column
         </div>
         <div>
             <div> <FindPage /> </div>
