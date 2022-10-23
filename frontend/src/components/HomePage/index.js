@@ -93,38 +93,46 @@ const HomePage = ()=> {
           <div>
             <button className="option-card-navigation-button"
             onClick={handleNotLoggedIn}>
-              Join a group
+              <h3>
+                Join a group
+              </h3>
             </button>
           </div>
-          <div>
+          <p className="option-card-paragraph">
             Do what you love, meet others who love it, find your community. The rest is history!
-          </div>
+          </p>
         </div>
         <div className="option-card-navigation" >
           <img src={(ticket).default} alt={(ticket).default} />
           <div>
             <button className="option-card-navigation-button"
             onClick={handleNotLoggedIn}>
-              Find an event
+              <h3>
+                Find an event
+              </h3>
             </button>
           </div>
-          <div>
+          <p className="option-card-paragraph">
             Events are happening on just about any topic you can think of, from online gaming and photography to yoga and hiking.
-          </div>
+          </p>
         </div>
         <div className="option-card-navigation" >
           <img src={(joinGroup).default} alt={(joinGroup).default} />
           <div>
             <button className="option-card-navigation-button">
+             <h3>
               Start a group
+             </h3>
             </button>
           </div>
-          <div>
+          <p className="option-card-paragraph">
             You don’t have to be an expert to gather people together and explore shared interests.
-          </div>
+          </p>
         </div>
             <button className="join-card-button" >
-             Join Groupup
+             <h3>
+               Join Groupup
+             </h3>
             </button>
 
       </div>
