@@ -99,7 +99,7 @@ return (
   <div className="soe-container">
   <div className="soe-header-container">
     <img
-      src={event.EventImages && event.EventImages !== {} ? event.EventImages[0].url : `/images/defaultEventImage.png` }
+    src={event.EventImages && event.EventImages.length > 1  ? event.EventImages[0].url : `/images/defaultEventImage.png` }
       alt={event.name}
       className="soe-image-style"
       />

@@ -92,7 +92,7 @@ a {
 
 .soe-group-about-container {
   display: -webkit-box;
-  -webkit-line-clamp: 8;
+  -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
   -webkit-text-size-adjust: 100%;
   overflow: hidden;
