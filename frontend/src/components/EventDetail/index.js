@@ -4,35 +4,51 @@ import './EventDetail.css'
 
 const EventDetail = ({ event })=>{
 
-
+  const newGroup = (
+  <>
+  <h3 className="newgroup-h3-size">New Group</h3>
+  </>
+  )
 //.Group: name, private, city, state,
 //.Venue: name address city, state lat/log
-// endDate, groupId, id, name, numAttending,
+// endDate, eventId, id, name, numAttending,
 // description, capacity, price,
 //previewImage, startDate, type, venueId
+console.log(event)
 
-const groupLink = event.Group.name.replace(' ', '').trim().toLowerCase();
-const eventLink = event.name.replace(' ', '').trim().toLowerCase();
   return (
     <Link to={`/${event.Group.id}/events/${event.id}`}>
-        <div className="show-main-container">
-        <div className="show-image-container">
-          <img src={event.previewImage && event.previewImage !== "Preview Image not found" ? event.previewImage : `/images/defaultEventImage.png` } alt={event.name}/>
+<div className="show-event-main-container">
+          <div className="show-event-image-container">
+            <h4 className="event-type-overlay">{event.type == "Online" ? event.type : null}</h4>
+            <img
+              src={event.previewImage && event.previewImage !== "Preview Image not found" ? event.previewImage : `/images/defaultGroup.jpg` }
+              alt={event.name}
+              className="show-event-image-style"
+              />
+          </div>
+          <div className="show-event-details-container">
+            <div className="show-event-name-container">
+              <h3>{event.startDate} </h3>
+              <h3>{event.name}</h3>
+              <h3 className="location-h3-size">{event.Group.name} • {event.Venue.city}, {event.Venue.state}</h3>
+                {newGroup}
+            </div>
+
+            <div className="show-event-about-container">
+              <p className="show-event-about-content">{event.description}</p>
+            </div>
+            <div className="show-event-member-and-visibility">
+              <div>
+                {event.numAttending} attendees
+              </div>
+              {/* <div className="show-event-link-icon">
+                ❔ This event’s content, including its members and event details, are visible to the public.Learn more
+
+              </div> */}
+            </div>
+          </div>
         </div>
-        <div className="show-details-container">
-          <span>{event.name}</span>
-          <div>
-            <span>{event.city},{event.state}</span>
-          </div>
-          <div>
-            <p>{event.description}</p>
-          </div>
-          <div>
-            <span>{event.numMembers}</span>
-            <img/>
-          </div>
-        </div>
-      </div>
     </Link>
   )
 }

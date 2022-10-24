@@ -41,7 +41,7 @@ function App() {
   const loginHome = (
     <>
     <Navigation isLoaded={isLoaded} />
-    <Home/>
+    <Home user={sessionUser}/>
     </>
   )
 

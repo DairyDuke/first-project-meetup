@@ -10,26 +10,29 @@ import CreateEventForm from '../CreateEvent';
 
 const FindPage = ({ isLoaded })=>{
   const [current, setCurrent] = useState(true)
+  let selectedStyle = "find-page-selected"
 
   return(
     <>
       <div className="find-page-container">
         <div className="find-page-main-container">
+          <h2 className="creation-links">
+            {current ? "Here are the available groups for you to join." : "Check out the events you can participate in."}
+          </h2>
           <div className="find-page-selection">
             <div className="find-page-toggle">
-              <button className="find-page-selectors"
+              <button className={current ? selectedStyle : "find-page-selectors" }
               onClick={()=>setCurrent(true)}
               >Groups</button>
-              <button className="find-page-selectors"
+              <button className={!current ? selectedStyle : "find-page-selectors" }
               onClick={()=>setCurrent(false)}
               >Events</button>
             </div>
-            <div>
-
-            {current ? <NavLink to="/new-group">Why not create a new Group?</NavLink> : <NavLink to="new-event">Let's create a new Event!</NavLink>}
-            </div>
           </div>
 
+          <div className="creation-links">
+            {current ? <NavLink to="/new-group" >Why not create a new Group?</NavLink> : <NavLink to="new-event">Let's create a new Event!</NavLink>}
+            </div>
           <div className="find-page-display-content-space-container">
             <div className="find-page-display-actual-content">
             <div>
