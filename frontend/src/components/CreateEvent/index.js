@@ -22,18 +22,18 @@ function CreateEventForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // if (password === confirmPassword) {
+
       setErrors([]);
       return dispatch(eventActions.createEventThunk({ name, description, type, capacity, price, startDate, endDate }, groupId ))
       .then(()=>{
-        history.push(`/find`)
+        history.push(`/groups/${groupId}`)
       })
         .catch(async (res) => {
           const data = await res.json();
           if (data && data.errors) setErrors(data.errors);
+          console.log(errors)
         });
     // }
-    return setErrors({confirmPassword: 'Confirm Password field must be the same as the Password field'});
   };
 
   const tooltipclasses = "signup-tooltip signup-tooltip-text"
@@ -63,8 +63,8 @@ function CreateEventForm() {
           onChange={(e) => setEndDate(e.target.value)}
           required
         />
-        <div>{errors.startDate ? errors.startDate : null} </div>
-        <div>{errors.endDate ? errors.endDate : null} </div>
+        <div className="cgroup-error-speech">{errors.startDate ? errors.startDate : null} </div>
+        <div className="cgroup-error-speech">{errors.endDate ? errors.endDate : null} </div>
       </label>
       <label className="cevent-inputs-container">
         Event name
@@ -74,7 +74,7 @@ function CreateEventForm() {
           onChange={(e) => setName(e.target.value)}
           required
         />
-        <div>{errors.name ? errors.name : null} </div>
+        <div className="cgroup-error-speech">{errors.name ? errors.name : null} </div>
       </label>
       <label className="cevent-inputs-container">
         Give your Event a description
@@ -84,7 +84,7 @@ function CreateEventForm() {
           onChange={(e) => setDescription(e.target.value)}
           required
         />
-        <div>{errors.description ? errors.description : null} </div>
+        <div className="cgroup-error-speech">{errors.description ? errors.description : null} </div>
       </label>
 
       <label className="cevent-inputs-container">
@@ -95,7 +95,7 @@ function CreateEventForm() {
           onChange={(e) => setPrice(e.target.value)}
           required
         />
-        <div>{errors.price ? errors.price : null} </div>
+        <div className="cgroup-error-speech">{errors.price ? errors.price : null} </div>
       </label>
 
       <label className="cevent-inputs-container">
@@ -106,23 +106,27 @@ function CreateEventForm() {
           onChange={(e) => setCapacity(e.target.value)}
           required
         />
-        <div>{errors.capacity ? errors.capacity : null} </div>
+        <div className="cgroup-error-speech">{errors.capacity ? errors.capacity : null} </div>
       </label>
       <label className="cevent-inputs-container">
         How will your Event meet?
+        <br/>
+        <label>Online
         <input
           type="radio"
           value="online"
           name="type"
           onChange={(e) => setType(e.target.value)}
-        />Online
+        /></label>
+        <label>
+        In-Person
         <input
           type="radio"
-          value="in-person"
+          value="In person"
           onChange={(e) => setType(e.target.value)}
           name="type"
-          />In-Person
-        <div>{errors.type ? errors.type : null} </div>
+          /></label>
+        <div className="cgroup-error-speech">{errors.type ? errors.type : null} </div>
       </label>
 
       <button type="submit" className="signup-form-button">Sign Up</button>

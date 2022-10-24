@@ -15,10 +15,10 @@ const getAllEvents = (events) => {
   };
 };
 
-const getOneEvent = (eventId) => {
+const getOneEvent = (data) => {
   return {
     type: GET_ONE_EVENT,
-    payload: eventId
+    payload: data
   };
 };
 
@@ -150,7 +150,7 @@ const eventsReducer = (state = initialState, action) => {
       return newState;
 
     case GET_ONE_EVENT:
-      newState.events[action.payload.id] = action.payload
+      newState["singleEvent"] = action.payload
       return newState;
 
 

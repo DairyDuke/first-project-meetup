@@ -16,7 +16,7 @@ const EventDetail = ({ event })=>{
 //previewImage, startDate, type, venueId
 
   return (
-    <Link to={`/${event.Group.id}/events/${event.id}`}>
+    <Link to={`/events/${event.id}`}>
 <div className="show-event-main-container">
           <div className="show-event-image-container">
             <h4 className="event-type-overlay">{event.type == "Online" ? event.type : null}</h4>

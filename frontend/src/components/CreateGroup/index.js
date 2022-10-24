@@ -24,7 +24,7 @@ function CreateGroupForm() {
 
       return dispatch(groupActions.createGroupThunk({ name, about, type, visibility, city, state }))
       .then(()=>{
-        history.push(`/find`)
+        history.push(`/`)
       })
         .catch(async (res) => {
           const data = await res.json();

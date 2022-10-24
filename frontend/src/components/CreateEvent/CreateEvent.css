@@ -88,6 +88,7 @@
   outline-offset: 2px;
   border-width: 1px;
   border-radius: 0.5rem;
+  margin-bottom: 2%;
   transform: unset;
 }
 
@@ -108,7 +109,7 @@
   border-radius: 8px;
   cursor: pointer;
   background-color: #F65858;
-  margin: 16px 0;
+  margin: 16px;
   padding: 8px 12px;
   color: #FFFFFF;
   fill: white;
