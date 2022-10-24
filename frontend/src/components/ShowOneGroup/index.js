@@ -54,17 +54,40 @@ if (sessionUser && sessionUser.id === group.organizerId){
   return (
     <>
     <div>
-      <img src={"/images/defaultGroup.jpg"} />
       <div>
-        <span>Group name {group.name}</span>
+       {/* top container  */}
         <div>
-          <h2>Test</h2>
+          <img src={"/images/defaultGroup.jpg"} />
+        </div>
+        <div>
+          <div>
+            <h3>{group.name}</h3>
+            <h3 className="location-h3-size">{group.city}, {group.state}</h3>
+          </div>
+          <div>
+            {group.numMembers} members · {group.private === 0 ? "Public" : "Private"}
+          </div>
+          <div>
+            Organized by {group.organizerId}
+          </div>
         </div>
       </div>
       <div>
+        <div> </div>
+        <div> </div>
+      </div>
+      <div>
+        <div>
+          <p className="show-group-about-content">{group.about}</p>
+        </div>
+        <div>
+          Organizer
+        </div>
+        <div>
+          Members List
+        </div>
       </div>
     </div>
-    {power}
     </>
   )
 }

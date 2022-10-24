@@ -4,6 +4,7 @@ import { Redirect, useHistory } from "react-router-dom";
 import './CreateGroup.css';
 import * as groupActions from "../../store/groups";
 
+
 function CreateGroupForm() {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
@@ -59,7 +60,8 @@ function CreateGroupForm() {
               </div>
               <input className="cgroup-input-style"
                 type="text"
-                placeholder="State"
+                placeholder="State's Abreviation"
+                maxlength="2em"
                 value={state}
                 onChange={(e) => setState(e.target.value)}
                 required
