@@ -101,12 +101,12 @@ export const deleteEventThunk = (eventId) => async (dispatch) => {
 };
 
 //PUT /api/events/:eventId -- line 257 backend/routes/api/events.js
-export const editEventThunk = (newEvent, eventId) => async (dispatch) => {
-  const {  venueId, name, type, capacity, price, description, startDate, endDate } = newEvent;
+export const editEventThunk = ({ name, description, type, capacity, price, startDate, endDate }, eventId) => async (dispatch) => {
+
   const response = await csrfFetch(`/api/events/${eventId}`, {
     method: 'PUT',
     body: JSON.stringify({
-     venueId,
+     venueId: null,
      name,
      type,
      capacity,

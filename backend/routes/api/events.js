@@ -260,7 +260,7 @@ router.put(
   requireAuth,
   validateEvent,
   eventExists,
-  venueExists,
+  // venueExists,
   checkHostCredentials,
   async (req, res, next) => {
     const eventId = req.params.eventId;
