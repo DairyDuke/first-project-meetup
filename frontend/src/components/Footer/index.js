@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Redirect, NavLink, useLocation } from 'react-router-dom';
+import ModalFunctions from '../Modals';
 import './Footer.css';
 
 const Footer = () => {

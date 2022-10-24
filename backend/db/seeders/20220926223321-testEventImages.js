@@ -12,22 +12,22 @@ module.exports = {
       },
       {
         eventId: 2,
-        url: "/images/defaultEventImage.png",
+        url: "/images/datingGroup.png",
         preview: true
       },
       {
         eventId: 3,
-        url: "/images/defaultEventImage.png",
+        url: "/images/aquaGroup.jpeg",
         preview: true
       },
       {
         eventId: 4,
-        url: "/images/defaultEventImage.png",
+        url: "/images/meetGroup.png",
         preview: true
       },
       {
         eventId: 5,
-        url: "/images/defaultEventImage.png",
+        url: "/images/taxesGroup.png",
         preview: true
       }
       // {
