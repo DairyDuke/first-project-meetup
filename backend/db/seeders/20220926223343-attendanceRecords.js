@@ -28,12 +28,12 @@ module.exports = {
       // Event 2 has 5 entries
       {
         eventId: 2,
-        userId: 2,
+        userId: 1,
         status: "host"
       },
       {
         eventId: 2,
-        userId: 1,
+        userId: 2,
         status: "attending"
       },
       {
@@ -55,7 +55,7 @@ module.exports = {
       //Event 3 has 4 entries
       {
         eventId: 3,
-        userId: 3,
+        userId: 2,
         status: "host"
       },
       {
@@ -65,7 +65,7 @@ module.exports = {
       },
       {
         eventId: 3,
-        userId: 2,
+        userId: 5,
         status: "pending"
       },
       {
@@ -73,6 +73,31 @@ module.exports = {
         userId: 4,
         status: "pending"
       },
+
+      //Event 4
+
+      {
+        eventId: 4,
+        userId: 3,
+        status: "host"
+      },
+      {
+        eventId: 4,
+        userId: 2,
+        status: "attending"
+      },
+      {
+        eventId: 4,
+        userId: 5,
+        status: "attending"
+      },
+
+      //Event 5
+      {
+        eventId: 5,
+        userId: 3,
+        status: "host"
+      }
     ]
     return queryInterface.bulkInsert('Attendances', bulkData, {});
     /**
@@ -91,7 +116,7 @@ module.exports = {
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete('Attendances', {
       // what to use to delete the above.
-      eventId: { [Op.in]: [1, 2, 3] }
+      eventId: { [Op.in]: [1, 2, 3, 4, 5, 6] }
     }, {});
     /**
      * Add commands to revert seed here.

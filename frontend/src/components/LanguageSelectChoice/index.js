@@ -15,8 +15,7 @@ const LanguageSelectChoice = ()=>{
           name="English"
           value="en-US"
           checked
-          >
-          </input>
+          /> English
         </div>
       </label>
       </div>

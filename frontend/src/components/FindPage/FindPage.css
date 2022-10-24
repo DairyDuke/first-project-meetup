@@ -1,0 +1,114 @@
+h3 {
+  text-decoration: none;
+}
+
+.find-page-spacer {
+  box-sizing: border-box;
+  width: 100%;
+  background-color: white;
+  position: fixed;
+  top: 0;
+}
+
+/* Overall body of the page container */
+.find-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  background-color: white;
+  border-bottom: 1px solid gray;
+}
+
+/* Center content container */
+.find-page-main-container {
+  max-width: 993px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Top portion that houses the Events/Groups Links */
+.find-page-selection {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: white;
+  position: sticky;
+  height: 43px;
+  z-index: 50;
+  top: 64px;
+  padding: 0;
+  margin: 0;
+  /* padding-top: 12px; */
+  /* padding-bottom: 6px; */
+  /* margin-bottom: 16px; */
+  /* border-bottom: 1px solid gray; */
+}
+
+/* Div for the links themselves */
+.find-page-toggle {
+  /* padding-bottom: 12px; */
+  height: 44px;
+}
+
+/* The Text for the links groups and events */
+.find-page-selectors {
+  cursor: pointer;
+  margin: 0;
+  margin-right: 16px;
+  font-size: 20px;
+  color: #757575;
+  height: 28px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+}
+
+.find-page-selected {
+  cursor: pointer;
+  margin: 0;
+  color: #008294 !important;
+  font-size: 24px;
+  font-weight: 900;
+  text-decoration: underline 4px;
+}
+
+.creation-links {
+  /* all: unset; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+  align-content: center;
+  padding-bottom: 8px;
+}
+
+.find-page-display-content-space-container {
+  overflow: hidden;
+  display: flex;
+  box-sizing: border-box;
+  align-items: left;
+  justify-content: left;
+  flex-direction: column;
+  /* margin-top: 20px; */
+}
+
+
+.find-page-display-actual-content {
+  display: block;
+  z-index: 20;
+  background-color: white;
+
+}
+
+@media screen and (max-width: 900px) {
+  .find-page-container {
+    align-items: flex-start;
+  }
+
+  .find-page-display-content-space-container {
+    align-items: flex-start;
+
+  }
+}

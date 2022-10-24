@@ -2,37 +2,29 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
-import {LoginFormModal, SignupFormModal, LanguageSelectModal} from '../Modals';
+import ModalFunctions from '../Modals';
 import './Navigation.css';
 import iconImg from '../../assets/images/favicon.ico'
 import HomePage from '../HomePage'
 import ShowGroups from '../ShowGroups'
+import ShowEvents from '../ShowEvents'
+import FindPage from '../FindPage'
 
 // {/* <NavLink to="/signup">Sign Up</NavLink> */}
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
 
   let sessionLinks;
-  let bodyLinks;
 
   if (sessionUser) {
     sessionLinks = (
       <ProfileButton user={sessionUser} />
     );
-    bodyLinks = (
-      <ShowGroups />
-    );
   } else {
     sessionLinks = (
       <>
-        <LanguageSelectModal />
-        <LoginFormModal />
-        <SignupFormModal />
+        <ModalFunctions />
       </>
-    );
-
-    bodyLinks = (
-      <ShowGroups />
     );
   }
 
@@ -50,10 +42,6 @@ function Navigation({ isLoaded }){
       </ul>
       </div>
     </div>
-
-      <div>
-          {isLoaded && bodyLinks}
-      </div>
     </>
   );
 }

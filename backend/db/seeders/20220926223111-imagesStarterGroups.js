@@ -9,29 +9,51 @@ module.exports = {
       //Group 1 has 2 images
       {
         groupId: 1,
-        url: "www.picture.group1.1",
+        url: "/images/defaultGroup.jpg",
         preview: true
       },
       {
         groupId: 1,
-        url: "www.picture.group1.2",
+        url: "/images/defaultGroupClean.jpeg",
         preview: false
       },
       //Group 2 has 2 images
       {
         groupId: 2,
-        url: "www.picture.group2.1",
+        url: "/images/datingGroup.png",
         preview: true
       },
       {
         groupId: 2,
-        url: "www.picture.group2.2",
-        preview: true
+        url: "/images/aquaGroup.jpeg",
+        preview: false
       },
       //Group 3 has 1 image
       {
         groupId: 3,
-        url: "www.picture.group3.1",
+        url: "/images/meetGroup.png",
+        preview: true
+      },
+      //Group 4 has 1 image
+      {
+        groupId: 4,
+        url: "/images/hammerGroup.png",
+        preview: true
+      },
+      //Group 3 has 1 image
+      {
+        groupId: 5,
+        url: "/images/defaultGroup.jpg",
+        preview: true
+      },
+      {
+        groupId: 5,
+        url: "/images/defaultGroupClean.jpeg",
+        preview: false
+      },
+      {
+        groupId: 5,
+        url: "/images/hammerGroup.png",
         preview: false
       },
     ]
@@ -53,7 +75,7 @@ module.exports = {
     return queryInterface.bulkDelete('GroupImages', {
 
       // what to use to delete the above.
-      groupId: { [Op.in]: [1, 2, 3] }
+      groupId: { [Op.in]: [1, 2, 3, 4, 5] }
     }, {});
     /**
      * Add commands to revert seed here.

@@ -4,21 +4,37 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     //writing out bulk data in a variable for easy reference.
     const bulkData = [
+      //6
       {
         eventId: 1,
-        url: "www.picture.event.1",
+        url: "/images/defaultEventImage.png",
         preview: true
       },
       {
         eventId: 2,
-        url: "www.picture.event.2",
+        url: "/images/defaultEventImage.png",
         preview: true
       },
       {
         eventId: 3,
-        url: "www.picture.event.3",
-        preview: false
+        url: "/images/defaultEventImage.png",
+        preview: true
+      },
+      {
+        eventId: 4,
+        url: "/images/defaultEventImage.png",
+        preview: true
+      },
+      {
+        eventId: 5,
+        url: "/images/defaultEventImage.png",
+        preview: true
       }
+      // {
+      //   eventId: 6,
+      //   url: "/defaultEventImage.png",
+      //   preview: true
+      // }
     ]
     return queryInterface.bulkInsert('EventImages', bulkData, {});
     /**
@@ -37,7 +53,7 @@ module.exports = {
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete('EventImages', {
       // what to use to delete the above.
-      eventId: { [Op.in]: [1, 2, 3] }
+      eventId: { [Op.in]: [1, 2, 3, 4, 5, 6] }
     }, {});
     /**
      * Add commands to revert seed here.

@@ -131,8 +131,8 @@ router.get(
         handleValidationErrors
       where.startDate = startDate
     }
-
-    const Events = await Event.scope("event").findAll({
+//.scope("event")
+    const Events = await Event.findAll({
       where,
       ...pagination,
       raw: true
