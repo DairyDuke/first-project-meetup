@@ -15,10 +15,10 @@ const getAllEvents = (events) => {
   };
 };
 
-const getOneEvent = (eventId) => {
+const getOneEvent = (data) => {
   return {
     type: GET_ONE_EVENT,
-    payload: eventId
+    payload: data
   };
 };
 
@@ -74,7 +74,7 @@ export const createEventThunk = ({ name, description, type, capacity, price, sta
   const response = await csrfFetch(`/api/groups/${groupId}/events`, {
     method: "POST",
     body: JSON.stringify({
-      // venueId,
+      venueId: null,
       name,
       description,
       type,
@@ -101,12 +101,12 @@ export const deleteEventThunk = (eventId) => async (dispatch) => {
 };
 
 //PUT /api/events/:eventId -- line 257 backend/routes/api/events.js
-export const editEventThunk = (newEvent, eventId) => async (dispatch) => {
-  const {  venueId, name, type, capacity, price, description, startDate, endDate } = newEvent;
+export const editEventThunk = ({ name, description, type, capacity, price, startDate, endDate }, eventId) => async (dispatch) => {
+
   const response = await csrfFetch(`/api/events/${eventId}`, {
     method: 'PUT',
     body: JSON.stringify({
-     venueId,
+     venueId: null,
      name,
      type,
      capacity,
@@ -150,7 +150,7 @@ const eventsReducer = (state = initialState, action) => {
       return newState;
 
     case GET_ONE_EVENT:
-      newState.events[action.payload.id] = action.payload
+      newState["singleEvent"] = action.payload
       return newState;
 
 

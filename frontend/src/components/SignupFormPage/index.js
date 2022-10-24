@@ -48,7 +48,7 @@ function SignupFormPage() {
       <ul>
         {/* {errors?.map((error, idx) => <li key={idx}>{error}</li>)} */}
       </ul>
-      <label>
+      <label className="signup-form-text">
         Your first name
         <input className="signup-input-box"
           type="text"
@@ -57,9 +57,9 @@ function SignupFormPage() {
           required
         />
 
-        <div>{errors.firstName ? errors.firstName : null} </div>
+        <div className="signup-error-speech">{errors.firstName ? errors.firstName : null} </div>
       </label>
-      <label>
+      <label className="signup-form-text">
         Your last name
         <input className="signup-input-box"
           type="text"
@@ -67,9 +67,9 @@ function SignupFormPage() {
           onChange={(e) => setLastName(e.target.value)}
           required
         />
-        <div>{errors.lastName ? errors.lastName : null} </div>
+        <div className="signup-error-speech">{errors.lastName ? errors.lastName : null} </div>
       </label>
-      <label>
+      <label className="signup-form-text">
         Email addresss
         <input className="signup-input-box"
           type="text"
@@ -77,9 +77,9 @@ function SignupFormPage() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <div>{errors.email ? errors.email : null} </div>
+        <div className="signup-error-speech">{errors.email ? errors.email : null} </div>
       </label>
-      <label>
+      <label className="signup-form-text">
         Username
         <input className="signup-input-box"
           type="text"
@@ -87,15 +87,15 @@ function SignupFormPage() {
           onChange={(e) => setUsername(e.target.value)}
           required
         />
-        <div>{errors.username ? errors.username : null} </div>
+        <div className="signup-error-speech">{errors.username ? errors.username : null} </div>
       </label>
-      <label>
+      <label className="signup-form-text">
         Password
-        <div className="tooltip">Hover over me
+        {/* <div className="tooltip"> ?
           <span className="tooltiptext">
           Your password must be at least 10 characters, and can't have 3 of the same characters in a row. To improve password strength, use a mix of upper case, lower case, numbers, and symbols. Learn more...
           </span>
-        </div>
+        </div> */}
 
         <input className="signup-input-box"
           type="password"
@@ -103,9 +103,9 @@ function SignupFormPage() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <div>{errors.password ? errors.password : null} </div>
+        <div className="signup-error-speech">{errors.password ? errors.password : null} </div>
       </label>
-      <label>
+      <label className="signup-form-text">
         Confirm Password
         <input className="signup-input-box"
           type="password"
@@ -113,7 +113,7 @@ function SignupFormPage() {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
-        <div>{errors.confirmPassword ? errors.confirmPassword : null} </div>
+        <div className="signup-error-speech">{errors.confirmPassword ? errors.confirmPassword : null} </div>
       </label>
       <button type="submit" className="signup-form-button">Sign Up</button>
     </form>

@@ -17,3 +17,7 @@
   border-radius: 0.5rem;
   padding: 2.5rem;
 }
+
+.button-padding {
+  padding: 10px 0;
+}

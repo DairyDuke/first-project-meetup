@@ -14,7 +14,7 @@ import EditGroup from './components/EditGroup'
 import EditEvent from './components/EditEvent'
 import ShowOneEvent from './components/ShowOneEvent'
 import ShowOneGroup from './components/ShowOneGroup'
-
+import CurrentUserGroups from './components/CurrentUserGroups'
 import Home from './components/Home'
 
 import HomePage from './components/HomePage'
@@ -84,15 +84,16 @@ function App() {
             <CreateGroupForm isLoaded={isLoaded} />
           </Route>
 
-          <Route exact path="/:groupId/events/:eventId">
-            <Navigation isLoaded={isLoaded} />
-            <ShowOneEvent />
-          </Route>
-
           <Route exact path="/events/:eventId/edit">
             <Navigation isLoaded={isLoaded} />
             <EditEvent />
           </Route>
+
+          <Route path="/events/:eventId">
+            <Navigation isLoaded={isLoaded} />
+            <ShowOneEvent />
+          </Route>
+
 
           <Route path="/groups/:groupId/new-event">
             <Navigation isLoaded={isLoaded} />
@@ -100,7 +101,7 @@ function App() {
           </Route>
 
           <Route>
-            <Navigation isLoaded={isLoaded} />
+            <Navigation isLoaded={isLoaded}  />
             <div style={{
               display: "flex",
               alignItems:"center",

@@ -8,7 +8,7 @@ const LanguageSelectChoice = ()=>{
       <h2> Change you language</h2>
       <div>
       <label className="cursor-pointer">
-        <div>
+        <div className="login-align-items" >
           <input
           type="radio"
           className="cursor-pointer"
@@ -18,6 +18,9 @@ const LanguageSelectChoice = ()=>{
           /> English
         </div>
       </label>
+      <div className="button-padding">
+        <button type="submit" className="signup-form-button">Confirm Choice</button>
+      </div>
       </div>
       </div>
     </div>

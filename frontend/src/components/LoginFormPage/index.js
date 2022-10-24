@@ -71,8 +71,8 @@ const LoginFormPage = ()=> {
             />
             </div>
             {/* <div>{errors ? errors : null} </div> */}
-            <div>{errors.username ? errors.password : null} </div>
-            <div>{errors.email ? errors.password : null} </div>
+            <div className="logn-error-speech">{errors.username ? errors.password : null} </div>
+            <div className="logn-error-speech">{errors.email ? errors.password : null} </div>
 
           <label className="login-text">
             Password
@@ -99,7 +99,7 @@ const LoginFormPage = ()=> {
               </div> */}
             {/* </div> */}
             </div>
-            <div>{errors.password ? errors.password : null} </div>
+            <div className="logn-error-speech">{errors.password ? errors.password : null} </div>
           </div>
           <div className="login-align-items">
             <button type="submit" className="login-submit-button">

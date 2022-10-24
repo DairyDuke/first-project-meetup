@@ -4,22 +4,23 @@ div {
 
 .signup-container {
   display: flex;
-  width: 484px;
-  height: 824px;
-  flex-direction: column;
+  top: 0;
+  justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
-  margin: auto;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .signup-content {
-  position: absolute;
+  /* position: absolute; */
+  z-index: 15;
+  width: 384px;
+  height: 800px;
   background-color: white;
   border-color: beige;
   border-width: 1px;
   border-style: solid;
   border-radius: 0.5rem;
-  padding: 2.5rem;
+  padding: 3.5rem;
 }
 
 
@@ -46,16 +47,35 @@ div {
 }
 
 .signup-input-box {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 100%;
-  border-radius: 0.5rem;
-  opacity: 1;
-  border-width: 1px;
-  height: auto;
+  align-self: flex-start;
   width: 344px;
-  padding: 8px 40px 8px 12px;
-  border-color: gray;
-  box-shadow: inset;
+  background-color: #FFFFFF;
+  margin-top: 4px;
+  margin-bottom: 6px;
+  padding: 8px 12px;
+  height: 30px;
+  outline: 2px solid rgba(128, 128, 128, 0.221);
+  outline-offset: 2px;
+  border-width: 1px;
+  border-radius: 0.5rem;
+  transform: unset;
+}
+
+.signup-form-text {
+
+  margin: 12px 0px;
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+.signup-error-speech {
+  height: 24px;
+  height: auto;
+  color: red;
+}
+
+.signup-input-box:hover {
+  outline: 2px solid rgb(128, 128, 128);
 }
 
 .signup-form-button {
@@ -66,7 +86,7 @@ div {
   opacity: 1;
   border-width: 1px;
   width: 344px;
-  height: 1.5rem;
+  height: 2.5rem;
   background-color: #F65858;
 }
 
@@ -82,7 +102,8 @@ div {
 /* Tooltip text */
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 120px;
+  width: 250px;
+  height: 150px;
   background-color: black;
   color: #fff;
   text-align: center;
@@ -91,7 +112,7 @@ div {
 
   /* Position the tooltip text - see examples below! */
   position: absolute;
-  z-index: 1;
+  z-index: 50;
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */

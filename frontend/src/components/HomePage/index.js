@@ -40,7 +40,7 @@ const HomePage = ()=> {
   const handleNotLoggedIn = (e) => {
     e.preventDefault()
 
-    history.push("/find")
+    history.push("/signup")
 
   }
 
@@ -67,18 +67,18 @@ const HomePage = ()=> {
       <div  className="homepage-points-of-interest">
         <div className="option-card" >
           <img src={(laptopSmile)} alt={(laptopSmile)} className="image-resizing"/>
-          <button className="option-card-button" onClick={handleNotLoggedIn}>
-            Make new friends {arrow}</button>
+          {/* <button className="option-card-button" onClick={handleNotLoggedIn}>
+            Make new friends {arrow}</button> */}
         </div>
         <div className="option-card" >
           <img src={(pencilGroup)} alt={(hiking)} className="image-resizing"/>
-          <button className="option-card-button" onClick={handleNotLoggedIn}>
-          Explore the outdoors {arrow}</button>
+          {/* <button className="option-card-button" onClick={handleNotLoggedIn}>
+          Explore the outdoors {arrow}</button> */}
         </div>
         <div className="option-card" >
           <img src={(chatting)} alt={(chatting)} className="image-resizing"/>
-          <button className="option-card-button" onClick={handleNotLoggedIn}>
-            Connect over tech {arrow}</button>
+          {/* <button className="option-card-button" onClick={handleNotLoggedIn}>
+            Connect over tech {arrow}</button> */}
         </div>
       </div>
       <div className="homepage-center-information">
@@ -91,12 +91,12 @@ const HomePage = ()=> {
         <div className="option-card-navigation" >
           <img src={(handsUp).default} alt={(handsUp).default} />
           <div>
-            <button className="option-card-navigation-button"
-            onClick={handleNotLoggedIn}>
+            <div className="option-card-navigation-button"
+            >
               <h3>
                 Join a group
               </h3>
-            </button>
+            </div>
           </div>
           <p className="option-card-paragraph">
             Do what you love, meet others who love it, find your community. The rest is history!
@@ -105,12 +105,12 @@ const HomePage = ()=> {
         <div className="option-card-navigation" >
           <img src={(ticket).default} alt={(ticket).default} />
           <div>
-            <button className="option-card-navigation-button"
-            onClick={handleNotLoggedIn}>
+            <div className="option-card-navigation-button"
+             >
               <h3>
                 Find an event
               </h3>
-            </button>
+            </div>
           </div>
           <p className="option-card-paragraph">
             Events are happening on just about any topic you can think of, from online gaming and photography to yoga and hiking.
@@ -119,17 +119,19 @@ const HomePage = ()=> {
         <div className="option-card-navigation" >
           <img src={(joinGroup).default} alt={(joinGroup).default} />
           <div>
-            <button className="option-card-navigation-button">
+            <div className="option-card-navigation-button"
+             >
              <h3>
               Start a group
              </h3>
-            </button>
+            </div>
           </div>
           <p className="option-card-paragraph">
             You don’t have to be an expert to gather people together and explore shared interests.
           </p>
         </div>
-            <button className="join-card-button" >
+            <button className="join-card-button"
+            onClick={handleNotLoggedIn}>
              <h3>
                Join Groupup
              </h3>

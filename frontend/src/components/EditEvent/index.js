@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory, useParams } from "react-router-dom";
 import './EditEvent.css';
 import * as eventActions from "../../store/events";
 
 function EditEvent() {
-  const { groupId } = useParams();
+  const { eventId } = useParams();
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
+  const event = useSelector(state => state.events.singleEvent);
+
+
   // const [name, setName] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -20,11 +23,38 @@ function EditEvent() {
   const history = useHistory()
 
 
+  const sanitizeDate = (date)=>{
+    const newDate = date.split("/")
+    const finalDate = `${newDate[2]}-${newDate[1]}-${newDate[0]}`
+    console.log(finalDate)
+    return finalDate
+  }
+  useEffect(()=>{
+    dispatch(eventActions.grabOneEvent(eventId))
+    .catch(async (res)=>{
+      const data = await res.json()
+      if (data && data.message) {
+        setErrors(data.message)
+      }
+    })
+    setName(event && event.name ? event.name : '');
+    setDescription(event && event.description ? event.description : '');
+    setType(event && event.type ? event.type : 'In person');
+    setCapacity(event && event.capacity ? event.capacity : '');
+    setPrice(event && event.price ? event.price : '');
+    setStartDate(event && event.startDate ? sanitizeDate(event.startDate) : '');
+    setEndDate(event && event.endDate ? sanitizeDate(event.endDate) : '');
+    // return (()=> dispatch(eventActions.removeSingleGroupThunk()))
+  }, [dispatch, eventId])
+
+  if (event == undefined) {return null}
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // if (password === confirmPassword) {
       setErrors([]);
-      return dispatch(eventActions.createEventThunk({ name, description, type, capacity, price, startDate, endDate }))
+      return dispatch(eventActions.editEventThunk({ name, description, type, capacity, price, startDate, endDate }, eventId))
       .then(()=>{
         history.push(`/find`)
       })

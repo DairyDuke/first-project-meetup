@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import './FindPage.css';
+import './CurrentUserGroups.css';
 import ShowGroups from '../ShowGroups';
 import ShowEvents from '../ShowEvents';
 import Navigation from '../Navigation';
 import CreateGroupForm from '../CreateGroup';
 import CreateEventForm from '../CreateEvent';
 
-const FindPage = ({ user })=>{
+const CurrentUserGroups = ({ user, isLoaded })=>{
   const [current, setCurrent] = useState(true)
   let selectedStyle = "find-page-selected"
 
@@ -32,8 +32,7 @@ const FindPage = ({ user })=>{
 
           {/* <Route path="/groups/:groupId/new-event"> */}
           <div className="creation-links">
-            {current ? <NavLink to="/new-group" >Why not create a new Group?</NavLink> : null}
-            {/* // <NavLink to="/groups/current">Let's create a new Event!</NavLink>} */}
+            {current ? <NavLink to="/new-group" >Why not create a new Group?</NavLink> : <NavLink to="/groups/current">Let's create a new Event!</NavLink>}
             </div>
           <div className="find-page-display-content-space-container">
             <div className="find-page-display-actual-content">
@@ -48,4 +47,4 @@ const FindPage = ({ user })=>{
   )
 }
 
-export default FindPage
+export default CurrentUserGroups

@@ -81,6 +81,7 @@
   overflow: visible;
   padding: 8px 12px;
   margin-top: 2%;
+  margin-bottom: 2%;
   height: 30px;
   outline: 2px solid rgba(128, 128, 128, 0.221);
   outline-offset: 2px;
@@ -133,7 +134,7 @@
 }
 
 .cgroup-error-speech {
-  height: auto;
+  height: 24px;
   color: red;
 }
 

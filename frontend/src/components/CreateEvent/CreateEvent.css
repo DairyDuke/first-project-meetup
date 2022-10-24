@@ -1,0 +1,150 @@
+.cevent-container {
+  display: flex;
+  top: 0;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.cevent-content {
+  /* position: absolute; */
+  z-index: 20;
+  width: 484px;
+  height: 400px;
+  background-color: white;
+  border-color: beige;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0.5rem;
+  padding: 2.5rem;
+}
+
+.cevent-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.cevent-header-icon {
+  font-size: 32px;
+}
+
+.cevent-h1-form {
+  margin-top: 10px;
+}
+
+.cevent-header-signup {
+  text-decoration: inherit;
+  color: #008294;
+  font-weight: 700;
+}
+
+.cevent-show-password-div {
+  position: relative;
+}
+
+.cevent-show-password {
+  cursor: pointer;
+  position: absolute;
+  font-size: 36px;
+  top: -0.75rem;
+  right: 0rem;
+
+}
+
+.cevent-show-password-x {
+  cursor: pointer;
+  position: absolute;
+  font-size: 36px;
+  top: -0.6rem;
+  right: 0.5rem;
+
+}
+
+
+.cevent-inputs-container {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  height: auto;
+}
+
+.cevent-text {
+  margin: 12px 0;
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+.cevent-input-style {
+  align-self: flex-start;
+  width: 464px;
+  background-color: #FFFFFF;
+  padding: 8px 12px;
+  height: 30px;
+  outline: 2px solid rgba(128, 128, 128, 0.221);
+  outline-offset: 2px;
+  border-width: 1px;
+  border-radius: 0.5rem;
+  margin-bottom: 2%;
+  transform: unset;
+}
+
+
+.cevent-input-style:hover {
+  outline: 2px solid rgb(128, 128, 128);
+}
+
+.cevent-align-items {
+  display: flex;
+  /* align-items: center; */
+  /* justify-content: center; */
+  align-content: center;
+}
+
+.cevent-submit-button {
+  align-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #F65858;
+  margin: 16px;
+  padding: 8px 12px;
+  color: #FFFFFF;
+  fill: white;
+  border-color: #F65858;
+  height: 48px;
+  width: 45%;
+  line-height: 24px;
+  margin-right: 12px;
+}
+
+.cevent-demo-user-button {
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #F65858;
+  margin: 16px 0;
+  padding: 8px 12px;
+  color: #FFFFFF;
+  fill: white;
+  border-color: #F65858;
+  height: 48px;
+  width: 45%;
+  line-height: 24px;
+  margin-left: 12px;
+}
+
+.cevent-error-speech {
+  height: auto;
+  color: red;
+}
+
+@media screen and (max-width:600px) {
+  .cevent-content {
+    width: auto;
+    margin: 0 8px;
+    /* height: auto; */
+  }
+
+}

@@ -81,6 +81,7 @@
 .bottom-menu {
   display: flex;
   font-size: 14px;
+  height: auto;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: left;
@@ -90,8 +91,9 @@
 
 .footer-menu-copyright {
   display: flex;
-  margin-top: 0.25rem;
-  margin-bottom: 0.25rem;
+  /* margin-top: 0.25rem; */
+  margin-bottom: 0;
+  border: 0;
   font-size: 14px;
   padding-left: 0;
   font-weight: 900;
@@ -99,9 +101,9 @@
 }
 
 .footer-menu-links {
-  text-decoration: none;
   cursor: pointer;
   color: #C5C4C4;
+  text-decoration: none;
 
 }
 
@@ -110,7 +112,7 @@
   flex-direction: column;
   margin-top: 4px;
   margin-bottom: 4px;
-  height: 24px;
+  height: 75%;
   align-items: left;
   justify-content: left;
 }
