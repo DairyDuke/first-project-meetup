@@ -1,3 +1,7 @@
+h3 {
+  text-decoration: none;
+}
+
 .find-page-spacer {
   box-sizing: border-box;
   width: 100%;
@@ -37,8 +41,8 @@
   top: 64px;
   /* padding-top: 12px; */
   padding-bottom: 6px;
-  margin-bottom: 16px;
-  border-bottom: 1px solid gray;
+  /* margin-bottom: 16px; */
+  /* border-bottom: 1px solid gray; */
 }
 
 /* Div for the links themselves */
@@ -70,7 +74,7 @@
   align-items: left;
   justify-content: left;
   flex-direction: column;
-  margin-top: 20px;
+  /* margin-top: 20px; */
 }
 
 .find-page-display-actual-content {
