@@ -13,7 +13,7 @@ function ModalFunctions() {
 
   return (
     <>
-     <button onClick={() => {
+     {/* <button onClick={() => {
         setShowModalLanguage(true)
         setShowModalLogin(false)
         setShowModalSignup(false)
@@ -25,7 +25,7 @@ function ModalFunctions() {
         <Modal onClose={() => setShowModalLanguage(false)}>
           <LanguageSelectChoice />
         </Modal>
-      )}
+      )} */}
       <button onClick={() => {
         setShowModalLogin(true)
         setShowModalSignup(false)

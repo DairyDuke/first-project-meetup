@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect, useHistory, useParams } from "react-router-dom";
 import './CreateEvent.css';
 import * as eventActions from "../../store/events";
 
 function CreateEventForm() {
+  const { groupId } = useParams();
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
   // const [name, setName] = useState("");
@@ -23,7 +24,7 @@ function CreateEventForm() {
     e.preventDefault();
     // if (password === confirmPassword) {
       setErrors([]);
-      return dispatch(eventActions.createEventThunk({ name, description, type, capacity, price, startDate, endDate }))
+      return dispatch(eventActions.createEventThunk({ name, description, type, capacity, price, startDate, endDate }, groupId ))
       .then(()=>{
         history.push(`/find`)
       })
@@ -38,7 +39,7 @@ function CreateEventForm() {
   const tooltipclasses = "signup-tooltip signup-tooltip-text"
 
   return (
-    <div className="signup-container">
+    <div className="cevent-container">
     <span className="signup-content">
     <form onSubmit={handleSubmit} className="signup-form-box">
     <div>
@@ -47,16 +48,16 @@ function CreateEventForm() {
       <ul>
         {/* {errors?.map((error, idx) => <li key={idx}>{error}</li>)} */}
       </ul>
-      <label>
+      <label className="cevent-inputs-container">
         Start date:
-        <input className="signup-input-box"
+        <input className="cevent-input-style"
           type="date"
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
           required
         />
         End date:
-        <input className="signup-input-box"
+        <input className="cevent-input-style"
           type="date"
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
@@ -65,9 +66,9 @@ function CreateEventForm() {
         <div>{errors.startDate ? errors.startDate : null} </div>
         <div>{errors.endDate ? errors.endDate : null} </div>
       </label>
-      <label>
+      <label className="cevent-inputs-container">
         Event name
-        <input className="signup-input-box"
+        <input className="cevent-input-style"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -75,9 +76,9 @@ function CreateEventForm() {
         />
         <div>{errors.name ? errors.name : null} </div>
       </label>
-      <label>
+      <label className="cevent-inputs-container">
         Give your Event a description
-        <input className="signup-input-box"
+        <input className="cevent-input-style"
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -86,9 +87,9 @@ function CreateEventForm() {
         <div>{errors.description ? errors.description : null} </div>
       </label>
 
-      <label>
+      <label className="cevent-inputs-container">
         What will your event cost?
-        <input className="signup-input-box"
+        <input className="cevent-input-style"
           type="number"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
@@ -97,9 +98,9 @@ function CreateEventForm() {
         <div>{errors.price ? errors.price : null} </div>
       </label>
 
-      <label>
+      <label className="cevent-inputs-container">
         What is the capacity?
-        <input className="signup-input-box"
+        <input className="cevent-input-style"
           type="number"
           value={capacity}
           onChange={(e) => setCapacity(e.target.value)}
@@ -107,7 +108,7 @@ function CreateEventForm() {
         />
         <div>{errors.capacity ? errors.capacity : null} </div>
       </label>
-      <label>
+      <label className="cevent-inputs-container">
         How will your Event meet?
         <input
           type="radio"

@@ -74,7 +74,7 @@ export const createEventThunk = ({ name, description, type, capacity, price, sta
   const response = await csrfFetch(`/api/groups/${groupId}/events`, {
     method: "POST",
     body: JSON.stringify({
-      // venueId,
+      venueId: null,
       name,
       description,
       type,

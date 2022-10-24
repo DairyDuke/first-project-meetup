@@ -4,7 +4,6 @@ import './Home.css'
 import FindPage from '../FindPage'
 
 const Home = ({ user })=>{
-console.log(user)
   return(
     <>
       <div>
@@ -12,7 +11,7 @@ console.log(user)
           <h1>Welcome, {user.firstName} 👋</h1>
         </div>
         <div>
-            <div> <FindPage /> </div>
+            <div> <FindPage user={user} /> </div>
         </div>
       </div>
     </>

@@ -17,7 +17,8 @@ const Footer = () => {
     <div className="footer-content">
         <div className="create-button-box">
           <span className="footer-heavy-text"> Create your own Groupup group. </span>
-            <NavLink to="/new-group" className="get-started-button">Get Started</NavLink>
+          {!sessionUser && <NavLink to="/signup" className="get-started-button">Get Started</NavLink>}
+          {sessionUser && <NavLink to="/new-group" className="get-started-button">Get Started</NavLink>}
         </div>
         <br />
         <br />
@@ -27,39 +28,38 @@ const Footer = () => {
             <ul className="footer-item-padding">
               {/* TODO switch signup to logout */}
               {sessionUser && <li className="footer-item-padding"><div className="footer-menu-links" onClick={logout}>Log out</div></li>}
-              {!sessionUser && <li className="footer-item-padding"><NavLink to="/signup" className="footer-menu-links">Sign up</NavLink>
-              </li>}
-              {!sessionUser && <li className="footer-item-padding">
-              <NavLink to="/login" className="footer-menu-links">Log in</NavLink></li>}
-          {/* <li className="footer-item-padding">Help</li>
-          <li className="footer-item-padding">Become an Affilliate</li> */}
+              {!sessionUser &&
+              <>
+              <li className="footer-item-padding"><NavLink to="/signup" className="footer-menu-links">Sign up</NavLink>
+              </li> <li className="footer-item-padding"><NavLink to="/login" className="footer-menu-links">Log in</NavLink>
+              </li>
+              </>
+              }
             </ul>
         </div>
-        <div className="width-third">
+        {/* <div className="width-third">
           <span className="footer-heavy-text">Discover</span>
             <ul className="footer-item-padding">
-              <li className="footer-item-padding"><NavLink to="/find" className="footer-menu-links">Groups</NavLink></li>
+              <li className="footer-item-padding"><NavLink to="/find" className="footer-menu-links">Groups</NavLink></li> */}
           {/* <li className="footer-item-padding">Calendar</li>
           <li className="footer-item-padding">Topics</li>
           <li className="footer-item-padding">Cities</li> */}
-              <li className="footer-item-padding"><NavLink to="/find" className="footer-menu-links">Online Events</NavLink></li>
+              {/* <li className="footer-item-padding"><NavLink to="/find" className="footer-menu-links">Online Events</NavLink></li> */}
           {/* <li className="footer-item-padding">Local Guides</li> */}
-            </ul>
-        </div>
-        <div className="width-third">
+            {/* </ul> */}
+        {/* </div> */}
+        {/* <div className="width-third">
           <span className="footer-heavy-text">Groupup</span>
             <ul className="footer-item-padding">
-              <li className="footer-item-padding"><NavLink to="" className="footer-menu-links">About</NavLink></li>
+              <li className="footer-item-padding"><NavLink to="" className="footer-menu-links">About</NavLink></li> */}
           {/* <li className="footer-item-padding">Blog</li>
           <li className="footer-item-padding">Groupup Pro</li>
           <li className="footer-item-padding">Careers</li>
           <li className="footer-item-padding">Apps</li>
           <li className="footer-item-padding">Podcast</li> */}
-            </ul>
-        </div>
+            {/* </ul>
+        </div> */}
       </span>
-        <br />
-        <br />
           {/* <div className="bottom-menu">
             <span className="footer-heavy-text">Follow us</span>
             <span> multiple icons here </span>

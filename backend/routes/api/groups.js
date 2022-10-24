@@ -66,10 +66,10 @@ const validateImage = [
 ]
 
 const validateEvent = [
-  check('venueId')
-    .exists({ checkFalsy: true })
-    .isNumeric()
-    .withMessage("Venue does not exist."),
+  // check('venueId')
+  //   .exists({ checkFalsy: true })
+  //   .isNumeric()
+  //   .withMessage("Venue does not exist."),
   check('name')
     .exists({ checkFalsy: true })
     .isLength({ min: 5 })
@@ -435,7 +435,7 @@ router.post(
   requireAuth,
   groupExists,
   validateEvent,
-  venueExists,
+  // venueExists,
   checkHostCredentials,
   async (req, res, next) => {
     const userId = req.user.id;
