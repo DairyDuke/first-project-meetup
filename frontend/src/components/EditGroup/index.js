@@ -39,6 +39,10 @@ function EditGroup() {
   if (group == undefined) {return null}
 
 
+  const handleCancel = (e) => {
+    e.preventDefault();
+    history.push(`/groups/${groupId}`)
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -56,100 +60,139 @@ function EditGroup() {
     return setErrors({confirmPassword: 'Confirm Password field must be the same as the Password field'});
   };
 
-  const tooltipclasses = "signup-tooltip signup-tooltip-text"
-
-  return (
-    <div className="signup-container">
-    <span className="signup-content">
-    <form onSubmit={handleSubmit} className="signup-form-box">
-    <div>
-      <h1 className="font-title">Let's setup your Group!</h1>
-    </div>
-      <ul>
-        {/* {errors?.map((error, idx) => <li key={idx}>{error}</li>)} */}
-      </ul>
-      <label>
-        Location
-        <input className="signup-input-box"
-          type="text"
-          placeholder="City"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          required
-        />
-        <input className="signup-input-box"
-          type="text"
-          placeholder="State"
-          value={state}
-          onChange={(e) => setState(e.target.value)}
-          required
-        />
-        <div>{errors.city ? errors.city : null} </div>
-        <div>{errors.state ? errors.state : null} </div>
-      </label>
-      <label>
-        Group name
-        <input className="signup-input-box"
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <div>{errors.name ? errors.name : null} </div>
-      </label>
-      <label>
-        Tell us about your Group
-        <input className="signup-input-box"
-          type="text"
-          value={about}
-          onChange={(e) => setAbout(e.target.value)}
-          required
-        />
-        <div>{errors.about ? errors.about : null} </div>
-      </label>
-      <label>
-        How does your group meet?
-        <input
-          type="radio"
-          value="online"
-          // name="type"
-          onChange={(e) => setType(e.target.value)}
-          checked={type=="online"}
-        />Online
-        <input
-          type="radio"
-          value="In person"
-          onChange={(e) => setType(e.target.value)}
-          // name="type"
-          checked={type=="In person"}
-          />In-Person
-        <div>{errors.type ? errors.type : null} </div>
-      </label>
-      {/* <div> */}
-      <label>
-        Do you want your group to be private?
-      <input
-          type="radio"
-          value="true"
-          // name="visibility"
-          onChange={(e) => setVisibility(e.target.value)}
-          checked={visibility=="true"}
-        />Yes
-        <input
-          type="radio"
-          value="false"
-          onChange={(e) => setVisibility(e.target.value)}
-          // name="visibility"
-          checked={visibility=="false"}
-          />No
-        <div>{errors.private ? errors.private : null} </div>
-      </label>
-      {/* </div> */}
-      <button type="submit" className="signup-form-button">Sign Up</button>
-    </form>
-    </span>
-    </div>
-  );
-}
+    return (
+      <>
+      <div className="cgroup-container">
+          <form onSubmit={handleSubmit} className="cgroup-content">
+            <div className="cgroup-header">
+              <h1 className="cgroup-h1-form">
+                Let's edit your Group!
+              </h1>
+              <div>
+              <h3 className="cgroup-header">
+                Here's your group’s location.
+              </h3>
+                <label className="cgroup-inputs-container">
+                 <input className="cgroup-input-style"
+                  type="text"
+                  placeholder="City"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  required
+                />
+                <div className="cgroup-error-speech">
+                  {errors.city ? errors.city : null}
+                </div>
+                <input className="cgroup-input-style"
+                  type="text"
+                  placeholder="State"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                  required
+                />
+                <div className="cgroup-error-speech">
+                  {errors.state ? errors.state : null}
+                </div>
+                </label>
+              </div>
+            </div>
+            <div>
+              <h3>
+              Would you like to change your group's name?
+              </h3>
+              <label className="cgroup-inputs-container">
+             <input className="cgroup-input-style"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+              <div className="cgroup-error-speech">
+                {errors.name ? errors.name : null}
+              </div>
+              </label>
+            </div>
+            <div>
+              <h3>
+              Here is your group's description:
+              </h3>
+              <label className="cgroup-inputs-container">
+              <input className="cgroup-input-style-description"
+                type="text"
+                value={about}
+                onChange={(e) => setAbout(e.target.value)}
+                required
+              />
+              <div className="cgroup-error-speech">
+                {errors.about ? errors.about : null}
+              </div>
+            </label>
+            </div>
+            <div className="cgroup-align-items">
+              <h3>
+              Update your group's meeting preference?
+              </h3>
+              <label className="cgroup-align-items-buttons">
+                <div className="spacer-div"> </div>
+              Online
+              <input
+                type="radio"
+                value="online"
+                onChange={(e) => setType(e.target.value)}
+                checked={type=="online"}
+                />
+                In-Person
+              <input
+                type="radio"
+                value="In person"
+                onChange={(e) => setType(e.target.value)}
+                checked={type=="In person"}
+                />
+              <div className="cgroup-error-speech">
+                {errors.type ? errors.type : null}
+              </div>
+              </label>
+              </div>
+            <div className="cgroup-align-items">
+                <h3>
+                Change your group's visibility?
+                </h3>
+                <label className="cgroup-align-items-buttons">
+                <input
+                  type="radio"
+                  value="true"
+                  onChange={(e) => setVisibility(e.target.value)}
+                  checked={visibility=="true"}
+                />Yes
+                <input
+                  type="radio"
+                  value="false"
+                  style={{paddingRight:"5px"}}
+                  onChange={(e) => setVisibility(e.target.value)}
+                  checked={visibility=="false"}
+                />No
+                <div className="cgroup-align-items">
+                  {errors.private ? errors.private : null}
+                </div>
+                </label>
+                </div>
+                <div>
+                  <button
+                    type="submit"
+                    className="cgroup-submit-button"
+                    >Confirm Edit
+                  </button>
+                  <button
+                    type="button"
+                    className="cgroup-submit-button"
+                    onClick={handleCancel}
+                    >Cancel Edit
+                  </button>
+                </div>
+              </form>
+          </div>
+      </>
+    );
+  }
 
 export default EditGroup;

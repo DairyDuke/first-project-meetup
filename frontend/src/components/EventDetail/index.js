@@ -14,7 +14,6 @@ const EventDetail = ({ event })=>{
 // endDate, eventId, id, name, numAttending,
 // description, capacity, price,
 //previewImage, startDate, type, venueId
-console.log(event)
 
   return (
     <Link to={`/${event.Group.id}/events/${event.id}`}>

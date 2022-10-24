@@ -1,0 +1,147 @@
+.cgroup-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  margin: auto;
+  width: 600px;
+  height: auto;
+}
+
+.cgroup-content {
+  flex-direction: column;
+  justify-items: center;
+  text-align: left;
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: white;
+  border-color: beige;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0.5rem;
+  padding: 2.5rem;
+}
+
+.cgroup-header {
+  margin-bottom: 4px;
+}
+
+.cgroup-header-icon {
+  font-size: 32px;
+}
+
+.cgroup-h1-form {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.cgroup-header-signup {
+  text-decoration: inherit;
+  color: #008294;
+  font-weight: 700;
+
+}
+
+
+.cgroup-inputs-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2%;
+  margin-bottom: 5%;
+  height: auto;
+}
+
+.cgroup-text {
+  margin: 12px 0;
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+.cgroup-input-style {
+  align-self: flex-start;
+  width: 464px;
+  background-color: #FFFFFF;
+  padding: 8px 12px;
+  margin-top: 2%;
+  height: 30px;
+  outline: 2px solid rgba(128, 128, 128, 0.221);
+  outline-offset: 2px;
+  border-width: 1px;
+  border-radius: 0.5rem;
+  transform: unset;
+}
+
+.cgroup-input-style-description {
+  align-self: flex-start;
+  width: 464px;
+  min-height: 40px;
+  max-height: 400px;
+  background-color: #FFFFFF;
+  overflow: visible;
+  padding: 8px 12px;
+  margin-top: 2%;
+  height: 30px;
+  outline: 2px solid rgba(128, 128, 128, 0.221);
+  outline-offset: 2px;
+  border-width: 1px;
+  border-radius: 0.5rem;
+  transform: unset;
+}
+
+
+.cgroup-input-style:hover {
+  outline: 2px solid rgb(128, 128, 128);
+}
+
+.cgroup-align-items {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin: 3px;
+  align-content: center;
+}
+
+.spacer-div {
+  margin: 3px 0;
+}
+
+.cgroup-align-items-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin: 3px;
+  /* align-items: center; */
+  /* justify-content: center; */
+  /* align-content: center; */
+}
+
+.cgroup-submit-button {
+  align-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #F65858;
+  margin: 16px 0;
+  padding: 8px 12px;
+  color: #FFFFFF;
+  fill: white;
+  border-color: #F65858;
+  height: 48px;
+  width: 45%;
+  line-height: 24px;
+  margin-right: 12px;
+}
+
+.cgroup-error-speech {
+  height: auto;
+  color: red;
+}
+
+@media screen and (max-width:600px) {
+  .cgroup-content {
+    width: auto;
+    margin: 0 8px;
+    /* height: auto; */
+  }
+
+}
