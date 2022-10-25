@@ -71,6 +71,7 @@ const LoginFormPage = ()=> {
             />
             </div>
             {/* <div>{errors ? errors : null} </div> */}
+            <div className="logn-error-speech">{errors ? errors : null} </div>
             <div className="logn-error-speech">{errors.username ? errors.password : null} </div>
             <div className="logn-error-speech">{errors.email ? errors.password : null} </div>
 
