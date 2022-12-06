@@ -1,5 +1,12 @@
 'use strict';
 
+// NEW: add this code to each migration file
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
+// END of new code
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     //writing out bulk data in a variable for easy reference.
@@ -76,7 +83,8 @@ module.exports = {
       //   endDate: "12/03/2022"
       // }
     ]
-    return queryInterface.bulkInsert('Events', bulkData, {});
+    options.tableName = 'Events'
+    return queryInterface.bulkInsert(options, bulkData, {});
     /**
      * Add seed commands here.
      *
@@ -91,7 +99,8 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
 
     const Op = Sequelize.Op;
-    return queryInterface.bulkDelete('Events', {
+    options.tableName = 'Events'
+    return queryInterface.bulkDelete(options, {
       // what to use to delete the above.
       name: { [Op.in]: ["Burger Off", "Cooking Class", "Pizza Off", "Cake Off", "Pie Alchemy", "Reading Marathon"] }
     }, {});
